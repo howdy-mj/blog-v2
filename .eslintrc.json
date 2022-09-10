@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "next",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-undef": "off"
+  }
+}
