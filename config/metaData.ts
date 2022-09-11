@@ -1,34 +1,31 @@
 const metaData = {
-  title: 'Title',
-  name: 'Your name',
-  description: 'Write your description',
-  language: 'en',
-  siteUrl: 'https://your-blog.vercel.app', // Deployed site url
-  socialBanner: '', // Open Graph image
+  title: 'MJ Kim',
+  name: 'MJ Kim',
+  description: '안녕하세요, 기록하고 공유하기를 좋아하는 프론트엔드 개발자 김민정입니다.',
+  language: 'ko',
+  siteUrl: 'https://blog-v2.vercel.app',
+  socialBanner: '/images/socialBanner.jpg',
   logoImage: '/images/logo.png',
-  email: '',
+  email: 'hi.minjungkim@gmail.com',
   sns: {
-    // Only ID
     github: 'howdy-mj',
-    linkedin: '',
+    linkedin: '민정-김-421134173/',
     twitter: '',
     facebook: '',
     youtube: '',
   },
-  gaId: '', // Google Analytics ID, e.g. G-XXXX
+  gaId: 'G-CTR99NRKEM',
   comment: {
     utterances: {
-      // https://utteranc.es/
-      repo: 'howdy-mj/howdy-nextjs-starter', // e.g. {github ID}/{repo name}
+      repo: 'howdy-mj/blog-v2',
     },
   },
   isActive: {
-    // Activate or deactivate your page
     personalInformation: true,
     snippets: true,
     about: true,
   },
-  postsPerPage: 5, // Posts pagination count
+  postsPerPage: 5,
 };
 
 export default metaData;

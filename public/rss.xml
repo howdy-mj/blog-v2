@@ -1,22 +1,22 @@
 
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
     <channel>
-      <title>Title</title>
-      <link>https://your-blog.vercel.app</link>
-      <description>Write your description</description>
-      <language>en</language>
-      <managingEditor> (Your name)</managingEditor>
-      <webMaster> (Your name)</webMaster>
+      <title>MJ Kim</title>
+      <link>https://blog-v2.vercel.app</link>
+      <description>안녕하세요, 기록하고 공유하기를 좋아하는 프론트엔드 개발자 김민정입니다.</description>
+      <language>ko</language>
+      <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
+      <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
       <lastBuildDate>Sun, 11 Sep 2022 00:00:00 GMT</lastBuildDate>
-      <atom:link href="https://your-blog.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="https://blog-v2.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
       
     <item>
-      <guid>https://your-blog.vercel.app/introducing-howdy-nextjs-starter</guid>
+      <guid>https://blog-v2.vercel.app/introducing-howdy-nextjs-starter</guid>
       <title>Introducing howdy-nextjs-starter!</title>
-      <link>https://your-blog.vercel.app/introducing-howdy-nextjs-starter</link>
+      <link>https://blog-v2.vercel.app/introducing-howdy-nextjs-starter</link>
       <description>Guide of this blog</description>
       <pubDate>Sun, 11 Sep 2022 00:00:00 GMT</pubDate>
-      <author> (Your name)</author>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
       <category>nextjs</category><category>howdy</category>
       <content:encoded>
 ## howdy-nextjs.starter
@@ -113,12 +113,12 @@ If is a `draft: true` content, in local you will see with 'Draft' badge.
     </item>
   
     <item>
-      <guid>https://your-blog.vercel.app/example/write-md</guid>
+      <guid>https://blog-v2.vercel.app/example/write-md</guid>
       <title>Write .md file</title>
-      <link>https://your-blog.vercel.app/example/write-md</link>
+      <link>https://blog-v2.vercel.app/example/write-md</link>
       <description>Example of code block</description>
       <pubDate>Sat, 10 Sep 2022 00:00:00 GMT</pubDate>
-      <author> (Your name)</author>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
       <category>markdown</category><category>example</category>
       <content:encoded>
 A sample post with markdown.
@@ -194,12 +194,27 @@ module.exports = ({
     </item>
   
     <item>
-      <guid>https://your-blog.vercel.app/example/write-mdx</guid>
+      <guid>https://blog-v2.vercel.app/draf-post</guid>
+      <title>Example of draft</title>
+      <link>https://blog-v2.vercel.app/draf-post</link>
+      undefined
+      <pubDate>Sat, 10 Sep 2022 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      undefined
+      <content:encoded>
+It's a draft example post
+
+No date or tag.
+</content:encoded>
+    </item>
+  
+    <item>
+      <guid>https://blog-v2.vercel.app/example/write-mdx</guid>
       <title>Write .mdx file</title>
-      <link>https://your-blog.vercel.app/example/write-mdx</link>
+      <link>https://blog-v2.vercel.app/example/write-mdx</link>
       <description>Example of mdx with lastMod</description>
       <pubDate>Thu, 08 Sep 2022 00:00:00 GMT</pubDate>
-      <author> (Your name)</author>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
       <category>markdown</category><category>example</category>
       <content:encoded>
 A sample post with `mdx`.
@@ -214,16 +229,30 @@ You can visit [mdxjs](https://mdxjs.com/) for more details.
     </item>
   
     <item>
-      <guid>https://your-blog.vercel.app/bookmark/general</guid>
+      <guid>https://blog-v2.vercel.app/bookmark/general</guid>
       <title>Development</title>
-      <link>https://your-blog.vercel.app/bookmark/general</link>
+      <link>https://blog-v2.vercel.app/bookmark/general</link>
       undefined
       <pubDate>Wed, 31 Aug 2022 00:00:00 GMT</pubDate>
-      <author> (Your name)</author>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
       <category>bookmarks</category>
       <content:encoded>
 - [Github](https://github.com/)
 - [MDN Web Docs](https://developer.mozilla.org/ko/)
+</content:encoded>
+    </item>
+  
+    <item>
+      <guid>https://blog-v2.vercel.app/bookmark/temp</guid>
+      <title>Temp</title>
+      <link>https://blog-v2.vercel.app/bookmark/temp</link>
+      undefined
+      <pubDate>Mon, 01 Aug 2022 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      <category>bookmarks</category>
+      <content:encoded>
+
+It's a draft post.
 </content:encoded>
     </item>
   
