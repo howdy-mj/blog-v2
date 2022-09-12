@@ -17,7 +17,7 @@ const metaData = {
   gaId: 'G-CTR99NRKEM',
   comment: {
     utterances: {
-      repo: 'howdy-mj/blog-v2',
+      repo: '',
     },
   },
   isActive: {
