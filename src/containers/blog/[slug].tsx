@@ -24,7 +24,7 @@ const BlogSlugContainer = ({ frontMatter, contentSection }: BlogSlugContainerPro
       </HeaderWrapper>
       <Section>{contentSection}</Section>
       {metaData.comment.utterances.repo && <Utterances />}
-      <ContentFooter />
+      {/* <ContentFooter /> */}
     </Layout>
   );
 };

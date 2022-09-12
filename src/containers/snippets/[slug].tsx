@@ -20,7 +20,7 @@ const SnippetsSlugContainer = ({ frontMatter, contentSection }: SnippetsSlugCont
         </LastModDate>
       </HeaderWrapper>
       <Section>{contentSection}</Section>
-      <ContentFooter />
+      {/* <ContentFooter /> */}
     </Layout>
   );
 };
