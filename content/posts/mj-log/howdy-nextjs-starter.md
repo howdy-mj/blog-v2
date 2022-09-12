@@ -1,24 +1,10 @@
+---
+title: 블로그 구축기
+tags: [mj.log]
+date: '2022-09-12'
+summary: 한 달 간 블로그 템플릿 만든 후기
+---
 
-  <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
-    <channel>
-      <title>MJ Kim</title>
-      <link>https://blog-v2.vercel.app</link>
-      <description>안녕하세요, 기록하고 공유하기를 좋아하는 프론트엔드 개발자 김민정입니다.</description>
-      <language>ko</language>
-      <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
-      <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
-      <lastBuildDate>Mon, 12 Sep 2022 00:00:00 GMT</lastBuildDate>
-      <atom:link href="https://blog-v2.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
-      
-    <item>
-      <guid>https://blog-v2.vercel.app/mj-log/howdy-nextjs-starter</guid>
-      <title>블로그 구축기</title>
-      <link>https://blog-v2.vercel.app/mj-log/howdy-nextjs-starter</link>
-      <description>한 달 간 블로그 템플릿 만든 후기</description>
-      <pubDate>Mon, 12 Sep 2022 00:00:00 GMT</pubDate>
-      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
-      <category>mj.log</category>
-      <content:encoded>
 ## 블로그를 만든 이유
 
 왜인지는 모르겠지만, 어렸을 때부터 블로그를 썼었다. 그때는 즐겨하던 게임 공략을 네이버 블로그에 작성했었다. 방문자 수가 올라가던 걸 보면서 글을 더 잘 쓰고, 사람들이 찾고 싶어 하는 내용을 작성하고 싶다는 생각이 강했다.
@@ -83,7 +69,7 @@
 
 ````
 // 예전 방식
-_app.tsx
+<span className="file-location">_app.tsx</span>
 
 ```tsx
 // ... 생략
@@ -192,8 +178,3 @@ _그런데 제목 부분 눈에 잘 띄지 않는 것 같아 수정해야겠다.
 아직 많이 부족해서 템플릿으로 공개는 못 했지만, 빠른 시일 내에 공개할 수 있도록 열심히 다듬어야겠다.
 
 _(하나 아쉬운 점이 있다면, Gatsby로 만든 블로그의 SEO가 정말 잘 되고 있어서 갈아타기 무척이나 아쉽다.)_
-</content:encoded>
-    </item>
-  
-    </channel>
-  </rss>
