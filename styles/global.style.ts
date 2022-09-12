@@ -97,6 +97,9 @@ const GlobalStyle = createGlobalStyle`
   ul, li {
     list-style: none;
   }
+  img {
+    max-width: 100%;
+  }
 
   ${codeStyle};
   ${aboutStyle};
