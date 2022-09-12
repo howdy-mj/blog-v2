@@ -8,7 +8,6 @@ import { isProd } from '@constants/isProd';
 import GlobalStyle from '@styles/global.style';
 import theme from '@styles/theme.style';
 import '@styles/prism-dracula.css';
-import '@styles/about.style.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
