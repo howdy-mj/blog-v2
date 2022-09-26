@@ -1,1 +1,1 @@
-export const posts = [{"frontMatter":{"title":"블로그 구축기","tags":["mj.log"],"date":"2022-09-12","summary":"한 달 간 블로그 템플릿 만든 후기","draft":false},"slug":"mj-log/howdy-nextjs-starter"}]
+export const posts = [{"frontMatter":{"title":"useEffect와 useLayoutEffect의 차이","tags":["react"],"date":"2022-09-25","draft":false},"slug":"react/useEffect-and-useLayoutEffect"},{"frontMatter":{"title":"블로그 구축기","tags":["mj.log"],"date":"2022-09-12","summary":"한 달 간 블로그 템플릿 만든 후기","draft":false},"slug":"mj-log/howdy-nextjs-starter"}]

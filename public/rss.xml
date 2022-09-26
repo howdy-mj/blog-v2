@@ -2,18 +2,301 @@
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
     <channel>
       <title>MJ Kim</title>
-      <link>https://blog-v2.vercel.app</link>
+      <link>https://howdy-blog-v2.vercel.app</link>
       <description>안녕하세요, 기록하고 공유하기를 좋아하는 프론트엔드 개발자 김민정입니다.</description>
       <language>ko</language>
       <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
       <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
-      <lastBuildDate>Mon, 12 Sep 2022 00:00:00 GMT</lastBuildDate>
-      <atom:link href="https://blog-v2.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sun, 25 Sep 2022 00:00:00 GMT</lastBuildDate>
+      <atom:link href="https://howdy-blog-v2.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
       
     <item>
-      <guid>https://blog-v2.vercel.app/mj-log/howdy-nextjs-starter</guid>
+      <guid>https://howdy-blog-v2.vercel.app/react/useEffect-and-useLayoutEffect</guid>
+      <title>useEffect와 useLayoutEffect의 차이</title>
+      <link>https://howdy-blog-v2.vercel.app/react/useEffect-and-useLayoutEffect</link>
+      undefined
+      <pubDate>Sun, 25 Sep 2022 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      <category>react</category>
+      <content:encoded>
+예전에 데이터에 따라 DOM 조작이 필요했었는데, 이때 화면의 깜빡임을 없애기 위해 useEffect 대신 useLayoutEffect를 사용했었다.
+
+그러나 정확히 이 둘의 차이가 무엇인지 생각해보면, 대답할 수 없었다.
+
+## useEffect
+
+React의 render phase에 따르면, 변형(mutations), 구독(subscriptions), 타이머, 로깅 등의 사이드 이펙트들이 컴포넌트 함수 내부에 있어서는 안된다. _(추후 다른 글로 작성할 예정)_
+
+이를 해결하기 위해 useEffect를 사용하는데, [useEffect](https://reactjs.org/docs/hooks-reference.html#useeffect)는 화면 렌더링이 완료된 후 혹은 어떤 값이 변경되었을 때 사이드 이펙트를 수행한다.
+
+### 실행 시점
+
+useEffect로 전달된 함수는 layout과 paint가 완료된 후에 **비동기적**으로 실행된다.
+
+이때 만약 DOM에 영향을 주는 코드가 있을 경우, 사용자는 화면의 깜빡임과 동시에 화면 내용이 달라지는 것을 볼 수 있다. 중요한 정보일 경우, 화면이 다 렌더되기 전에 동기화해주는 것이 좋은데, 이를 위해 useLayoutEffect라는 훅이 나왔으며, 기능은 동일하되 실행 시점만 다르다.
+
+React 18부터는 useEffect에서도 layout과 paint 전에 동기적으로 함수를 실행할 수 있는 [flushSync](https://reactjs.org/docs/react-dom.html#flushsync)라는 함수가 추가되었다. 하지만 강제로 실행하는 것이다보니, 성능상 이슈가 있을 수 있다.
+
+## useLayoutEffect
+
+[useLayoutEffect](https://ko.reactjs.org/docs/hooks-reference.html#uselayouteffect)는 useEffect와 동일하지만, 렌더링 후 layout과 paint 전에 **동기적**으로 실행된다.
+
+때문에 설령 DOM을 조작하는 코드가 존재하더라도, 사용자는 깜빡임을 보지 않는다.
+
+### 예제
+
+간단하게 DOM을 조작하는 코드를 만들었다.
+
+
+
+버튼 클릭 시, 버튼의 bottom을 가져와 텍스트가 위치할 top을 계산하여 화면에 보여주는 것으로, useEffct로 하느냐 useLayoutEffect로 하느냐의 차이만 존재한다.
+
+그런데 너무 빨라서 두 개의 차이를 잘 보지 못할 수 있는데, 클릭한 것을 0.25배속하여 만들어보았다.
+
+
+  
+  0.25배속이기 때문에 인내심을 요한다
+
+
+사실 0.25배속으로 해도 두 개의 차이가 크게 나타나지 않는다. 찰나의 순간 깜빡임이 있느냐 없느냐의 차이다.
+
+따라서 스크롤 위치를 찾거나 어떤 element의 스타일 요소를 변경하는 등 직접적으로 DOM을 조작하는 곳 제외하고는 useEffect를 사용하는 것을 추천한다. 공식 문서에서도 useEffect를 먼저 사용한 후에, 문제가 생긴다면 그때 useLayoutEffect를 사용하는 것을 추천하고 있다.
+
+### 서버 렌더링에서 useLayoutEffect 사용하기
+
+Next.js와 같은 서버 렌더링을 사용하는 경우, 자바스크립트가 모두 다운로드 될 때까지 useEffect와 useLayoutEffect 그 어느 것도 실행되지 않는다. 따라서 서버에서 렌더링되는 컴포넌트에서 useLayoutEffect를 사용하는 경우, React에서 경고를 띄운다.
+
+```txt
+Warning: useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See  for common fixes.
+```
+
+useLayoutEffect는 페인트 전에 실행되기 때문에 서버에서 렌더되는 화면과 클라이언트에서 렌더되는 화면이 다를 수 있다. 따라서 useLayoutEffect는 오직 클라이언트 사이드에서만 실행되어야 한다는 경고 메세지다.
+
+
+
+위 에러에서 알려주는 링크를 따라가보면 [uselayouteffect-ssr.md](https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85)에 따르면, 두 가지 방법을 알려준다.
+
+첫 번째는 useEffect 사용하는 방법이다.
+
+```js
+function MyComponent() {
+  useEffect(() => {
+    // ...
+  });
+}
+```
+
+두 번째는 해당 컴포넌트를 lazy하게 로드하는 방법이다.
+
+```js
+function Parent() {
+  const [showChild, setShowChild] = useState(false);
+
+  // 클라이언트 사이드의 hydration 이후에 보여주기
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
+
+  if (!showChild) {
+    return null;
+  }
+
+  return ;
+}
+
+function Child(props) {
+  useLayoutEffect(() => {
+    // ...
+  });
+}
+```
+
+이 외에 세 번째 방법으로는 [useIsomorphicLayoutEffect](https://usehooks-ts.com/react-hook/use-isomorphic-layout-effect) 훅을 사용할 수 있다.
+
+```js
+import { useEffect, useLayoutEffect } from 'react';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+export default useIsomorphicLayoutEffect;
+```
+
+서버일 경우 useLayoutEffect를 useEffect로 변경헌다.
+
+## 코드로 알아보기
+
+그렇다면 코드상으로는 어떤 부분이 다를까?
+
+```js:ReactHooks.js
+export function useEffect(
+  create: () => (() => void) | void,
+  deps: Array | void | null
+): void {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useEffect(create, deps);
+}
+
+export function useLayoutEffect(
+  create: () => (() => void) | void,
+  deps: Array | void | null
+): void {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useLayoutEffect(create, deps);
+}
+```
+
+[useEffect](https://github.com/facebook/react/blob/cb5084d1c4dc0693e7dcd8af7e921a0aa771914b/packages/react/src/ReactHooks.js#L102)와 [useLayoutEffect](https://github.com/facebook/react/blob/cb5084d1c4dc0693e7dcd8af7e921a0aa771914b/packages/react/src/ReactHooks.js#L118)는 실행 시점만 다를 뿐 같은 로직이기 때문에 코드만 봤을 때는 차이가 없다.
+
+
+
+다음에는 어떤 코드를 봐야할까 고민 하던 중, react-reconciler의 [Dispatcher](https://github.com/facebook/react/blob/cb5084d1c4dc0693e7dcd8af7e921a0aa771914b/packages/react-reconciler/src/ReactInternalTypes.js#L363)를 봤지만, 타입만 명시해줄 뿐 특별히 다른건 없었다.
+
+그러다 해당 파일 상단에 HookType이 `ReactFiberHooks.old.js`로 이동했다는 주석을 보고 동일 계층의 파일들을 보니 `ReactFiberHooks.new.js`도 있어서 해당 파일을 보기로 했다.
+
+```js:ReactFiberHooks.new.js
+const HooksDispatcherOnMount: Dispatcher = {
+  // ...생략
+  useEffect: mountEffect,
+  useLayoutEffect: mountLayoutEffect,
+};
+
+const HooksDispatcherOnUpdate: Dispatcher = {
+  // ...생략
+  useEffect: updateEffect,
+  useLayoutEffect: updateLayoutEffect,
+};
+
+const HooksDispatcherOnRerender: Dispatcher = {
+  // ...생략
+  useEffect: updateEffect,
+  useLayoutEffect: updateLayoutEffect,
+};
+```
+
+다른 점을 찾았다.
+
+useEffect는 mountEffect와 updateEffect를, useLayoutEffect는 mountLayoutEffect와 updateLayoutEffect를 실행한다. mount와 update 함수의 구조는 거의 비슷하여
+해당 글에서는 mount만 다룬다.
+
+```js:ReactFiberHooks.new.js {3, 11-12}
+// useEffect
+function mountEffect(create: () => (() => void) | void, deps: Array | void | null): void {
+  return mountEffectImpl(PassiveEffect | PassiveStaticEffect, HookPassive, create, deps);
+}
+
+// useLayoutEffect
+function mountLayoutEffect(
+  create: () => (() => void) | void,
+  deps: Array | void | null
+): void {
+  const fiberFlags: Flags = UpdateEffect | LayoutStaticEffect;
+  return mountEffectImpl(fiberFlags, HookLayout, create, deps);
+}
+```
+
+그리고 이 둘의 차이는 return하는 함수의 첫 번째(fiberFlags), 두 번째(hookFlags) 인자가 달랐다.
+
+```js:ReactFiberHooks.new.js {5}
+function mountEffectImpl(fiberFlags, hookFlags, create, deps: Array | void | null): void {
+  const hook = mountWorkInProgressHook();
+  const nextDeps = deps === undefined ? null : deps;
+  currentlyRenderingFiber.flags |= fiberFlags;
+  hook.memoizedState = pushEffect(HookHasEffect | hookFlags, create, undefined, nextDeps);
+}
+```
+
+[FiberFlags](https://github.com/facebook/react/blob/cb5084d1c4dc0693e7dcd8af7e921a0aa771914b/packages/react-reconciler/src/ReactFiberFlags.js)
+
+```js:ReactFiberFlags.js
+export type Flags = number;
+
+export const Update = /*                       */ 0b000000000000000000000100; // => UpdateEffect
+export const Passive = /*                      */ 0b000000000000010000000000; // => PassiveEffect
+
+export const LayoutStatic = /*                 */ 0b001000000000000000000000; // => LayoutStaticEffect
+export const PassiveStatic = /*                */ 0b010000000000000000000000; // => PassivStaticEffect
+```
+
+[HookFlags](https://github.com/facebook/react/blob/cb5084d1c4dc0693e7dcd8af7e921a0aa771914b/packages/react-reconciler/src/ReactHookEffectTags.js)
+
+```js:ReactHookEffectTags.js
+export type HookFlags = number;
+
+export const Layout = /*    */ 0b01000; // => HookLayout
+export const Passive = /*   */ 0b10000; // => HookPassive
+```
+
+그리고 이 fiberFlags와 hookFlags는 pushEffect 함수의 첫 번째 인자인 tag로 들어가고, 해당 함수는 `componentUpdateQueue`로 업데이트 할 컴포넌트를 Flag를 통해 Queue로 관리하는 것 같다.
+
+```js:ReactFiberHooks.new.js {10-11}
+function pushEffect(tag, create, destroy, deps: Array | void | null) {
+  const effect: Effect = {
+    tag,
+    create,
+    destroy,
+    deps,
+    // Circular
+    next: (null: any),
+  };
+  let componentUpdateQueue: null | FunctionComponentUpdateQueue =
+    (currentlyRenderingFiber.updateQueue: any);
+  if (componentUpdateQueue === null) {
+    componentUpdateQueue = createFunctionComponentUpdateQueue();
+    currentlyRenderingFiber.updateQueue = (componentUpdateQueue: any);
+    componentUpdateQueue.lastEffect = effect.next = effect;
+  } else {
+    const lastEffect = componentUpdateQueue.lastEffect;
+    if (lastEffect === null) {
+      componentUpdateQueue.lastEffect = effect.next = effect;
+    } else {
+      const firstEffect = lastEffect.next;
+      lastEffect.next = effect;
+      effect.next = firstEffect;
+      componentUpdateQueue.lastEffect = effect;
+    }
+  }
+  return effect;
+}
+```
+
+그리고 초기값으로 할당된 currentlyRenderingFiber는 renderWithHooks 함수에서 현재 동작중인 훅을 기록하는 것으로 보인다.
+
+```js:ReactFiberHooks.new.js {10}
+export function renderWithHooks(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  Component: (p: Props, arg: SecondArg) => any,
+  props: Props,
+  secondArg: SecondArg,
+  nextRenderLanes: Lanes,
+): any {
+  renderLanes = nextRenderLanes;
+  currentlyRenderingFiber = workInProgress;
+}
+```
+
+## 결론
+
+useEffect와 useLayoutEffect가 어떻게 다르고, 어떤 코드로 이루어졌는지 알아보았다.
+
+그런데 사실 어떤 원리로 동작하는지 정확하게 파악하려면, React의 Fiber 알고리즘과 Reconciliation까지 이해해야 정확한 글을 작성할 수 있을 것 같다. (결국 수박 겉핥기 글이 되어버렸다..)
+
+
+
+
+
+**참고**
+
+- [React](https://reactjs.org/)
+
+
+</content:encoded>
+    </item>
+  
+    <item>
+      <guid>https://howdy-blog-v2.vercel.app/mj-log/howdy-nextjs-starter</guid>
       <title>블로그 구축기</title>
-      <link>https://blog-v2.vercel.app/mj-log/howdy-nextjs-starter</link>
+      <link>https://howdy-blog-v2.vercel.app/mj-log/howdy-nextjs-starter</link>
       <description>한 달 간 블로그 템플릿 만든 후기</description>
       <pubDate>Mon, 12 Sep 2022 00:00:00 GMT</pubDate>
       <author>hi.minjungkim@gmail.com (MJ Kim)</author>
@@ -59,7 +342,7 @@
 
 특히 다크모드를 구현할 때 이에 매칭되는 색상이 어떤 걸로 정할지 고민을 엄청나게 했다. Color Contrast 사이트를 사용했지만, 이상하게 점수가 높은 색상을 적용하면 폰트 색상이 묻히거나 배경 색상이 이상해져서, 최대한 중간 타협점을 찾아서 수정했다. 물론 내 눈에만 이상했던 걸 수도 있지만.. 나중에 더 좋은 색상을 찾으면 바꿀 것 같다.
 
-어느 정도 틀이 잡힌 후에 회사 디자이너분에게 간단한 피드백을 요청드렸고, 덕분에 훨씬 좋아진 것 같다 _(그렇지만 그때 말씀해주신 건 다 적용 못 했어요.. 나중에 천천히 할게요...ㅠㅠ)_
+어느 정도 틀이 잡힌 후에 회사 디자이너분에게 간단한 피드백을 요청드렸고, 덕분에 훨씬 좋아진 것 같다. _(그렇지만 그때 말씀해주신 건 다 적용 못 했어요.. 나중에 천천히 할게요...ㅠㅠ)_
 
 ### md와 mdx
 
@@ -122,9 +405,9 @@ _그런데 제목 부분 눈에 잘 띄지 않는 것 같아 수정해야겠다.
 
 그런데 styled-component의 ThemeProvider로 다크모드를 판단하자니, 처음에 라이트모드였다가 다크모드로 변경되는 그 1초가 너무 보기 싫었다. 그러한 유저 경험을 주는 블로그라면 내가 생각해도 싫을 것 같았다.
 
-이래서 다들 CSS variable을 사용하는구나 깨달았다. 이럴 줄 알았다면 처음에 CSS 모듈을 생각했을 텐데.. 역시 해보지 않으면 모르는 구나를 다시 한번 깨달았다.
+이런 저런 방법을 강구하다 결국 CSS variable을 선택했다. 이럴 줄 알았다면 처음에 CSS 모듈을 생각했을 텐데.. 역시 해보지 않으면 모르는 구나를 다시 한번 깨달았다. 다행히 이때 색상을 거의 통일해놔서 변경할 부분은 많지 않았다.
 
-그리고 다크모드 구현이 끝난 줄 알았지만, 댓글 컴포넌트인 utterances의 테마가 같이 변경되지 않았다. 여기저기 레퍼런스를 찾아봤지만 원하던 결과가 나오지 않아, 결국 테마를 토글할 때 utterances의 로직을 넣어주었다. (utterances는 Github Repo가 public이어야 사용 가능해서 당분간은 사용 안할 예정이다)
+그리고 다크모드 구현이 끝난 줄 알았지만, utterances(댓글 컴포넌트)의 테마가 같이 변경되지 않았다. 여기저기 레퍼런스를 찾아봤지만 원하던 결과가 나오지 않아, 결국 테마를 토글할 때 utterances의 색상을 변경하는 로직을 넣어주었다. 이 부분도 수정하고 싶다. (utterances는 Github Repo가 public이어야 사용 가능해서 당분간은 사용 안할 예정이다)
 
 ### SEO
 
