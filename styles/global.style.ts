@@ -1,6 +1,7 @@
 import { createGlobalStyle, css } from 'styled-components';
 import { codeStyle } from './code.style';
 import { aboutStyle } from './about.style';
+import { contentStyle } from './content.style';
 
 const lightTheme = css`
   --bg-primary: #fcfcff;
@@ -103,6 +104,7 @@ const GlobalStyle = createGlobalStyle`
 
   ${codeStyle};
   ${aboutStyle};
+  ${contentStyle};
 `;
 
 export default GlobalStyle;
