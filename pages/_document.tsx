@@ -10,6 +10,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { RenderPage, RenderPageResult } from 'next/dist/shared/lib/utils';
 import metaData from '@config/metaData';
 import GoogleAnalytics from '@components/GoogleAnalytics';
+import { isProd } from '@constants/isProd';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -53,7 +54,7 @@ class MyDocument extends Document {
     return (
       <Html lang={metaData.language}>
         <Head>
-          <GoogleAnalytics />
+          {isProd && <GoogleAnalytics />}
           <link rel="icon" href="/favicons/favicon.ico" />
           <link rel="apple-touch-icon" sizes="76x76" href="/favicons/logo_76x76.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicons/logo_32x32.png" />
