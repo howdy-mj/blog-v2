@@ -1,4 +1,4 @@
-import { Content, getSlugContents } from '@utils/getFiles';
+import { Content, getBasicContentInfo } from '@utils/getFiles';
 import generateRss, { RssContent } from '@utils/generateRss';
 import fs from 'fs';
 
@@ -7,10 +7,10 @@ export const makePostsRss = async (allPosts: Content[]) => {
 
   const frontMatterWithContent = (await Promise.all(
     allSlugs.map(async (slug) => {
-      const slugContents = await getSlugContents('posts', slug);
+      const { frontMatter, content } = await getBasicContentInfo('posts', slug);
       return {
-        frontMatter: slugContents.frontMatter,
-        content: slugContents.content,
+        frontMatter,
+        content,
         slug,
       };
     })

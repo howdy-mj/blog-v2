@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
 import metaData from '@config/metaData';
 import { removeHtmlTagFromString } from '@utils/parseData';
-import { Content } from '@utils/getFiles';
+import { Content, getFilePath, getSlugContents, getSlugPaths } from '@utils/getFiles';
 import BlogSlugContainer from '@containers/blog/[slug]';
 import MdxComponent, { MdxComponentProps } from '@components/MarkdownElements/MdxComponent';
 import { BlogSEO } from '@components/SEO';
-import { getFilePath, getSlugContents, getSlugPaths } from '@utils/getFiles';
 
 type BlogSlugProps = { slug: string; content: string } & MdxComponentProps & Content;
 

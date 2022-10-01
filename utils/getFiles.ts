@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { sync } from 'glob';
 import matter from 'gray-matter';
+import { PluggableList } from '@mdx-js/mdx/lib/core';
 import { isProd } from '@constants/isProd';
 import { sortByDate } from '@utils/sortByDate';
 import { serialize } from 'next-mdx-remote/serialize';
@@ -13,11 +14,10 @@ import remarkMath from 'remark-math';
 // rehype
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeHighlight from 'rehype-highlight';
-import rehypeCodeTitles from 'rehype-code-titles';
 import rehypePrismPlus from 'rehype-prism-plus';
 import rehypePresetMinify from 'rehype-preset-minify';
 import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
 
 export type FrontMatter = {
   title: string;
@@ -101,7 +101,7 @@ export const getFilePath = (slug: string[]) => {
   return slug.length === 1 ? slug[0] : slug.join('/');
 };
 
-export const getSlugContents = async (directory: Directory, slug: string) => {
+export const getBasicContentInfo = async (directory: Directory, slug: string) => {
   const directoryPath = getDirectoryPath(directory);
   const isMdxFile = fs.existsSync(path.join(directoryPath, slug + '.mdx'));
   const contentWithFrontMatter = getContentWithFrontMatter(
@@ -110,19 +110,28 @@ export const getSlugContents = async (directory: Directory, slug: string) => {
   );
 
   const { data: frontMatter, content } = matter(contentWithFrontMatter);
+  return {
+    frontMatter,
+    content,
+    isMdxFile,
+  };
+};
+
+export const getSlugContents = async (directory: Directory, slug: string) => {
+  const { isMdxFile, frontMatter, content } = await getBasicContentInfo(directory, slug);
+
+  const defaultRehypePlugins: PluggableList = [
+    rehypeSlug,
+    rehypeAutolinkHeadings,
+    rehypeKatex,
+    [rehypePrismPlus, { ignoreMissing: true }],
+    rehypePresetMinify,
+  ];
 
   const mdxSource = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [remarkGfm, remarkCodeTitles, remarkImgToJsx, remarkMath],
-      rehypePlugins: [
-        rehypeSlug,
-        rehypeAutolinkHeadings,
-        rehypeHighlight,
-        rehypeCodeTitles,
-        rehypeKatex,
-        [rehypePrismPlus, { ignoreMissing: true }],
-        rehypePresetMinify,
-      ],
+      rehypePlugins: isMdxFile ? defaultRehypePlugins : [rehypeRaw, ...defaultRehypePlugins],
       format: isMdxFile ? 'mdx' : 'md',
     },
   });
