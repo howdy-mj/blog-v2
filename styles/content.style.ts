@@ -122,6 +122,8 @@ export const blogV1ContentStyle = css`
 
   // 파일 이름
   .file-location {
+    margin-top: 10px;
+    display: inline-block;
     background-color: #0b6e99;
     color: #fdfdfd;
     font-family: monospace;
