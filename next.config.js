@@ -5,6 +5,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
+  i18n: {
+    locales: ['en', 'ko'],
+    defaultLocale: 'ko',
+  },
   async rewrites() {
     return [
       {
