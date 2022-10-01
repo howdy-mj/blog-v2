@@ -11,7 +11,7 @@ const PersonalInformation = () => {
       <BasicInformation>
         <ImageWrapper>
           <Image
-            src={metaData.logoImage ? metaData.logoImage : '/images/logo.png'}
+            src={metaData.profileImage ? metaData.profileImage : '/images/logo.png'}
             alt="logo"
             layout="fill"
             sizes="5rem"
@@ -50,8 +50,11 @@ const ImageWrapper = styled.div`
   position: relative;
   width: 8rem;
   height: 8rem;
-  border-radius: 50%;
   margin-right: 2rem;
+
+  img {
+    border-radius: 50%;
+  }
 `;
 
 const NameText = styled.h1`

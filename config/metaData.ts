@@ -5,7 +5,7 @@ const metaData = {
   language: 'ko',
   siteUrl: 'https://howdy-blog-v2.vercel.app',
   socialBanner: '/images/socialBanner.jpg',
-  logoImage: '/images/logo.png',
+  profileImage: '/images/profile.jpg',
   email: 'hi.minjungkim@gmail.com',
   sns: {
     github: 'howdy-mj',
