@@ -7,6 +7,7 @@ import Pre from '@components/MarkdownElements/Pre';
 import BlockQuote from '@components/MarkdownElements/BlockQuote';
 import { H1, H2, H3, H4, P } from '@components/MarkdownElements/TextComponent';
 import { Li, Ol, Ul } from '@components/MarkdownElements/ListComponent';
+import { Table } from '@components/MarkdownElements/Table';
 
 const components: MDXComponents = {
   Image,
@@ -21,6 +22,7 @@ const components: MDXComponents = {
   ol: (props) => <Ol {...props} />,
   ul: (props) => <Ul {...props} />,
   li: (props) => <Li {...props} />,
+  table: (props) => <Table {...props} />,
 };
 
 export type MdxComponentProps = {

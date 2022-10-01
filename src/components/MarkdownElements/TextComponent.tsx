@@ -48,6 +48,6 @@ export const P = ({ children }: JSX.IntrinsicElements['p']) => {
 };
 
 const PText = styled.p`
-  line-height: 1.5;
+  line-height: 1.8;
   margin-bottom: 0.8rem;
 `;
