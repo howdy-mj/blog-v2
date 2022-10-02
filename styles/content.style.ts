@@ -192,17 +192,17 @@ export const blogV1ContentStyle = css`
       margin-bottom: 10px;
       font-weight: bold;
 
-      &::before {
-        content: '▶︎ ';
-      }
-
-      @media not all and (min-resolution: 0.001dpcm) {
-        @supports (-webkit-appearance: none) {
-          &::before {
-            content: '';
-          }
-        }
-      }
+      //&::before {
+      //  content: '▶︎ ';
+      //}
+      //
+      //@media not all and (min-resolution: 0.001dpcm) {
+      //  @supports (-webkit-appearance: none) {
+      //    &::before {
+      //      content: '';
+      //    }
+      //  }
+      //}
 
       &:hover {
         animation-duration: 3s;
