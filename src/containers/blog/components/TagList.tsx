@@ -43,6 +43,7 @@ const Container = styled.div`
 `;
 
 const StyledTagItem = styled(TagItem)<{ isActive: boolean }>`
+  white-space: nowrap;
   color: ${(p) => (p.isActive ? `var(--text-primary)` : `var(--text-description)`)};
   &:hover {
     color: var(--text-primary);
