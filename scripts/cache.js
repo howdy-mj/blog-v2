@@ -24,6 +24,28 @@ const getContentWithFrontMatter = (dirName, filename) => {
   return fs.readFileSync(path.join(directoryPath, filename), 'utf-8');
 };
 
+const dateSortDesc = (a, b) => {
+  if (a > b) return -1;
+  if (a < b) return 1;
+  return 0;
+};
+
+const parseStringToDate = (date) => {
+  if (date === undefined) {
+    return new Date();
+  }
+  return new Date(date);
+};
+
+const sortByDate = (files) => {
+  return files.sort((prev, next) => {
+    return dateSortDesc(
+      parseStringToDate(prev.frontMatter.date),
+      parseStringToDate(next.frontMatter.date)
+    );
+  });
+};
+
 function cachePosts() {
   const { fileNameWithExtension } = getFileNameWithExtension('posts');
 
@@ -40,7 +62,9 @@ function cachePosts() {
     };
   });
 
-  return `export const posts = ${JSON.stringify(allPosts)}`;
+  const sortedPosts = sortByDate(allPosts);
+
+  return `export const posts = ${JSON.stringify(sortedPosts)}`;
 }
 
 try {
