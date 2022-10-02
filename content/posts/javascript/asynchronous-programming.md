@@ -1,7 +1,7 @@
 ---
 title: '자바스크립트의 비동기 프로그래밍'
-date: 2022-2-1 00:00:00
-category: 'javascript'
+date: '2022-2-1'
+tags: ['javascript']
 draft: false
 ---
 
