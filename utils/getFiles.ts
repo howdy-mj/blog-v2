@@ -120,6 +120,8 @@ export const getBasicContentInfo = async (directory: Directory, slug: string) =>
 export const getSlugContents = async (directory: Directory, slug: string) => {
   const { isMdxFile, frontMatter, content } = await getBasicContentInfo(directory, slug);
 
+  const defaultRemarkPlugins: PluggableList = [remarkGfm, remarkImgToJsx, remarkMath];
+
   const defaultRehypePlugins: PluggableList = [
     rehypeSlug,
     rehypeAutolinkHeadings,
@@ -130,7 +132,9 @@ export const getSlugContents = async (directory: Directory, slug: string) => {
 
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [remarkGfm, remarkCodeTitles, remarkImgToJsx, remarkMath],
+      remarkPlugins: isMdxFile
+        ? [remarkCodeTitles, ...defaultRemarkPlugins]
+        : [...defaultRemarkPlugins],
       rehypePlugins: isMdxFile ? defaultRehypePlugins : [rehypeRaw, ...defaultRehypePlugins],
       format: isMdxFile ? 'mdx' : 'md',
     },
