@@ -5,6 +5,7 @@ import { formatDate } from '@utils/formatDate';
 import { FrontMatter } from '@utils/getFiles';
 import Layout from '@components/Layout';
 import Utterances from '@components/Utterances';
+import Giscus from '@components/Giscus';
 import ContentFooter from '@components/ContentFooter';
 
 interface BlogSlugContainerProps {
@@ -24,6 +25,7 @@ const BlogSlugContainer = ({ frontMatter, contentSection }: BlogSlugContainerPro
       </HeaderWrapper>
       <Section>{contentSection}</Section>
       {metaData.comment.utterances.repo && <Utterances />}
+      {metaData.comment.giscus.repo && <Giscus />}
       {/* <ContentFooter /> */}
     </Layout>
   );

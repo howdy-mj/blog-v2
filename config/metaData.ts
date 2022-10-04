@@ -19,6 +19,12 @@ const metaData = {
     utterances: {
       repo: '',
     },
+    giscus: {
+      repo: 'howdy-mj/blog-v2',
+      repoId: 'R_kgDOH-YNyw',
+      category: 'Announcements',
+      categoryId: 'DIC_kwDOH-YNy84CRybt',
+    },
   },
   isActive: {
     personalInformation: true,
