@@ -9,7 +9,7 @@ const metaData = {
   email: 'hi.minjungkim@gmail.com',
   sns: {
     github: 'howdy-mj',
-    linkedin: '민정-김-421134173/',
+    linkedin: 'howdy-mj',
     twitter: '',
     facebook: '',
     youtube: '',
