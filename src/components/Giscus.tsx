@@ -6,6 +6,20 @@ import metaData from '@config/metaData';
 const src = 'https://giscus.app/client.js';
 const lightTheme = 'github-light';
 const darkTheme = 'dark_dimmed';
+const GISCUS_CLASSNAME = '.giscus-frame';
+
+export const changeGiscusTheme = (mode: 'light' | 'dark') => {
+  const giscusElement = document?.querySelector<HTMLIFrameElement>(GISCUS_CLASSNAME);
+  if (giscusElement) {
+    const theme = mode === 'light' ? lightTheme : darkTheme;
+    const message = {
+      giscus: {
+        setConfig: { theme },
+      },
+    };
+    giscusElement.contentWindow?.postMessage(message, 'https://giscus.app');
+  }
+};
 
 const Giscus = () => {
   const giscusRef = useRef<HTMLDivElement | null>(null);

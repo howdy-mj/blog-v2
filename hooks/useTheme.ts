@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { changeUtterancesTheme } from '@components/Utterances';
+import { changeGiscusTheme } from '@components/Giscus';
 
 const THEME = 'theme';
 type ThemeMode = 'light' | 'dark';
@@ -27,6 +28,7 @@ const useTheme = () => {
     window.localStorage.setItem(THEME, mode);
     setTheme(mode);
     changeUtterancesTheme(mode);
+    changeGiscusTheme(mode);
   };
 
   return { theme, toggleTheme };
