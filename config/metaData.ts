@@ -25,7 +25,7 @@ const metaData = {
     snippets: true,
     about: true,
   },
-  postsPerPage: 5,
+  postsPerPage: 10,
 };
 
 export default metaData;
