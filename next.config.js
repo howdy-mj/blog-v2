@@ -17,4 +17,13 @@ module.exports = withBundleAnalyzer({
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/css/emotion.js-intro',
+        destination: '/css/emotionjs-intro',
+        permanent: true,
+      },
+    ];
+  },
 });
