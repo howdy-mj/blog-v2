@@ -104,8 +104,8 @@ const GlobalStyle = createGlobalStyle`
 
   ${codeStyle};
   ${aboutStyle};
-  ${contentStyle};
   ${blogV1ContentStyle}; // TODO: 점차 없애기
+  ${contentStyle};
 `;
 
 export default GlobalStyle;
