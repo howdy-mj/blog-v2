@@ -7,9 +7,143 @@
       <language>ko</language>
       <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
       <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
-      <lastBuildDate>Sun, 25 Sep 2022 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Sun, 16 Oct 2022 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://howdy-blog-v2.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
       
+    <item>
+      <guid>https://howdy-blog-v2.vercel.app/cs/bit</guid>
+      <title>컴퓨터 언어의 비트(bit)</title>
+      <link>https://howdy-blog-v2.vercel.app/cs/bit</link>
+      undefined
+      <pubDate>Sun, 16 Oct 2022 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      <category>cs</category>
+      <content:encoded>
+필자는 자바스크립트로 개발을 시작했다. 매니지드 언어이다 보니, 직접 메모리에 할당이나 해제를 해보지 못했다. 그래서 내가 선언한 변수가 어떤 식으로 메모리에 할당되고 사용되는지 알 수 없었다.
+
+하지만 개발을 하다보면 종종 '메모리 누수가 될 수 있으니 주의해야 한다', '메모리 낭비가 심하다' 등의 상황을 직면할 수 있는데, 그리 와닿지 않았다.
+
+이를 이해하기 위해 컴퓨터를 공부해보려 한다.
+
+## 비트
+
+컴퓨터의 언어를 '**비트(bit)**'라 칭하며, 2진법을 사용한다는 뜻의 바이너리(binary)와 숫자를 뜻하는 디지트(digit)이 합쳐진 말이다.
+
+일반적으로 전자기기에서는 신호가 꺼졌는지(0) 켜졌는지(1)로 구별하기 때문에 두 개의 숫자를 사용하는 2진법을 기반으로 발전했다. 모스 부호 역시 점(.)과 선(-) 두 개의 기호를 여러 가지 방식으로 조합하여 다양한 정보를 표현한다.
+
+### 비트의 연산
+
+비트는 논리 연산(logic operation)으로 다양한 내용을 표현할 수 있다.
+
+|     |                                                          |
+| :-: | :------------------------------------------------------: |
+| NOT |       거짓인 비트는 참이, 참인 비트는 거짓을 반환        |
+| AND |         모든 비트가 모두 참인 경우에만 참을 반환         |
+| OR  |            어느 하나라도 참인 경우, 참을 반환            |
+| XOR | 배타적(exclusive) OR는 서로 다른 값인 경우에만 참을 반환 |
+
+
+
+
+  
+  https://instrumentationtools.com/logic-gates-and-truth-tables/
+
+
+위는 진리표(truth table)이다. 0은 거짓, 1은 참을 뜻하며, 좌측에 입력(input)값을 우측이 출력(output)으로 결과 값을 보여준다.
+
+## 진법 변환
+
+컴퓨터의 모든 정보는 0과 1로 표현된다. 하지만 0과 1로 모두 표기하기에는 너무 길어지고 눈이 아파서 읽기 쉬게 표현하는 방법을 고안해냈다. 
+
+
+### 8진 표현법
+
+하나는 8진 표현법(octal representation)이다. 2진수 비트들은 3개씩 그룹으로 묶는 것이다. 
+
+100이라는 2진 값을 8진 값으로 바꾸기 위해서는 (1 x $2^2$) + (0 x $2^1$) + (0 x $2^0$) = 4라는 식으로 계산한다.
+
+### 16진 표현법
+
+하지만 최근 컴퓨터는 8비트의 배수를 사용해 만들어지기 때문에, 8진 표현법보다는 16진 표현법(hexadecimal representation)을 많이 쓴다. 8의 배수는 4(16진수 한 자리의 비트 수)로 균일하게 나뉘지만, 3(8진수 한 자리의 비트 수)으로는 균일하게 나눠지지 않는다. 윈도우 컴퓨터를 사용 중이라면 프로그램을 다운 받을 때 32bit, 64bit 중 어떤 걸로 다운받을지 물어보는 경우를 종종 봤을 것이다.
+
+16진수를 표현하기 위해서는 10 이상의 숫자가 필요하다. 그래서 abcedf하는 기호가 10에서 15를 표현하기로 했다. 
+
+
+
+0부터 15까지 각각 2진수와 10진수, 16진수로 어떻게 표현되는지 알아보자.
+
+|2진수(4bit)| 10진수| 16진수|
+|:--:|:--:|:--:|
+|0000|0|0|
+|0001|1|1|
+|0010|2|2|
+|0011|3|3|
+|0100|4|4|
+|0101|5|5|
+|0110|6|6|
+|0111|7|7|
+|1000|8|8|
+|1001|9|9|
+|1010|10|A|
+|1011|11|B|
+|1100|12|C|
+|1101|13|D|
+|1110|14|E|
+|1111|15|F|
+
+
+## 글자 다루기
+
+### 아스키 코드(ASCII)
+
+아스키(ASCII, American Standard Code for Information Interchange)는 문자를 인코딩해주는 대표적인 부호이며, 컴퓨터와 통신 장비 등 대부분의 장치가 아스키를 기반으로 만들었다. 
+
+출력 가능한 문자들은 52개의 영문 알파벳 대소문자와, 10개의 숫자, 32개의 특수 문자 그리고 하나의 공백 문자로 이루어진다. 전체 문자표는 [ASCII](https://ko.wikipedia.org/wiki/ASCII)에서 볼 수 있다.
+
+
+### ISO, 국가의 표준 그리고 유니코드
+
+아스키 코드는 영어를 표현하는 데 필요한 모든 문자다. 컴퓨터가 전세계로 보급되면서, 그 밖의 언어를 지원해야 할 필요가 점차 늘었다. 이에 따라 국제 표준화 기구(ISO)는 ISO-646과 ISO-8859를 도입했다. 이는 아스키를 확장해 유럽 언어에 필요한 액센트 기호나 그 밖의 발음 구별 기호를 추가한 것이다. 
+
+이 외, 아시아권 나라에서도 각자의 표준이 생기기 시작했으며, 우리나라는 1976년에 한글을 표현하는 [KSC5601](http://www.ktword.co.kr/test/view/view.php?m_temp1=1452)를 만들었다.
+
+국가마다 다른 표준을 만들었기 때문에, 전 세계 모든 문자를 컴퓨터에서 일관되게 표현하고 다룰 수 있도록 유니코드(Unicode)라는 표준이 생겼다.
+
+유니코드는 문자 코드에 따라 각기 다른 인코딩(encoding)을 사용해서 컴퓨터가 읽을 수 있도록 표현한다. 가장 대중적인 인코딩 방식은 [UTF-8](https://ko.wikipedia.org/wiki/UTF-8)이다. 
+
+
+## 색상 다루기
+
+컴퓨터 모니터는 빨간색, 녹색, 파란색을 섞어서 색을 만들어내는데, 이를 RGB 색 모델이라 한다. 그리고 다루지 않은 어떤 색상을 표현하기 위해 알파(Alpha)라는 투명도를 사용한다.  
+
+
+  
+  http://web.simmons.edu/~grovesd/comm244/notes/week3/css-colors
+
+
+R, G, B는 각각 8bit를 사용하여, $2^8$인 256가지(0~255)의 색상을 표현한다.
+
+웹 개발을 하는 사람이라면 CSS로 색상을 대부분 hex color로 하는 걸 알 수 있을텐데, 이는 RGB를 16진수로 표기한 값이다. 
+
+
+
+**추가할 내용**
+
+
+  - 이진법 덧셈/뺄셈
+
+
+
+
+**참고**
+
+
+  - 한 권으로 읽는 컴퓨터 구조와 프로그래밍, 조너선 스타인하트 (2021)
+  - [Color | MDN](https://developer.mozilla.org/ko/docs/Web/CSS/color_value#rgb_%EC%83%89%EC%83%81)
+
+</content:encoded>
+    </item>
+  
     <item>
       <guid>https://howdy-blog-v2.vercel.app/react/useEffect-and-useLayoutEffect</guid>
       <title>useEffect와 useLayoutEffect의 차이</title>
