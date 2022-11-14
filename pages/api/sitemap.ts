@@ -10,7 +10,7 @@ export default function sitemapHandler(req: NextApiRequest, res: NextApiResponse
   const allSnippets = filterDraftInProduction(getAllFiles('snippets'));
 
   const postPaths = allPosts.map((post) => `/${post.slug}`);
-  const snippetPaths = allSnippets.map((snippet) => `/snippet/${snippet.slug}`);
+  const snippetPaths = allSnippets.map((snippet) => `/snippets/${snippet.slug}`);
   const allPaths = [...postPaths, ...snippetPaths];
 
   const sitemap = `
