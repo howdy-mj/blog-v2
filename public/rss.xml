@@ -3372,11 +3372,11 @@ const person = useMemo(() => {
 이벤트 루프는 실행 할 함수를 관리하는 역할로 콜 스택과 큐(Queue)의 함수를 계속 확인한다. 만약 콜 스택이 비어 있고 큐에 대기 중인 함수가 있다면, 순차적으로 큐에 대기중인 함수를 콜 스택으로 이동시킨다. 그리고 이렇게 반복되는 매 순회(Iteration)을 tick이라 부른다.
 
 ```js
-console.log('Hi')
+console.log('Hi');
 setTimeout(function cb1() {
-  console.log('cb1')
-}, 5000)
-console.log('Bye')
+  console.log('cb1');
+}, 5000);
+console.log('Bye');
 ```
 
 위의 함수를 실행한 순서는 아래와 같다.
@@ -3415,11 +3415,17 @@ console.log('Bye')
 
 
 
-- **태스크 큐(Task Queue)**: `setTimeout()`, `setInterval()`과 같은 비동기 함수의 콜백 함수 또는 이벤트 핸들러가 대기하는 곳이다.
 
-- **마이크로 태스크 큐(Micro Task Queue)**: `Promise()`의 후속 처리 메서드의 콜백 함수나 `MutationObserver()`가 대기하는 곳이다.
+  
+    태스크 큐(Task Queue): `setTimeout()`, `setInterval()`과 같은 비동기 함수의 콜백 함수 또는 이벤트 핸들러가 대기하는 곳이다.
+  
+  
+    마이크로 태스크 큐(Micro Task Queue): `Promise()`의 후속 처리 메서드의 콜백 함수나 `MutationObserver()`가 대기하는 곳이다.
+  
+  
+    rAF 큐(Request Animation Frame Queue): `requestAnimationFrame()`처럼 애니메이션을 업데이트하는 콜백 함수가 대기하는 곳이다.
+  
 
-- **rAF 큐(Request Animation Frame Queue)**: `requestAnimationFrame()`처럼 애니메이션을 업데이트하는 콜백 함수가 대기하는 곳이다.
 
 
 
@@ -3428,25 +3434,25 @@ console.log('Bye')
 각 큐에 대한 실행 우선 순위는 **마이크로 태스크 큐 > rAF 큐 > 태스트 큐** 순서이다. 이벤트 루프는 해당 순서대로 대기하고 있는 함수들을 보고 있다가 차례대로 콜 스택에 가져와 실행한다.
 
 ```js
-console.log('처음')
+console.log('처음');
 
 setTimeout(() => {
-  console.log('setTimeout - 태스크 큐')
-}, 0)
+  console.log('setTimeout - 태스크 큐');
+}, 0);
 
 Promise.resolve()
   .then(() => {
-    console.log('promise1 - 마이크로 태스크 큐')
+    console.log('promise1 - 마이크로 태스크 큐');
   })
   .then(() => {
-    console.log('promise2 - 마이크로 태스크 큐')
-  })
+    console.log('promise2 - 마이크로 태스크 큐');
+  });
 
 requestAnimationFrame(() => {
-  console.log('requestAnimationFrame - rAF 큐')
-})
+  console.log('requestAnimationFrame - rAF 큐');
+});
 
-console.log('마지막')
+console.log('마지막');
 ```
 
 ```txt
@@ -3475,13 +3481,13 @@ setTimeout - 태스크 큐
 태스크 큐보다 먼저 실행해야하는 함수가 존재한다면, `queueMicrotask()`로 우선 순위를 끌어올릴 수 있다.
 
 ```js
-const callback = () => console.log('일반 콜백 함수 호출')
-const urgentCallback = () => console.log('---> 긴급 콜백 함수 호출')
+const callback = () => console.log('일반 콜백 함수 호출');
+const urgentCallback = () => console.log('---> 긴급 콜백 함수 호출');
 
-console.log('시작')
-setTimeout(callback, 0)
-queueMicrotask(urgentCallback)
-console.log('종료')
+console.log('시작');
+setTimeout(callback, 0);
+queueMicrotask(urgentCallback);
+console.log('종료');
 ```
 
 ```
@@ -3544,27 +3550,27 @@ console.log('종료')
 
 콜백은 다른 함수의 인자로 함수를 넘기는 것을 말한다. 콜백 함수로 비동기 프로그래밍을 짤 수 있지만, 모든 콜백 함수가 비동기이진 않다. 예를 들어 `map()`, `filter()`의 첫 번째 인자로 들어가는 콜백 함수는 동기식으로 호출된다.
 
-```js{20}
+```js {20}
 // 해당 코드는 [자바스크립트 Deep Dive, 이웅모 (2020)]의 프로미스(p842)에서 가져왔습니다.
 
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts'
+const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const getPosts = url => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', url)
-  xhr.send()
+const getPosts = (url) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.send();
 
   xhr.onload = () => {
     if (xhr.status === 200) {
-      console.log(JSON.parse(xhr.response))
+      console.log(JSON.parse(xhr.response));
     } else {
-      console.error(`${xhr.status} ${xhr.statusText}`)
+      console.error(`${xhr.status} ${xhr.statusText}`);
     }
-  }
-}
+  };
+};
 
-const posts = getPosts(POSTS_URL)
-console.log('posts: ', posts)
+const posts = getPosts(POSTS_URL);
+console.log('posts: ', posts);
 ```
 
 여기서 post를 console로 찍었을 때 어떤 결과가 나올까?
@@ -3573,28 +3579,28 @@ console.log('posts: ', posts)
 
 ```js
 const getPosts = (url, whenSuccess, whenFail) => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', url)
-  xhr.send()
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.send();
 
   xhr.onload = () => {
     if (xhr.status === 200) {
-      whenSuccess(JSON.parse(xhr.response))
+      whenSuccess(JSON.parse(xhr.response));
     } else {
-      whenFail(xhr.status, xhr.statusText)
+      whenFail(xhr.status, xhr.statusText);
     }
-  }
-}
+  };
+};
 
-const handlePosts = response => {
+const handlePosts = (response) => {
   // ...
-}
+};
 
 const errorHandling = (status, statusText) => {
   // ...
-}
+};
 
-const posts = getPosts(POSTS_URL, handlePosts, errorHandling)
+const posts = getPosts(POSTS_URL, handlePosts, errorHandling);
 ```
 
 따라서 콜백의 후속 처리를 모두 그 콜백 함수 내에서 처리해야 하기 때문에, 위처럼 다시 콜백함수를 넘기는 수 밖에 없게 되었다.
@@ -3605,35 +3611,35 @@ const posts = getPosts(POSTS_URL, handlePosts, errorHandling)
 
 Promise도 콜백 헬을 해결할 수 없었지만, 비동기 함수의 후속 처리가 콜백 함수에 비해 다루기 훨씬 쉬워졌다.
 
-```js{19}
-const getPostsWithPromise = url => {
+```js {19}
+const getPostsWithPromise = (url) => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
+    const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', url)
-    xhr.send()
+    xhr.open('GET', url);
+    xhr.send();
 
     xhr.onload = () => {
       if (xhr.status === 200) {
-        resolve(JSON.parse(xhr.response))
+        resolve(JSON.parse(xhr.response));
       } else {
-        reject(xhr.status, xhr.statusText)
+        reject(xhr.status, xhr.statusText);
       }
-    }
-  })
-}
+    };
+  });
+};
 
-const posts = getPostsWithPromise(POSTS_URL)
-console.log('posts: ', posts)
+const posts = getPostsWithPromise(POSTS_URL);
+console.log('posts: ', posts);
 ```
 
 콜백 함수와 달리 post를 console로 찍어보면 Promise {\}이란 값이 나온다. 비동기 함수가 수행되기 전이기 때문에 resolve나 reject가 아닌 pending이 반환된 것이다.
 
 ```js
 posts
-  .then(res => console.log(res))
-  .catch(err => console.error(err))
-  .finally(() => console.log('끝'))
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err))
+  .finally(() => console.log('끝'));
 ```
 
 그리고 Promise로 생성된 posts는 각각 then, catch, finally로 후속 처리가 가능하다.
@@ -3642,9 +3648,9 @@ fetch() 함수가 바로 Promise 기반으로 만들어진 HTTP 요청 전송 �
 
 ```js
 fetch(POSTS_URL)
-  .then(res => console.log(res))
-  .catch(err => console.error(err))
-  .finally(() => console.log('끝'))
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err))
+  .finally(() => console.log('끝'));
 ```
 
 Promise는 비동기 함수 처리를 쉽게 할 수 있다는 것 외에도, 여러 비동기 처리를 병렬 처리할 때 사용하는 `Promise.all()`, 여러 비동기 처리를 다룰 때 가장 먼저 fulfilled된 처리 결과를 반환하는 `Promise.race()` 등 일반 콜백 함수로 다루는 것보다 보다 더 다양한 작업이 가능하다.
@@ -3656,21 +3662,21 @@ Promise는 비동기 함수 처리를 쉽게 할 수 있다는 것 외에도, �
 async/await는 Promise를 기반으로 동작하며, then/catch/finally와 같은 후속 처리 메서드 없이 마치 동기 처리처럼 사용할 수 있다.
 
 ```js
-const getPostWithAsync = async url => {
+const getPostWithAsync = async (url) => {
   try {
-    const response = await fetch(url)
-    return await response.json() // 혹은 다른 형태로 데이터 전처리 가능
+    const response = await fetch(url);
+    return await response.json(); // 혹은 다른 형태로 데이터 전처리 가능
   } catch (err) {
-    console.err(err)
+    console.err(err);
   } finally {
-    console.log('끝')
+    console.log('끝');
   }
-}
+};
 
-const posts = getPostWithAsync(POSTS_URL)
-console.log('posts: ', posts)
+const posts = getPostWithAsync(POSTS_URL);
+console.log('posts: ', posts);
 
-posts.then(console.log)
+posts.then(console.log);
 ```
 
 콜백 함수나 Promise는 무조건 api를 호출한 후, 또 다른 콜백 함수를 실행하여 데이터의 처리가 가능했지만, async/await는 해당 함수 내부에서 바로 동기 처리처럼 데이터를 수정할 수 있다. 또한 try/catch 문으로 에러 처리도 훨씬 수월하다. _(추후 콜백 함수나 Promise에서는 try/catch 문이 어려운지 작성해보겠다)_
