@@ -3079,8 +3079,8 @@ React에서 메모이제이션을 하는 대표적인 방법으로는 `useCallba
 
 ```js
 const memoizedCallback = useCallback(() => {
-  doSomething(a, b)
-}, [a, b])
+  doSomething(a, b);
+}, [a, b]);
 ```
 
 useCallback은 메모이제이션 된 콜백을 반환한다.
@@ -3092,7 +3092,7 @@ dependency 배열에는 어떠한 값이 변경되었을 때 다시 생성해준
 ### useMemo
 
 ```js
-const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b])
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 ```
 
 useMemo는 메모이제이션 된 값을 반환한다.
@@ -3122,25 +3122,25 @@ Class 컴포넌트에는 `PureComponent`가 존재하며, `React.memo`와는 달
 App.tsx
 
 ```tsx
-import { useState, useMemo } from 'react'
-import Title from './components/Title'
-import { getAvgPerHour } from './utils/index'
+import { useState, useMemo } from 'react';
+import Title from './components/Title';
+import { getAvgPerHour } from './utils/index';
 
 const App = () => {
-  const [list, setList] = useState([])
-  const [todo, setTodo] = useState('')
+  const [list, setList] = useState([]);
+  const [todo, setTodo] = useState('');
 
   const onChange = (e: React.ChangeEvent) => {
-    setTodo(e.target.value)
-  }
+    setTodo(e.target.value);
+  };
 
   const onSubmit = (e: React.ChangeEvent) => {
-    e.preventDefault()
-    setList([...list, todo])
-    setTodo('')
-  }
+    e.preventDefault();
+    setList([...list, todo]);
+    setTodo('');
+  };
 
-  const avgPerHour = getAvgPerHour(list)
+  const avgPerHour = getAvgPerHour(list);
 
   return (
     <>
@@ -3158,37 +3158,39 @@ const App = () => {
         하나당 최대 걸려야할 시간: {avgPerHour}분
       
     
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
 components/Title.tsx
 
-```tsx{8}
-import React from 'react'
+```tsx {8}
+import React from 'react';
 
 interface TitleI {
-  title: String
+  title: String;
 }
 
 const Title = ({ title }: TitleI) => {
-  console.log('Title 렌더')
-  return {title}
-}
+  console.log('Title 렌더');
+  return {title};
+};
 
-export default React.memo(Title)
+export default React.memo(Title);
 ```
 
 utils/index.ts
 
-```ts{2}
+```ts {2}
 export const getAvgPerHour = (totalList: string[]) => {
-  console.log('getAvgPerHour 함수')
-  if (totalList.length === 0) return 0
-  return 60 / totalList.length
-}
+  console.log('getAvgPerHour 함수');
+  if (totalList.length === 0) {
+    return 0;
+  }
+  return 60 / totalList.length;
+};
 ```
 
 
@@ -3204,19 +3206,19 @@ input에 값을 입력할 때에는 list의 값이 변경되지 않고, Title은
 
 App.tsx
 
-```tsx{1}
-const avgPerHour = useMemo(() => getAvgPerHour(list), [list])
+```tsx {1}
+const avgPerHour = useMemo(() => getAvgPerHour(list), [list]);
 ```
 
 components/Title.tsx
 
-```tsx{6}
+```tsx {6}
 const Title = ({ title, obj }: TitleI) => {
-  console.log('Title 렌더')
-  return {title}
-}
+  console.log('Title 렌더');
+  return {title};
+};
 
-export default React.memo(Title)
+export default React.memo(Title);
 ```
 
 이렇게 하면 input에 값을 입력해도 console이 찍히지 않는다.
@@ -3225,10 +3227,10 @@ export default React.memo(Title)
 
 App.tsx
 
-```tsx{1,3}
+```tsx {1,3}
 const onChange = useCallback((e: React.ChangeEvent) => {
-  setTodo(e.target.value)
-}, [])
+  setTodo(e.target.value);
+}, []);
 ```
 
 `useCallback`은 컴포넌트가 리렌더 될 때 함수의 재생성을 막아주는 역할을 한다. 위와 같이 `useCallback`으로 감싸준다면 첫 렌더할 때만 생성하고, 이후에는 저장된 값을 그대로 가져와서 사용한다.
@@ -3245,51 +3247,51 @@ React는 얕은 비교를 하기 때문에 원시 타입은 판단 가능하지�
 
 App.tsx
 
-```tsx{6}
+```tsx {6}
 const App = () => {
-  const person = { name: 'kmj' }
+  const person = { name: 'kmj' };
 
   return (
     <>
       
     
-  )
-}
+  );
+};
 ```
 
 components/Title.tsx
 
-```tsx{11}
-import React, { useEffect, useRef } from 'react'
+```tsx {11}
+import React, { useEffect, useRef } from 'react';
 
 interface TitleI {
-  title: String
+  title: String;
   person: {
-    name: string
-  }
+    name: string;
+  };
 }
 
 const Title = ({ title, person }: TitleI) => {
-  console.log('Title 렌더') // 렌더될때마다 console에 찍힘
+  console.log('Title 렌더'); // 렌더될때마다 console에 찍힘
   return (
     <>
       {title}
       작성자: {person.name}
     
-  )
-}
+  );
+};
 
-export default React.memo(Title)
+export default React.memo(Title);
 ```
 
 만약 이처럼 Title 컴포넌트에 person이라는 참조 타입을 넘기게 된다면, 아무리 `React.memo`로 감싸고 있더라도 React는 다른 값으로 인식하여 계속 console이 찍히는 것을 볼 수 있다. 때문에 넘겨줄 때, `useMemo`를 통해 person의 이전 값을 기억해두면 된다.
 
 App.tsx
 
-```tsx{1}
+```tsx {1}
 const person = useMemo(() => {
-  return { name: 'kmj' }
-}, [])
+  return { name: 'kmj' };
+}, []);
 ```
 
 이는 useMemo, useCallback, useEffect 그리고 모든 커스텀 훅에도 해동되는 내용이다.
@@ -3300,9 +3302,9 @@ const person = useMemo(() => {
 
 
 
-- Hooks API Reference | React
-- 성능 최적화 | React
-- When to useMemo and useCallback | Kent C.Dodds
+- [Hooks API Reference | React](https://ko.reactjs.org/docs/hooks-reference.html)
+- [성능 최적화 | React](https://ko.reactjs.org/docs/optimizing-performance.html)
+- [When to useMemo and useCallback | Kent C.Dodds](https://kentcdodds.com/blog/usememo-and-usecallback)
 
 
 </content:encoded>
