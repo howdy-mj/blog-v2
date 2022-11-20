@@ -1,7 +1,7 @@
 ---
 title: 'ECMAScript 스펙 읽는법'
 date: '2022-6-4'
-category: 'javascript'
+tags: ['javascript']
 draft: false
 ---
 
@@ -150,11 +150,11 @@ JavaScript와 ECMASCript의 차이를 이해했다면, ECMAScript에서 어떤 �
 ```js
 // ifStatement을 해당 if문 외부의 블럭 요소(여기서는 checkIsFemale 함수)라 이해하고 작성했다.
 // 하지만 틀린 내용일수 있으니 문맥 이해하는 정도로만 넘겨주었으면 좋겠다.
-const checkIsFemale = gender => {
+const checkIsFemale = (gender) => {
   if (gender === 'female') {
-    return true
+    return true;
   }
-}
+};
 ```
 
 `checkIsFemale`은 return 값만 존재하는 문이다. 따라서 지금은
@@ -170,11 +170,11 @@ IfStatement_Return:
 
 ```js
 const checkIsFemale = async () => {
-  const gender = await getUserGender()
+  const gender = await getUserGender();
   if (gender === 'female') {
-    return true
+    return true;
   }
-}
+};
 ```
 
 였다면,
@@ -214,7 +214,7 @@ IfStatement_Await_Return:
 if (true) {
   function test() {
     // TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES3' or 'ES5'.
-    console.log('test')
+    console.log('test');
   }
 }
 ```

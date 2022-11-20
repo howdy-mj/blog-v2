@@ -2018,7 +2018,7 @@ Headless UI Components: A Journey With High Order Components, Render Props, and 
       undefined
       <pubDate>Fri, 03 Jun 2022 15:00:00 GMT</pubDate>
       <author>hi.minjungkim@gmail.com (MJ Kim)</author>
-      undefined
+      <category>javascript</category>
       <content:encoded>
 JavaScript 관련하여 궁금한 점이 있을 때 이것저것 찾다보면 그 종착지는 언제나 ECMAScript였다. 그러나 엄청난 길이의 스크롤을 보고 주눅이 들었고, 차분히 읽어보기로 마음 먹었을 때는 처음 보거나 정의를 알 수 없는 것들이 많이 있었다. 그러다 참조 링크를 계속 타고 들어가서 이해할때 쯔음, 처음에 무엇때문에 이걸 찾아봤는지 까먹는 나를 발견할 수 있었다.
 
@@ -2165,11 +2165,11 @@ parameters는 하나 혹은 그 이상이 있을 수 있고, 모든 곳에서 �
 ```js
 // ifStatement을 해당 if문 외부의 블럭 요소(여기서는 checkIsFemale 함수)라 이해하고 작성했다.
 // 하지만 틀린 내용일수 있으니 문맥 이해하는 정도로만 넘겨주었으면 좋겠다.
-const checkIsFemale = gender => {
+const checkIsFemale = (gender) => {
   if (gender === 'female') {
-    return true
+    return true;
   }
-}
+};
 ```
 
 `checkIsFemale`은 return 값만 존재하는 문이다. 따라서 지금은
@@ -2185,11 +2185,11 @@ IfStatement_Return:
 
 ```js
 const checkIsFemale = async () => {
-  const gender = await getUserGender()
+  const gender = await getUserGender();
   if (gender === 'female') {
-    return true
+    return true;
   }
-}
+};
 ```
 
 였다면,
@@ -2229,7 +2229,7 @@ IsLabelledFunction은 문(Statement, 이하 stmt)을 인자로 받으며 Boolean
 if (true) {
   function test() {
     // TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES3' or 'ES5'.
-    console.log('test')
+    console.log('test');
   }
 }
 ```
