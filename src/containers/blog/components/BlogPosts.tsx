@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TagList from '@containers/blog/components/TagList';
 import SearchBar from '@components/SearchBar';
 import PostList from '@containers/blog/components/PostList';
@@ -31,6 +31,10 @@ const BlogPosts = ({ originPosts, tags, totalPosts, currentPage = 1 }: BlogPosts
     setValue(value);
     setPosts(searchBlogPosts(value, originPosts));
   };
+
+  useEffect(() => {
+    setPosts(originPosts);
+  }, [originPosts]);
 
   return (
     <>
