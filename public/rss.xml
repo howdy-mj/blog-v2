@@ -7429,14 +7429,14 @@ current instanceof Object // true
 ```js
 // 클래스의 상속
 function Greeting(name) {
-  this.name = name
-  this.hello = function() {
-    console.log(`hello ${name}`)
-  }
+  this.name = name;
+  this.hello = function () {
+    console.log(`hello ${this.name}`);
+  };
 }
 
-const mj = new Greeting('mj')
-mj.hello() // output: hello mj
+const mj = new Greeting('mj');
+mj.hello(); // output: hello mj
 ```
 
 하지만 새로운 클래스를 생성할 때마다 모두 `hello` 함수를 갖고 있어 메모리가 낭비된다.
@@ -7446,22 +7446,22 @@ mj.hello() // output: hello mj
 ```js
 // 자바스크립트 프로토타입 기반의 상속
 function Greeting(name) {
-  this.name = name
+  this.name = name;
 }
 
-Greeting.prototype.hello = function() {
-  console.log(`hello ${name}`)
-}
+Greeting.prototype.hello = function () {
+  console.log(`hello ${name}`);
+};
 
-const mj = new Greeting('mj')
-mj.hello() // output: hello mj
+const mj = new Greeting('mj');
+mj.hello(); // output: hello mj
 ```
 
-그렇다면 **'프로토타입'**이 정확히 무슨 뜻일까?
+그렇다면 **프로토타입**이 정확히 무슨 뜻일까?
 
 ## 프로토타입(prototype) 객체
 
-ECMA-262에서 prototype은 **'object that provides shared properties for other objects'**로, 다른 객체에 공유 프로퍼티(메서드 포함)를 제공하는 객체이다.
+ECMA-262에서 prototype은 **object that provides shared properties for other objects**로, 다른 객체에 공유 프로퍼티(메서드 포함)를 제공하는 객체이다.
 
 모든 객체는 `[[Prototype]]`이라는 내부 슬롯(자바스크립트 엔진의 내부 로직)을 갖으며, 상속을 구현하는 프로토타입 객체를 가리킨다.
 
@@ -7473,11 +7473,11 @@ ECMA-262에서 prototype은 **'object that provides shared properties for other 
 하지만 `[[Prototype]]` 내부 슬롯에는 직접 접근이 불가하다. 이는 프로토타입 체인의 단방향을 지키기 위해서다. 만약 직접 접근가능하다면, 서로가 서로의 프로토타입이 되면서 프로토타입 체인이 무한으로 돈다. 따라서 `__proto__` 프로퍼티로만 접근할 수 있다.
 
 ```js
-const a = {}
-const b = {}
+const a = {};
+const b = {};
 
-a.__proto__ = b
-b.__proto__ = a // Uncaught TypeError: Cyclic __proto__ value
+a.__proto__ = b;
+b.__proto__ = a; // Uncaught TypeError: Cyclic __proto__ value
 ```
 
 ### \_\_proto\_\_
@@ -7492,8 +7492,8 @@ b.__proto__ = a // Uncaught TypeError: Cyclic __proto__ value
 ES6에서 `__proto__`를 표준으로 채택되었다. 하지만 여전히 코드 내에서 `__proto__`보다는 `Object.getPrototypeOf()`의 사용을 권장한다.
 
 ```js
-const hello = { name: 'kmj' }
-Object.getPrototypeOf(hello)
+const hello = { name: 'kmj' };
+Object.getPrototypeOf(hello);
 // {constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, __lookupGetter__: ƒ, …}
 ```
 
@@ -7507,25 +7507,25 @@ non-constructor에는 `prototype` 프로퍼티가 없다.
 ```js
 // 함수 객체는 prototype 프로퍼티가 있음
 function func() {}
-func.hasOwnProperty('prototype') // output: true
+func.hasOwnProperty('prototype'); // output: true
 
 // 일반 객체는 prototype 프로퍼티가 없음
-const obj = {}
-obj.hasOwnProperty('prototype') // output: false
+const obj = {};
+obj.hasOwnProperty('prototype'); // output: false
 ```
 
 단, 화살표 함수와 ES6 메서드 축약 표현으로 정의된 메서드는 non-constructor로 `prototype` 프로퍼티가 없다.
 
 ```js
 // 화살표 함수
-const arrowFunc = () => {}
-arrowFunc.hasOwnProperty('prototype') // output: false
+const arrowFunc = () => {};
+arrowFunc.hasOwnProperty('prototype'); // output: false
 
 // ES6 축약 메서드
 const es6 = {
   test() {},
-}
-es6.test.hasOwnProperty('prototype') // output: false
+};
+es6.test.hasOwnProperty('prototype'); // output: false
 ```
 
 ## 생성자 함수와 프로토타입
@@ -7534,19 +7534,19 @@ es6.test.hasOwnProperty('prototype') // output: false
 
 ```js
 function Person(name) {
-  this.name = name
+  this.name = name;
 }
-const me = new Person('kmj') // Person 생성자로 만들어진 me 객체
-me.constructor === Person // output: true
+const me = new Person('kmj'); // Person 생성자로 만들어진 me 객체
+me.constructor === Person; // output: true
 ```
 
 생성자 함수로 생성한 것이 아닌, 리터럴 표기법으로 생성하여도 constructor 프로퍼티가 연결된다.
 
 ```js
-const person = function(name) {
-  this.name = name
-}
-person.constructor === Function // output: true
+const person = function (name) {
+  this.name = name;
+};
+person.constructor === Function; // output: true
 ```
 
 이처럼 리터럴 표기법에 의해 생성된 객체도 상속을 위해 프로토타입이 필요하며, 이는 곧 constructor 프로퍼티와 연결된다. 즉, **프로토타입과 생성자 함수는 늘 함께 존재**한다.
@@ -7923,7 +7923,7 @@ HTML title
 
 ```
 
-해당 문서의 문자 인코딩 방식을 나타내며, 유니코드(Unicode)를 위한 문자셋인 UTF-8을 가장 많이 사용한다. 작성하지 않을 경우, 해당 문서를 보든 사용자의 브라우저가 제대로 해석하지 못해 임의의 문자를 표시할 수도 있다.
+해당 문서의 문자 인코딩 방식을 나타내며, 유니코드(Unicode)를 위한 문자셋인 UTF-8을 가장 많이 사용한다. 작성하지 않을 경우, 해당 문서를 보는 사용자의 브라우저가 제대로 해석하지 못해 임의의 문자를 표시할 수도 있다.
 
 ```html
 
@@ -7944,8 +7944,8 @@ body 태그는 나중에 다른 글에서 설명하려 한다.
 크게 Main, Secondary 카테고리 그리고 Transparent content Model로 나뉘며, Main 카테고리는 크게 7가지의 콘텐츠 모델로 나뉜다.
 
 
-
-https://developer.mozilla.org/ko/docs/Web/Guide/HTML/Content_categories
+  
+  https://developer.mozilla.org/ko/docs/Web/Guide/HTML/Content_categories
 
 
 자세한 건 여기서 확인할 수 있다.
@@ -8076,7 +8076,7 @@ const listData = [
     id: 5,
     text: 'my blog',
   },
-]
+];
 ```
 
 ### map()
@@ -8087,24 +8087,24 @@ arr.map(callback(currentValue[, index[, array]])[, thisArg])
 ```
 
 ```js
-const realMapResult = listData.map(list => list.text)
-console.log(realMapResult)
+const realMapResult = listData.map((list) => list.text);
+console.log(realMapResult);
 // output: ["hello", "everyone", "welcome", "to", "my blog"]
 ```
 
 실제 `map()`과 같은 결과를 얻기 위해 아래 처럼 만들었다.
 
 ```js
-const mockMap = list => {
-  let result = [] // map()은 새로운 배열을 반환
+const mockMap = (list) => {
+  let result = []; // map()은 새로운 배열을 반환
   for (const i of list) {
-    result.push(i.text)
+    result.push(i.text);
   }
-  return result
-}
+  return result;
+};
 
-const result = mockMap(listData)
-console.log(result)
+const result = mockMap(listData);
+console.log(result);
 // output: ["hello", "everyone", "welcome", "to", "my blog"]
 ```
 
@@ -8118,8 +8118,8 @@ arr.filter(callback(element[, index[, array]])[, thisArg])
 `filter()`와 `map()`의 구조는 거의 비슷하다.
 
 ```js
-const realFilterResult = listData.filter(list => list.text !== 'everyone')
-console.log(realFilterResult)
+const realFilterResult = listData.filter((list) => list.text !== 'everyone');
+console.log(realFilterResult);
 // output: [
 //   {
 //     id: 1,
@@ -8143,18 +8143,18 @@ console.log(realFilterResult)
 `filter()`는 해당 조건에 맞는 요소가 아닌, 객체들을 반환한다.
 
 ```js
-const mockFilter = list => {
-  let result = [] // filter() 역시 새로운 배열을 반환
+const mockFilter = (list) => {
+  let result = []; // filter() 역시 새로운 배열을 반환
   for (const i of list) {
     if (i.text !== 'everyone') {
-      result.push(i) // 해당 조건에 맞는 객체를 push
+      result.push(i); // 해당 조건에 맞는 객체를 push
     }
   }
-  return result
-}
+  return result;
+};
 
-const result = mockFilter(listData)
-console.log(result)
+const result = mockFilter(listData);
+console.log(result);
 // output: [
 //   {
 //     id: 1,
@@ -8192,68 +8192,59 @@ reducer() 함수는 네 개의 인자를 받는다.
 4. 원본 배열 (src)
 
 ```js
-const array1 = [1, 2, 3, 4]
-const resultOfReducer = array1.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    console.log('accumulator', accumulator) // output: 10 11 13 16
-    console.log('currentValue', currentValue) // output: 1 2 3 4
-    console.log('currentIndex', currentIndex) // output: 0 1 2 3
-    console.log('array', array) // output: [1, 2, 3, 4]
-    return accumulator + currentValue
-  },
-  10
-)
-console.log(resultOfReducer) // output: 20
+const array1 = [1, 2, 3, 4];
+const resultOfReducer = array1.reduce((accumulator, currentValue, currentIndex, array) => {
+  console.log('accumulator', accumulator); // output: 10 11 13 16
+  console.log('currentValue', currentValue); // output: 1 2 3 4
+  console.log('currentIndex', currentIndex); // output: 0 1 2 3
+  console.log('array', array); // output: [1, 2, 3, 4]
+  return accumulator + currentValue;
+}, 10);
+console.log(resultOfReducer); // output: 20
 ```
 
 ```js
 // console로 확인해보자면 이와 같다
-const resultOfReducer = array1.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    console.log('accumulator', accumulator)
-    // output: 10 11 13 16
-    // 두 번째 인자의 initialValue가 10이기 때문에 10에서 시작한다
-    console.log('currentValue', currentValue)
-    // output: 1 2 3 4
-    // array1의 값을 하나씩 반환한다
-    console.log('currentIndex', currentIndex)
-    // output: 0 1 2 3
-    // 현재의 index를 하나씩 반환 한다
-    console.log('array', array)
-    // output: [1, 2, 3, 4]
-    // array1을 반환한다
-    return accumulator + currentValue
-    // 두개의 값이 더한 채로 accumulator에 누적된다
-  },
-  10
-)
-console.log(resultOfReducer) // output: 20
+const resultOfReducer = array1.reduce((accumulator, currentValue, currentIndex, array) => {
+  console.log('accumulator', accumulator);
+  // output: 10 11 13 16
+  // 두 번째 인자의 initialValue가 10이기 때문에 10에서 시작한다
+  console.log('currentValue', currentValue);
+  // output: 1 2 3 4
+  // array1의 값을 하나씩 반환한다
+  console.log('currentIndex', currentIndex);
+  // output: 0 1 2 3
+  // 현재의 index를 하나씩 반환 한다
+  console.log('array', array);
+  // output: [1, 2, 3, 4]
+  // array1을 반환한다
+  return accumulator + currentValue;
+  // 두개의 값이 더한 채로 accumulator에 누적된다
+}, 10);
+console.log(resultOfReducer); // output: 20
 ```
 
 reduce()로 문자열을 출력하면 아래와 같다.
 
 ```js
-const resultOfReducer = listData.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    return accumulator + currentValue.text + ' '
-  },
-  ''
-)
-console.log(resultOfReducer)
+const resultOfReducer = listData.reduce((accumulator, currentValue, currentIndex, array) => {
+  return accumulator + currentValue.text + ' ';
+}, '');
+console.log(resultOfReducer);
 // output: "hello everyone welcome to my blog "
 ```
 
 이를 for문으로 돌리면 아래처럼 작성할 수 있다.
 
 ```js
-const mockReducer = list => {
-  let result = ''
+const mockReducer = (list) => {
+  let result = '';
   for (const data of list) {
-    result += data.text + ' '
+    result += data.text + ' ';
   }
-  return result
-}
-console.log(mockReducer(listData))
+  return result;
+};
+console.log(mockReducer(listData));
 // output: "hello everyone welcome to my blog "
 ```
 
@@ -8660,11 +8651,10 @@ UI Events에서 전체 이벤트를 볼 수 있다.
       <category>next</category>
       <content:encoded>
 
-업데이트: 2021.01.26
-
-
-업데이트: 2021.05.23 
-- 주요 내용: getServerSideProps (댓글 달아주신 sixmen님 감사합니다)
+  업데이트: 2021.01.26
+  
+  
+  업데이트: 2021.05.23 - 주요 내용: getServerSideProps (댓글 달아주신 sixmen님 감사합니다)
 
 
 
@@ -8679,15 +8669,15 @@ Next.js에서 라이브러리 설치 없이 유저가 사용하는 기기를 탐
 
 ```tsx
 // 'pages/index.tsx'에서 getInitialProps 사용
-import { NextPage, NextPageContext } from 'next'
-import Head from 'next/head'
+import { NextPage, NextPageContext } from 'next';
+import Head from 'next/head';
 
 interface Props {
-  userAgent: string
+  userAgent: string;
 }
 
 const Home: NextPage = ({ userAgent }) => {
-  console.log('index', userAgent)
+  console.log('index', userAgent);
   return (
     
       
@@ -8697,15 +8687,15 @@ const Home: NextPage = ({ userAgent }) => {
 
       Hello World!
     
-  )
-}
+  );
+};
 
 Home.getInitialProps = async ({ req }: NextPageContext) => {
-  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-  return { userAgent }
-}
+  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
+  return { userAgent };
+};
 
-export default Home
+export default Home;
 ```
 
 그럼 console에서 아래와 같이 정상적으로 필자가 사용하는 기기의 정보를 가져올 수 있다.
@@ -8722,17 +8712,17 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like G
 
 Next 9.3 이상에서 `getInitialProps` 대신 `getStaticProps` 사용을 권장하고 있지만, 정작 `getStaticProps`으로는 사용중인 기기 정보를 얻을 수 없었다.
 
-```tsx{25-28}
+```tsx {25-26}
 // 'pages/index.tsx'에서 getStaticProps를 사용하면 에러 발생
-import { NextPage, NextPageContext } from 'next'
-import Head from 'next/head'
+import { NextPage, NextPageContext } from 'next';
+import Head from 'next/head';
 
 interface Props {
-  userAgent?: string
+  userAgent?: string;
 }
 
 const Home: NextPage = ({ userAgent }) => {
-  console.log('index', userAgent)
+  console.log('index', userAgent);
 
   return (
     
@@ -8743,17 +8733,15 @@ const Home: NextPage = ({ userAgent }) => {
 
       Hello World!
     
-  )
-}
+  );
+};
 
 export const getStaticProps = ({ req }: NextPageContext) => {
   const userAgent =
-    typeof navigator === 'undefined'
-      ? req.headers['user-agent']
-      : navigator.userAgent
+    typeof navigator === 'undefined' ? req.headers['user-agent'] : navigator.userAgent;
 
-  return { props: { userAgent } }
-}
+  return { props: { userAgent } };
+};
 ```
 
 처음에 navigator가 undefined되어 `typeof navigator === 'undefined'` 조건을 넣었지만, 여전히 `TypeError: Cannot read property 'headers' of undefined`라는 타입 에러를 뱉으며 결과를 얻을 수 없었다.
@@ -8764,15 +8752,15 @@ export const getStaticProps = ({ req }: NextPageContext) => {
 
 `getStaticProps`이 빌드 타임에 데이터를 가져오는 정적 생성이라면, `getServerSideProps`는 매 요청때마다 데이터를 가져오는 서버사이드 렌더링이다.
 
-```tsx{22-25}
-import Head from 'next/head'
+```tsx {22-25}
+import Head from 'next/head';
 
 interface Props {
-  userAgent: string
+  userAgent: string;
 }
 
 const Home = ({ userAgent }: Props) => {
-  console.log('index page', userAgent)
+  console.log('index page', userAgent);
 
   return (
     
@@ -8783,15 +8771,15 @@ const Home = ({ userAgent }: Props) => {
 
       Hello World!
     
-  )
-}
+  );
+};
 
 export const getServerSideProps = ({ req }) => {
-  const userAgent = req.headers['user-agent']
-  return { props: { userAgent } }
-}
+  const userAgent = req.headers['user-agent'];
+  return { props: { userAgent } };
+};
 
-export default Home
+export default Home;
 ```
 
 `getServerSideProps` 역시 서버에서 렌더링이 되기 때문에, 아직 브라우저는 이를 인지하지 못하기 때문에 `window`가 undefined이다. 그렇기 때문에 서버에 요청 보낸 후 응답으로 받는 `req`로 값을 가져와야 한다.
@@ -8854,7 +8842,7 @@ Next.js에서는 `getStaticProps`의 사용을 추천하는 주요 이유는 성
 
 ### 1. \_app에서 getInitialProps 사용
 
-```tsx{17, 27-30}
+```tsx {13, 23-26}
 import { useEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
@@ -8866,10 +8854,7 @@ interface userAgentProps {
   userAgent: string;
 }
 
-function MyApp(
-  { Component, pageProps }: AppProps,
-  { userAgent }: userAgentProps,
-) {
+function MyApp({ Component, pageProps }: AppProps, { userAgent }: userAgentProps) {
   console.log('_app userAgent:', userAgent); // output: undefined
 
   return (
@@ -8933,7 +8918,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 ### 궁금점
 
-getInitialProps와 getStaticProps의 차이, 그리고 넘긴 props가 왜 undefined인지 궁금하다. => 댓글로 달아주신 sixmen님 다시 한 번 감사드립니다:)
+
+  getInitialProps와 getStaticProps의 차이, 그리고 넘긴 props가 왜 undefined인지 궁금하다.
+
+=> 댓글로 달아주신 sixmen님 다시 한 번 감사드립니다:)
 
 
 
@@ -10732,12 +10720,12 @@ React는 어떻게 state나 props의 변경을 감지할 수 있을까? 먼저 �
 원시 타입에는 문자열, 숫자, Boolean, null, undefined가 있으며 이는 변경 불가능한(immutable) 값이다.
 
 ```js
-const str = 'hello'
+const str = 'hello';
 
-console.log(str[0]) // output: 'h'
-str[0] = 'w' // 에러가 뜨지 않음
+console.log(str[0]); // output: 'h'
+str[0] = 'w'; // 에러가 뜨지 않음
 
-console.log(str) // output: 'hello', 바뀌지 않음
+console.log(str); // output: 'hello', 바뀌지 않음
 ```
 
 비록 `str[0] = 'w'`로 했을 때 아무런 에러가 뜨지 않았지만, 다시 str를 콘솔로 찍어보니 바뀌지 않은 것을 확인할 수 있다. 이처럼 원시 타입은 변경 불가능하다.
@@ -10751,29 +10739,29 @@ console.log(str) // output: 'hello', 바뀌지 않음
 `배열의 변경`
 
 ```js
-const fruits = ['apple', 'banana']
+const fruits = ['apple', 'banana'];
 
-fruits.push('mango')
-console.log(fruits) // output: ['apple', 'banana', 'mango']
+fruits.push('mango');
+console.log(fruits); // output: ['apple', 'banana', 'mango']
 ```
 
 `객체의 변경`
 
 ```js
-const profile = { name: 'kmj' }
+const profile = { name: 'kmj' };
 
-profile.name = 'howdy-mj'
-profile.gender = 'female'
-console.log(profile) // output: { name: 'howdy-mj', gender: 'female' }
+profile.name = 'howdy-mj';
+profile.gender = 'female';
+console.log(profile); // output: { name: 'howdy-mj', gender: 'female' }
 ```
 
 이처럼 참조 타입은 바로 값이 바뀌는 것을 확인할 수 있다. 하지만 React, Redux는 해당 값이 변경 되지 않았다고 판단할 것이다. 밑의 예시를 보자.
 
 ```js
-const num = [1, 2, 3]
+const num = [1, 2, 3];
 
-num === num // output: true
-num === [1, 2, 3] // output: false
+num === num; // output: true
+num === [1, 2, 3]; // output: false
 ```
 
 분명 `num`과 `[1, 2, 3]`은 같지만, 자바스크립트는 두 개의 값이 다르다고 알려주고 있다. 이는 참조 타입이 메모리 주소를 '참조'하기 때문이다. (해당 내용은 나중에 새로운 글에서 자세히 작성해보겠다. 우선 밑의 핵심 요약을 보면 감을 잡을 수 있을거라 생각한다)
@@ -10785,13 +10773,13 @@ num === [1, 2, 3] // output: false
 원시 타입은 **워드 파일의 복사본을 만든것 처럼, 해당 값을 복사하면 서로가 독립된 값**을 가진다.
 
 ```js
-var title = '마지막'
-var final = title
+var title = '마지막';
+var final = title;
 
-title = '진짜 마지막'
+title = '진짜 마지막';
 
-console.log(title) // output: '진짜 마지막'
-console.log(final) // output: '마지막'
+console.log(title); // output: '진짜 마지막'
+console.log(final); // output: '마지막'
 ```
 
 이처럼 final은 처음에 복사한 title 값을 그대로 가져온 반면, title은 나중에 변경된 값으로 찍힌다.
@@ -10799,13 +10787,13 @@ console.log(final) // output: '마지막'
 참조 타입은 **만약 내가 구글 드라이브에 동기화된 파일을 수정하면, 다른 사람 것에서도 자동으로 변경**된다. 단, url 주소는 동일하다.
 
 ```js
-const profile = { name: 'kmj' }
-const copy = profile
+const profile = { name: 'kmj' };
+const copy = profile;
 
-profile.name = 'howdy-mj'
+profile.name = 'howdy-mj';
 
-console.log(profile) // output: { name: 'howdy-mj' }
-console.log(copy) // output: { name: 'howdy-mj' }
+console.log(profile); // output: { name: 'howdy-mj' }
+console.log(copy); // output: { name: 'howdy-mj' }
 ```
 
 profile.name을 바꾸자, 기존의 profile과 copy 모두 바뀐 것을 확인할 수 있다.
@@ -10817,7 +10805,7 @@ profile.name을 바꾸자, 기존의 profile과 copy 모두 바뀐 것을 확인
 보통 redux를 사용하면,
 
 ```js
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
 const songsReducer = () => {
   return [
@@ -10825,30 +10813,30 @@ const songsReducer = () => {
     { title: 'Memories', duration: '3:10' },
     { title: '널 좋아하나봐', duration: '3:44' },
     { title: '거짓말이라도 해서 널 보고싶어', duration: '3:48' },
-  ]
-}
+  ];
+};
 
 const selectedSongReducer = (selectedSong = null, action) => {
   if (action.type === 'SONG_SELECTED') {
-    return action.payload
+    return action.payload;
   }
-  return selectedSong
-}
+  return selectedSong;
+};
 
 export default combineReducers({
   songs: songsReducer,
   selectedSong: selectedSongReducer,
-})
+});
 ```
 
 위와 같은 형태로 모든 reducers를 `combineReducers로` 모아 store에 알려준다.
 
 이때, [combineReducers](https://github.com/reduxjs/redux/blob/master/src/combineReducers.ts) 코드를 보면 Redux가 어떻게 state의 변화를 감지하는지 알 수 있다.
 
-```ts{15, 18}
+```ts {15, 18}
 // ...
-let hasChanged = false
-const nextState: StateFromReducersMapObject = {}
+let hasChanged = false;
+const nextState: StateFromReducersMapObject = {};
 for (let i = 0; i  fruit !== 'mango')
 fruits.map(fruit => fruit === 'apple' ? 'peach' : fruit)
 ```

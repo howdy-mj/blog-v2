@@ -32,7 +32,7 @@ const listData = [
     id: 5,
     text: 'my blog',
   },
-]
+];
 ```
 
 ### map()
@@ -43,24 +43,24 @@ arr.map(callback(currentValue[, index[, array]])[, thisArg])
 ```
 
 ```js
-const realMapResult = listData.map(list => list.text)
-console.log(realMapResult)
+const realMapResult = listData.map((list) => list.text);
+console.log(realMapResult);
 // output: ["hello", "everyone", "welcome", "to", "my blog"]
 ```
 
 실제 `map()`과 같은 결과를 얻기 위해 아래 처럼 만들었다.
 
 ```js
-const mockMap = list => {
-  let result = [] // map()은 새로운 배열을 반환
+const mockMap = (list) => {
+  let result = []; // map()은 새로운 배열을 반환
   for (const i of list) {
-    result.push(i.text)
+    result.push(i.text);
   }
-  return result
-}
+  return result;
+};
 
-const result = mockMap(listData)
-console.log(result)
+const result = mockMap(listData);
+console.log(result);
 // output: ["hello", "everyone", "welcome", "to", "my blog"]
 ```
 
@@ -74,8 +74,8 @@ arr.filter(callback(element[, index[, array]])[, thisArg])
 `filter()`와 `map()`의 구조는 거의 비슷하다.
 
 ```js
-const realFilterResult = listData.filter(list => list.text !== 'everyone')
-console.log(realFilterResult)
+const realFilterResult = listData.filter((list) => list.text !== 'everyone');
+console.log(realFilterResult);
 // output: [
 //   {
 //     id: 1,
@@ -99,18 +99,18 @@ console.log(realFilterResult)
 `filter()`는 해당 조건에 맞는 요소가 아닌, 객체들을 반환한다.
 
 ```js
-const mockFilter = list => {
-  let result = [] // filter() 역시 새로운 배열을 반환
+const mockFilter = (list) => {
+  let result = []; // filter() 역시 새로운 배열을 반환
   for (const i of list) {
     if (i.text !== 'everyone') {
-      result.push(i) // 해당 조건에 맞는 객체를 push
+      result.push(i); // 해당 조건에 맞는 객체를 push
     }
   }
-  return result
-}
+  return result;
+};
 
-const result = mockFilter(listData)
-console.log(result)
+const result = mockFilter(listData);
+console.log(result);
 // output: [
 //   {
 //     id: 1,
@@ -148,68 +148,59 @@ reducer() 함수는 네 개의 인자를 받는다.
 4. 원본 배열 (src)
 
 ```js
-const array1 = [1, 2, 3, 4]
-const resultOfReducer = array1.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    console.log('accumulator', accumulator) // output: 10 11 13 16
-    console.log('currentValue', currentValue) // output: 1 2 3 4
-    console.log('currentIndex', currentIndex) // output: 0 1 2 3
-    console.log('array', array) // output: [1, 2, 3, 4]
-    return accumulator + currentValue
-  },
-  10
-)
-console.log(resultOfReducer) // output: 20
+const array1 = [1, 2, 3, 4];
+const resultOfReducer = array1.reduce((accumulator, currentValue, currentIndex, array) => {
+  console.log('accumulator', accumulator); // output: 10 11 13 16
+  console.log('currentValue', currentValue); // output: 1 2 3 4
+  console.log('currentIndex', currentIndex); // output: 0 1 2 3
+  console.log('array', array); // output: [1, 2, 3, 4]
+  return accumulator + currentValue;
+}, 10);
+console.log(resultOfReducer); // output: 20
 ```
 
 ```js
 // console로 확인해보자면 이와 같다
-const resultOfReducer = array1.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    console.log('accumulator', accumulator)
-    // output: 10 11 13 16
-    // 두 번째 인자의 initialValue가 10이기 때문에 10에서 시작한다
-    console.log('currentValue', currentValue)
-    // output: 1 2 3 4
-    // array1의 값을 하나씩 반환한다
-    console.log('currentIndex', currentIndex)
-    // output: 0 1 2 3
-    // 현재의 index를 하나씩 반환 한다
-    console.log('array', array)
-    // output: [1, 2, 3, 4]
-    // array1을 반환한다
-    return accumulator + currentValue
-    // 두개의 값이 더한 채로 accumulator에 누적된다
-  },
-  10
-)
-console.log(resultOfReducer) // output: 20
+const resultOfReducer = array1.reduce((accumulator, currentValue, currentIndex, array) => {
+  console.log('accumulator', accumulator);
+  // output: 10 11 13 16
+  // 두 번째 인자의 initialValue가 10이기 때문에 10에서 시작한다
+  console.log('currentValue', currentValue);
+  // output: 1 2 3 4
+  // array1의 값을 하나씩 반환한다
+  console.log('currentIndex', currentIndex);
+  // output: 0 1 2 3
+  // 현재의 index를 하나씩 반환 한다
+  console.log('array', array);
+  // output: [1, 2, 3, 4]
+  // array1을 반환한다
+  return accumulator + currentValue;
+  // 두개의 값이 더한 채로 accumulator에 누적된다
+}, 10);
+console.log(resultOfReducer); // output: 20
 ```
 
 reduce()로 문자열을 출력하면 아래와 같다.
 
 ```js
-const resultOfReducer = listData.reduce(
-  (accumulator, currentValue, currentIndex, array) => {
-    return accumulator + currentValue.text + ' '
-  },
-  ''
-)
-console.log(resultOfReducer)
+const resultOfReducer = listData.reduce((accumulator, currentValue, currentIndex, array) => {
+  return accumulator + currentValue.text + ' ';
+}, '');
+console.log(resultOfReducer);
 // output: "hello everyone welcome to my blog "
 ```
 
 이를 for문으로 돌리면 아래처럼 작성할 수 있다.
 
 ```js
-const mockReducer = list => {
-  let result = ''
+const mockReducer = (list) => {
+  let result = '';
   for (const data of list) {
-    result += data.text + ' '
+    result += data.text + ' ';
   }
-  return result
-}
-console.log(mockReducer(listData))
+  return result;
+};
+console.log(mockReducer(listData));
 // output: "hello everyone welcome to my blog "
 ```
 

@@ -22,14 +22,14 @@ draft: false
 ```js
 // 클래스의 상속
 function Greeting(name) {
-  this.name = name
-  this.hello = function() {
-    console.log(`hello ${name}`)
-  }
+  this.name = name;
+  this.hello = function () {
+    console.log(`hello ${this.name}`);
+  };
 }
 
-const mj = new Greeting('mj')
-mj.hello() // output: hello mj
+const mj = new Greeting('mj');
+mj.hello(); // output: hello mj
 ```
 
 하지만 새로운 클래스를 생성할 때마다 모두 `hello` 함수를 갖고 있어 메모리가 낭비된다.
@@ -39,22 +39,22 @@ mj.hello() // output: hello mj
 ```js
 // 자바스크립트 프로토타입 기반의 상속
 function Greeting(name) {
-  this.name = name
+  this.name = name;
 }
 
-Greeting.prototype.hello = function() {
-  console.log(`hello ${name}`)
-}
+Greeting.prototype.hello = function () {
+  console.log(`hello ${name}`);
+};
 
-const mj = new Greeting('mj')
-mj.hello() // output: hello mj
+const mj = new Greeting('mj');
+mj.hello(); // output: hello mj
 ```
 
-그렇다면 **'프로토타입'**이 정확히 무슨 뜻일까?
+그렇다면 **프로토타입**이 정확히 무슨 뜻일까?
 
 ## 프로토타입(prototype) 객체
 
-ECMA-262에서 prototype은 **'object that provides shared properties for other objects'**로, 다른 객체에 공유 프로퍼티(메서드 포함)를 제공하는 객체이다.
+ECMA-262에서 prototype은 **object that provides shared properties for other objects**로, 다른 객체에 공유 프로퍼티(메서드 포함)를 제공하는 객체이다.
 
 모든 객체는 `[[Prototype]]`이라는 내부 슬롯(자바스크립트 엔진의 내부 로직)을 갖으며, 상속을 구현하는 프로토타입 객체를 가리킨다.
 
@@ -66,11 +66,11 @@ ECMA-262에서 prototype은 **'object that provides shared properties for other 
 하지만 `[[Prototype]]` 내부 슬롯에는 직접 접근이 불가하다. 이는 프로토타입 체인의 단방향을 지키기 위해서다. 만약 직접 접근가능하다면, 서로가 서로의 프로토타입이 되면서 프로토타입 체인이 무한으로 돈다. 따라서 `__proto__` 프로퍼티로만 접근할 수 있다.
 
 ```js
-const a = {}
-const b = {}
+const a = {};
+const b = {};
 
-a.__proto__ = b
-b.__proto__ = a // Uncaught TypeError: Cyclic __proto__ value
+a.__proto__ = b;
+b.__proto__ = a; // Uncaught TypeError: Cyclic __proto__ value
 ```
 
 ### \_\_proto\_\_
@@ -85,8 +85,8 @@ b.__proto__ = a // Uncaught TypeError: Cyclic __proto__ value
 ES6에서 `__proto__`를 표준으로 채택되었다. 하지만 여전히 코드 내에서 `__proto__`보다는 `Object.getPrototypeOf()`의 사용을 권장한다.
 
 ```js
-const hello = { name: 'kmj' }
-Object.getPrototypeOf(hello)
+const hello = { name: 'kmj' };
+Object.getPrototypeOf(hello);
 // {constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, __lookupGetter__: ƒ, …}
 ```
 
@@ -100,25 +100,25 @@ Object.getPrototypeOf(hello)
 ```js
 // 함수 객체는 prototype 프로퍼티가 있음
 function func() {}
-func.hasOwnProperty('prototype') // output: true
+func.hasOwnProperty('prototype'); // output: true
 
 // 일반 객체는 prototype 프로퍼티가 없음
-const obj = {}
-obj.hasOwnProperty('prototype') // output: false
+const obj = {};
+obj.hasOwnProperty('prototype'); // output: false
 ```
 
 단, 화살표 함수와 ES6 메서드 축약 표현으로 정의된 메서드는 <span class="return">non-constructor</span>로 `prototype` 프로퍼티가 없다.
 
 ```js
 // 화살표 함수
-const arrowFunc = () => {}
-arrowFunc.hasOwnProperty('prototype') // output: false
+const arrowFunc = () => {};
+arrowFunc.hasOwnProperty('prototype'); // output: false
 
 // ES6 축약 메서드
 const es6 = {
   test() {},
-}
-es6.test.hasOwnProperty('prototype') // output: false
+};
+es6.test.hasOwnProperty('prototype'); // output: false
 ```
 
 ## 생성자 함수와 프로토타입
@@ -127,19 +127,19 @@ es6.test.hasOwnProperty('prototype') // output: false
 
 ```js
 function Person(name) {
-  this.name = name
+  this.name = name;
 }
-const me = new Person('kmj') // Person 생성자로 만들어진 me 객체
-me.constructor === Person // output: true
+const me = new Person('kmj'); // Person 생성자로 만들어진 me 객체
+me.constructor === Person; // output: true
 ```
 
 생성자 함수로 생성한 것이 아닌, 리터럴 표기법으로 생성하여도 <span class="return">constructor</span> 프로퍼티가 연결된다.
 
 ```js
-const person = function(name) {
-  this.name = name
-}
-person.constructor === Function // output: true
+const person = function (name) {
+  this.name = name;
+};
+person.constructor === Function; // output: true
 ```
 
 이처럼 리터럴 표기법에 의해 생성된 객체도 상속을 위해 프로토타입이 필요하며, 이는 곧 <span class="return">constructor</span> 프로퍼티와 연결된다. 즉, **프로토타입과 생성자 함수는 늘 함께 존재**한다.

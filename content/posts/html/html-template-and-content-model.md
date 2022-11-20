@@ -49,7 +49,7 @@ head 태그에는 문서의 메타데이터(metadata)가 있으며, 다른 문�
 <meta charset="UTF-8" />
 ```
 
-해당 문서의 문자 인코딩 방식을 나타내며, 유니코드(Unicode)를 위한 문자셋인 UTF-8을 가장 많이 사용한다. 작성하지 않을 경우, 해당 문서를 보든 사용자의 브라우저가 제대로 해석하지 못해 임의의 문자를 표시할 수도 있다.
+해당 문서의 문자 인코딩 방식을 나타내며, 유니코드(Unicode)를 위한 문자셋인 UTF-8을 가장 많이 사용한다. 작성하지 않을 경우, 해당 문서를 보는 사용자의 브라우저가 제대로 해석하지 못해 임의의 문자를 표시할 수도 있다.
 
 ```html
 <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -70,8 +70,8 @@ body 태그는 나중에 다른 글에서 설명하려 한다.
 크게 Main, Secondary 카테고리 그리고 Transparent content Model로 나뉘며, Main 카테고리는 크게 7가지의 콘텐츠 모델로 나뉜다.
 
 <div style="text-align: center">
-<img src="https://developer.mozilla.org/@api/deki/files/6244/=Content_categories_venn.png?size=webview" style="width: 400px;">
-<p style="font-size: 12px;">https://developer.mozilla.org/ko/docs/Web/Guide/HTML/Content_categories</p>
+  <img src="https://www.w3.org/TR/2011/WD-html5-20110525/content-venn.png" style="width: 400px;">
+  <p style="font-size: 12px;">https://developer.mozilla.org/ko/docs/Web/Guide/HTML/Content_categories</p>
 </div>
 
 자세한 건 <a href="https://html.spec.whatwg.org/multipage/dom.html#kinds-of-content" target="_blank">여기서</a> 확인할 수 있다.
