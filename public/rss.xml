@@ -985,9 +985,12 @@ Next.js가 먼저 Server를 거친 후에 Client가 렌더링 되는건 알겠�
 
 흐름대로 Next.js의 Server의 render.tsx부터 살펴보았다.
 
-server/render.tsx (Code)
+server/render.tsx
 
-```tsx{23}
+  (Code)
+
+
+```tsx {20}
 export async function renderToHTML(
   req: IncomingMessage,
   res: ServerResponse,
@@ -1000,10 +1003,7 @@ export async function renderToHTML(
   const renderDocument = async () => {
     // ...
     async function loadDocumentInitialProps(
-      renderShell?: (
-        _App: AppType,
-        _Component: NextComponentType
-      ) => Promise
+      renderShell?: (_App: AppType, _Component: NextComponentType) => Promise
     ) {
       // ...
       const renderPage: RenderPage = (
@@ -1019,9 +1019,9 @@ export async function renderToHTML(
               })}
             
           
-        )
-        return { html, head }
-      }
+        );
+        return { html, head };
+      };
     }
     // ...
     return {
@@ -1030,8 +1030,8 @@ export async function renderToHTML(
       head,
       headTags: [],
       styles,
-    }
-  }
+    };
+  };
 }
 ```
 
@@ -1040,7 +1040,7 @@ export async function renderToHTML(
 ### renderToString() (Code)
 
 ```js
-ReactDOMServer.renderToString(element)
+ReactDOMServer.renderToString(element);
 ```
 
 React 엘리먼트의 초기 HTML을 문자열로 반환한다.
@@ -1049,9 +1049,12 @@ React 엘리먼트의 초기 HTML을 문자열로 반환한다.
 
 그리고 이렇게 생성된 HTML은 htmlProps가 되어 document로 반환된다.
 
-server/render.tsx (Code)
+server/render.tsx
 
-```tsx{12,21}
+  (Code)
+
+
+```tsx {12,21}
 export async function renderToHTML(
   req: IncomingMessage,
   res: ServerResponse,
@@ -1061,13 +1064,13 @@ export async function renderToHTML(
 ): Promise {
   // ...
 
-  const documentResult = await renderDocument()
+  const documentResult = await renderDocument();
 
   const htmlProps: HtmlProps = {
     __NEXT_DATA__: {
       // ...
     },
-  }
+  };
 
   const document = (
     
@@ -1075,9 +1078,9 @@ export async function renderToHTML(
         {documentResult.documentElement(htmlProps)}
       
     
-  )
+  );
 
-  const documentHTML = ReactDOMServer.renderToStaticMarkup(document)
+  const documentHTML = ReactDOMServer.renderToStaticMarkup(document);
 
   // ...
   // 운영환경 여부에 따라 prefix에 속성을 다르게 하고,
@@ -1086,14 +1089,12 @@ export async function renderToHTML(
 
   if (generateStaticHTML) {
     // ...
-    return new RenderResult(optimizedHtml)
+    return new RenderResult(optimizedHtml);
   }
 
   return new RenderResult(
-    chainStreams(streams).pipeThrough(
-      createBufferedTransformStream(postOptimize)
-    )
-  )
+    chainStreams(streams).pipeThrough(createBufferedTransformStream(postOptimize))
+  );
 }
 ```
 
@@ -1108,37 +1109,42 @@ Next.js로 만들어진 페이지의 Network 탭에서 서버에서 반환한 HT
 
 Next.js 서버에서 어떻게 HTML을 생성하고 정보를 입력하는지 알았으니, 이제 Client 코드를 살펴보자.
 
-client/next.js (Code)
+client/next.js
+
+  (Code)
+
 
 ```js
 initialize({})
   .then(() => hydrate())
-  .catch(console.error)
+  .catch(console.error);
 ```
 
 우선 `initialize()`가 진행된 다음에 `hydrate()`를 실행하는 것을 알았다. 각각의 코드를 살펴보자.
 
-client/index.tsx (Code)
+client/index.tsx
 
-```tsx{7}
-export async function initialize(
-  opts: { webpackHMR?: any } = {}
-): Promise {
-  initialData = JSON.parse(
-    document.getElementById('__NEXT_DATA__')!.textContent!
-  )
-  window.__NEXT_DATA__ = initialData
+  (Code)
 
-  const prefix: string = initialData.assetPrefix || ''
 
-  appElement = document.getElementById('__next')
-  return { assetPrefix: prefix }
+```tsx {4}
+export async function initialize(opts: { webpackHMR?: any } = {}): Promise {
+  initialData = JSON.parse(document.getElementById('__NEXT_DATA__')!.textContent!);
+  window.__NEXT_DATA__ = initialData;
+
+  const prefix: string = initialData.assetPrefix || '';
+
+  appElement = document.getElementById('__next');
+  return { assetPrefix: prefix };
 }
 ```
 
 `initialize()`는 서버에서 렌더링한 HTML에서 `__NEXT_DATA__` 를 id로 갖는 엘리먼트의 컨텐츠를 브라우저의 전역객체 `window.__NEXT_DATA__`로 저장한다. 그리고 운영 환경에 따라 assetPrefix를 반환한다.
 
-client/index.tsx (Code)
+client/index.tsx
+
+  (Code)
+
 
 ```tsx
 export async function hydrate(opts?: { beforeRender?: () => Promise }) {
@@ -1149,54 +1155,50 @@ export async function hydrate(opts?: { beforeRender?: () => Promise }) {
     Component: CachedComponent,
     props: initialData.props,
     err: initialErr,
-  }
+  };
 
-  render(renderCtx)
+  render(renderCtx);
 }
 ```
 
 `hydrate()`는 실행하려는 페이지의 에러가 있는지 확인 및 validation 체크를 하고 없다면 렌더링할 때 필요한 컨텍스트(ex. 라우터, App, Component, initialProps 등)를 `render()`의 인자로 넘겨준다.
 
-```tsx{8}
+```tsx {8}
 async function render(renderingProps: RenderRouteInfo): Promise {
   // ...
-  await doRender(renderingProps)
+  await doRender(renderingProps);
 }
 
 function doRender(input: RenderRouteInfo): Promise {
   // ...
-  renderReactElement(appElement!, callback => (
+  renderReactElement(appElement!, (callback) => (
     
-      {process.env.__NEXT_STRICT_MODE ? (
-        {elem}
-      ) : (
-        elem
-      )}
+      {process.env.__NEXT_STRICT_MODE ? {elem} : elem}
     
-  ))
+  ));
 }
 ```
 
 `doRender()` 함수를 따라가다보면, `renderReactElement()`를 실행한다
 
-client/index.tsx (Code)
+client/index.tsx
 
-```tsx{12,15}
-let shouldHydrate: boolean = true // 첫 렌더에서는 항상 true이다
+  (Code)
 
-function renderReactElement(
-  domEl: HTMLElement,
-  fn: (cb: () => void) => JSX.Element
-): void {
+
+```tsx {9,12}
+let shouldHydrate: boolean = true; // 첫 렌더에서는 항상 true이다
+
+function renderReactElement(domEl: HTMLElement, fn: (cb: () => void) => JSX.Element): void {
   //...
-  const reactEl = fn(shouldHydrate ? markHydrateComplete : markRenderComplete)
+  const reactEl = fn(shouldHydrate ? markHydrateComplete : markRenderComplete);
 
   // ...
   if (shouldHydrate) {
-    ReactDOM.hydrate(reactEl, domEl)
-    shouldHydrate = false
+    ReactDOM.hydrate(reactEl, domEl);
+    shouldHydrate = false;
   } else {
-    ReactDOM.render(reactEl, domEl)
+    ReactDOM.render(reactEl, domEl);
   }
 }
 ```
@@ -1213,10 +1215,10 @@ React 엘리먼트를 DOM(container)에 렌더링하고 컴포넌트에 대한 �
 
 React 17의 index.js
 
-```jsx{3}
-import App from './App'
+```jsx {3}
+import App from './App';
 
-ReactDOM.render(, document.getElementById('root'))
+ReactDOM.render(, document.getElementById('root'));
 ```
 
 이해가 잘 안갈 수 있으니 코드로 알아보자. React 18에서는 createRoot가 한 번 더 감싸주어서 17 버전의 코드를 가져왔다.
@@ -1243,8 +1245,13 @@ Next.js는 서버에서 HTML을 문자열로 가져온 후에, 클라이언트�
   Hydration 번역
   
     사실 아직 hydration의 마땅한 번역 값을 찾지 못했다.
-    Hydrate는 '수화(水化) 시키다'는 뜻이며, 수화(水化)는 어떤 물질이 물과 결합하여 수화물(물을 포함하는 화합물)이 되는 현상이다.
-    서버의 데이터가 클라이언트의 DOM과 결합하는 과정을 빗대어 hydrate라는 단어로 정의된 것 같다.
+    
+      Hydrate는 '수화(水化) 시키다'는 뜻이며, 수화(水化)는 어떤 물질이 물과 결합하여 수화물(물을
+      포함하는 화합물)이 되는 현상이다.
+    
+    
+      서버의 데이터가 클라이언트의 DOM과 결합하는 과정을 빗대어 hydrate라는 단어로 정의된 것 같다.
+    
   
 
 
@@ -1257,36 +1264,36 @@ React는 클라이언트 렌더링만 있어서 유저에게 보여줄 HTML, CSS
 Next.js로 만든 프로젝트에서 `getServerSideProps()`를 이용해 데이터를 주입해보자.
 
 ```tsx
-import React, { useState } from 'react'
-import { GetServerSideProps } from 'next'
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import { GetServerSideProps } from 'next';
+import styled from 'styled-components';
 
 const StyledContainer = styled.div`
   border: 1px solid blue;
-`
+`;
 
 type TempProps = {
-  name: string
-}
+  name: string;
+};
 
 const Temp = ({ name }: TempProps) => {
-  const [color, setColor] = useState('blue')
+  const [color, setColor] = useState('blue');
   return (
      setColor('purple')}>
       Temp page: {name}
     
-  )
-}
+  );
+};
 
-export default Temp
+export default Temp;
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       name: 'howdy-mj',
     },
-  }
-}
+  };
+};
 ```
 
 위의 코드를 Network 탭의 HTML을 보면 아래와 같다.
@@ -1334,26 +1341,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 브라우저에 렌더링된 화면은 DOM에 자바스크립트 코드를 서버에서 가져온 HTML에 연결하여 작성한 코드가 모두 정상 동작한다.
 
- -->
-
-taskr 라이브러리로 실행하고 있다.
-
-```json
-{
-  // ...
-  "scripts": {
-    "dev": "taskr",
-    "release": "taskr release",
-    "build": "pnpm release && pnpm types",
-    "prepublishOnly": "cd ../../ && turbo run build",
-    "types": "tsc --declaration --emitDeclarationOnly --declarationDir dist",
-    "typescript": "tsec --noEmit",
-    "ncc-compiled": "ncc cache clean && taskr ncc"
-  }
-}
-```
-
-마지막 릴리즈가 2017년도로, 더 이상의 유지보수는 하지 않는 것으로 보이는데 계속 사용하는 이유가 뭘까?라는 궁금증에 남겨둔다. -->
+{/* ### 궁금점 */}
+{/* Next.js의 package.json을 살펴보니, 스크립트 실행을 taskr 라이브러리로 실행하고 있다. */}
+{/* 마지막 릴리즈가 2017년도로, 더 이상의 유지보수는 하지 않는 것으로 보이는데 계속 사용하는 이유가 뭘까?라는 궁금증에 남겨둔다. */}
 
 
 
@@ -1361,11 +1351,11 @@ taskr 라이브러리로 실행하고 있다.
 
 
 
-- Next.js
-- React
-- SPA기반 SSR 구현하기 (feat.React) 3-SSR용 서버 구현과 Hydration
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [SPA기반 SSR 구현하기 (feat.React) 3-SSR용 서버 구현과 Hydration]()
 
-What is a technical definition of "hydration" within NextJS? -->
+{/* - What is a technical definition of "hydration" within NextJS? */}
 
 
 </content:encoded>
