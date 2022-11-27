@@ -3,7 +3,7 @@ import generateRss, { RssContent } from '@utils/generateRss';
 import fs from 'fs';
 
 export const makePostsRss = async (allPosts: Content[]) => {
-  const allSlugs = allPosts.map((post) => post.slug);
+  const allSlugs = allPosts.filter((post) => !post.frontMatter.draft).map((post) => post.slug);
 
   const frontMatterWithContent = (await Promise.all(
     allSlugs.map(async (slug) => {
