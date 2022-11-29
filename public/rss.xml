@@ -7,9 +7,118 @@
       <language>ko</language>
       <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
       <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
-      <lastBuildDate>Sun, 16 Oct 2022 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Tue, 29 Nov 2022 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://www.howdy-mj.me/rss.xml" rel="self" type="application/rss+xml"/>
       
+    <item>
+      <guid>https://www.howdy-mj.me/general/http-cache</guid>
+      <title>캐시(cache)</title>
+      <link>https://www.howdy-mj.me/general/http-cache</link>
+      <description>HTTP 캐시 훑어보기</description>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      <category>web</category><category>general</category>
+      <content:encoded>
+## 캐시란?
+
+캐시(Cache)는 데이터나 값을 미리 복사해 놓는 임시 장소를 가리킨다. 캐시는 원래 데이터를 접근하는 시간이 오래 걸리거나, 값을 다시 계산하는 시간을 절약하고 싶을 때 사용한다.
+
+특히 웹 서비스에서는 사용하는 이미지, CSS 및 자바스크립트 파일을 매번 네트워크를 통해 불러오지 않고 최초에만 다운로드하여 캐시에 저장해 두고, 그 이후 요청때 저장해 둔 파일을 사용할 때 유용하다.
+
+
+
+캐시의 유형은 다양하지만, 궁극적인 목표는 아래와 같다. 
+
+- 불필요한 데이터 전송을 줄여, 네트워크 요금 비용을 줄여준다. 
+- 네트워크 병목을 줄여준다.
+- 원 서버(origin server)에 대한 요청을 줄여주어, 더 빨리 응답할 수 있게 된다. 
+- 거리로 인한 지연을 줄여준다.
+
+## 캐시 유형
+
+[AWS 캐싱](https://aws.amazon.com/ko/caching/) 설명에 따르면, 캐싱은 DB 캐싱, CDN, 웹 캐싱, 일반 캐시, 세션 관리 이렇게 5가지 유형으로 나뉜다.
+
+해당 글에서는 웹 프론트 개발시에 자주 언급되는 CDN, 웹 캐싱만 간단히 알아보자. 
+
+### CDN
+
+CDN(Content Delivery Network)은 분산된 서버 네트워크를 사용해 유저들에게 리소스(ex. 동영상, 이미지, 폰트 등)를 제공하여 사이트 성능을 향상시킨다. 흔히 CDN이 서버에 캐싱된 컨텐츠만 다룬다고 알고 있지만, 캐싱이 되지 않은 컨텐츠들을 제공할때도 좋다. 
+
+CDN 서버들은 기존 컨텐츠를 불러오는 서버들보다 유저와 더 가까워서 RTT(Round Trip Time: 왕복 요청 시간)가 더 짧다.
+
+
+### 웹 캐싱
+
+웹 캐싱은 HTTP 캐싱이라고도 불리며, 웹 요청이 캐시에 도착했을 때, 캐시된 로컬 사본이 존재한다면, 그 문서는 원 서버가 아니라 그 캐시로부터 제공된다. 
+
+웹에서 사용하는 캐시는 크게 메모리(RAM)에 저장하는 메모리 캐시와 파일 형태로 디스크에 저장하는 디스크 캐시가 있다. 어떤 캐시를 사용할지는 직접 제어할 수 없으며, 브라우저가 사용 빈도나 파일 크기에 따라 알아서 처리한다. 
+
+## Cache-Control
+
+브라우저가 캐시를 하기 위해서는 Cache-Control이라는 헤더가 응답 헤더에 있어야 한다. 브라우저는 이 헤더를 통해 캐시를 어떻게, 얼마나 적용할지 판단한다.
+
+
+
+대표적으로 아래 5가지 값이 조합되어 들어간다.
+
+- `no-store`: 캐시 사용 안함
+- `no-cache`: 캐시를 사용하기 전 서버에 사용 가능한지 체크하는 옵션
+- `public`: 모든 환경에서 캐시 사용 가능, 브라우저 뿐만 아니라 웹 서버와 브라우저 사이의 중간 캐시 서버에서도 캐시 사용 가능
+- `private`: 브라우저 환경에서만 캐시 사용, 외부 캐시 서버에서는 사용 불가
+- `max-age`: 캐시의 유효 시간(초 단위)
+
+![Cache-Control 흐름도](https://web-dev.imgix.net/image/admin/htXr84PI8YR0lhgLPiqZ.png?auto=format&w=700)
+
+위 흐름도를 보면 조금 더 빠르게 이해할 수 있다.
+
+
+
+### 예제
+
+|Cache-Control 값| 설명|
+|:--|:--|
+|max-age=86400| 최대 1일(60초 x 60분 x 24시간) 동안 브라우저 및 중간 캐시가 캐싱 가능|
+|private, max-age=600| 최대 10분(60초 x 10분) 동안 브라우저가 캐싱 가능|
+|public, max-age=3153600| 1년 동안 모든 캐시 저장 가능|
+|public, max-age=0| 0초 동안 캐싱 가능, 캐시가 바로 만료되므로 매번 서버에 캐시를 사용해도 되는지 요청하여, no-cache와 동일 함|
+|no-store| 캐싱이 불가하며 모든 요청에서 전체를 가져와야 함|
+
+### 적절한 캐시 값 설정하기
+
+리소스마다 변경 빈도가 다르기 때문에 캐싱 설정도 달라야 한다.
+
+일반적으로 HTML 파일은 항상 최신 버전의 웹 서비스를 제공해야 하기 때문에 no-cache로 설정한다. 만약 HTML이 캐싱되어 있다면, 이전 버전의 자바스크립트나 CSS를 로드하여 최신 버전의 웹 서비스를 제공하지 못한다.
+
+반면 CSS나 자바스크립트 혹은 정적인 리소스들은 다르다. 이미 빌드된 자바스크립트나 CSS 파일은 HTML이 변경되기 전에 변경될 일이 없다. 따라서 하루, 한 달 혹은 1년 등 길게 잡아도 상관 없다.
+
+## 실제 페이지 Cache 살펴보기
+
+필자 블로그 글은 페이지를 로드할때 서버 사이드에서 보여줄 글을 미리 전부 불러오고 있다. 그래서 브라우저의 네트워크 탭을 보면 200이 아닌 304로 뜨지만, 캐시 정책을 따로 작성하지 않았기 때문에 `public, max-age=0`로 설정되어 있다.
+
+![howdy-mj cache](https://user-images.githubusercontent.com/58619071/204547491-13c1463e-e187-48d0-b792-367875be5660.png)
+
+추후 블로그 내의 캐시 정책 수정 후에 다시 올려보겠다.
+
+
+
+이 외, 자주 들어가는 사이트를 들어가보았더니 아래와 같은 화면을 볼 수 있었다.
+
+![linked cache](https://user-images.githubusercontent.com/58619071/204551294-0957f521-46c5-42c2-be3e-c7b136f5a99e.png)
+
+디스크에 저장된 캐시란 것도 확인할 수 있었고, 이미지나 동영상이 많았음에도 불구하고 로드되는 속도도 매우 빨랐다.
+
+
+
+
+**참조**
+
+- [Content delivery networks (CDNs)](https://web.dev/content-delivery-networks/)
+- [HTTP caching](https://developer.mozilla.org/ko/docs/Web/HTTP/Caching)
+- [HTTP Cache로 불필요한 네트워크 요청 방지](https://web.dev/http-cache/)
+- [Caching Tutorial](https://www.mnot.net/cache_docs/)
+</content:encoded>
+    </item>
+  
     <item>
       <guid>https://www.howdy-mj.me/cs/bit</guid>
       <title>컴퓨터 언어의 비트(bit)</title>
