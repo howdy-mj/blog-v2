@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import metaData from '@config/metaData';
 import styled from 'styled-components';
 import { Text } from '@components/Typography.style';
