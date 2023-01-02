@@ -13,10 +13,12 @@ const PersonalInformation = () => {
           <Image
             src={metaData.profileImage ? metaData.profileImage : '/images/logo.png'}
             alt="logo"
-            layout="fill"
-            sizes="5rem"
-            objectFit="contain"
             priority={true}
+            fill
+            sizes="5rem"
+            style={{
+              objectFit: 'contain',
+            }}
           />
         </ImageWrapper>
 
