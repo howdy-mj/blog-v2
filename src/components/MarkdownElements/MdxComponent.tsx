@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { MDXComponents } from 'mdx/types';
-import Image from "next/image";
+import Image from 'next/image';
 import CustomLink from '@components/MarkdownElements/CustomLink';
 import Pre from '@components/MarkdownElements/Pre';
 import BlockQuote from '@components/MarkdownElements/BlockQuote';
