@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import metaData from '@config/metaData';
 import styled from 'styled-components';
 import { Text } from '@components/Typography.style';
@@ -13,10 +13,12 @@ const PersonalInformation = () => {
           <Image
             src={metaData.profileImage ? metaData.profileImage : '/images/logo.png'}
             alt="logo"
-            layout="fill"
-            sizes="5rem"
-            objectFit="contain"
             priority={true}
+            fill
+            sizes="5rem"
+            style={{
+              objectFit: 'contain',
+            }}
           />
         </ImageWrapper>
 
