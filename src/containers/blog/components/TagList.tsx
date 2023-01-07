@@ -10,14 +10,13 @@ type TagListProps = {
 
 const TagList = ({ searchedValue, tags, onClick }: TagListProps) => {
   const isActiveTag = (tag: string) => {
-    return searchedValue === `#${tag}`;
+    return searchedValue === tag;
   };
 
   return (
     <Container>
-      <StyledTagItem tag="ALL" onClick={() => onClick('')} isActive={searchedValue === ''} />
       {tags.map((tag) => (
-        <StyledTagItem key={tag} tag={`#${tag}`} onClick={onClick} isActive={isActiveTag(tag)} />
+        <StyledTagItem key={tag} tag={tag} onClick={onClick} isActive={isActiveTag(tag)} />
       ))}
     </Container>
   );
