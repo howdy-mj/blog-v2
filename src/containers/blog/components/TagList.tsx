@@ -9,8 +9,9 @@ type TagListProps = {
 };
 
 const TagList = ({ searchedValue, tags, onClick }: TagListProps) => {
-  const isActiveTag = (tag: string) => {
-    return searchedValue === tag;
+  const isActiveTag = (tag: string): boolean => {
+    const keywords = searchedValue.split(' ').filter((keyword) => keyword);
+    return keywords.includes(tag);
   };
 
   return (
