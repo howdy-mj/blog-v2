@@ -9,15 +9,15 @@ type TagListProps = {
 };
 
 const TagList = ({ searchedValue, tags, onClick }: TagListProps) => {
-  const isActiveTag = (tag: string) => {
-    return searchedValue === `#${tag}`;
+  const isActiveTag = (tag: string): boolean => {
+    const keywords = searchedValue.split(' ').filter((keyword) => keyword);
+    return keywords.includes(tag);
   };
 
   return (
     <Container>
-      <StyledTagItem tag="ALL" onClick={() => onClick('')} isActive={searchedValue === ''} />
       {tags.map((tag) => (
-        <StyledTagItem key={tag} tag={`#${tag}`} onClick={onClick} isActive={isActiveTag(tag)} />
+        <StyledTagItem key={tag} tag={tag} onClick={onClick} isActive={isActiveTag(tag)} />
       ))}
     </Container>
   );

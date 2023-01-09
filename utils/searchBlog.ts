@@ -13,19 +13,24 @@ export const searchBlogPosts = (searchValue: string, originPosts: Content[]) => 
     return originPosts;
   }
 
-  const tag = searchValue.slice(1);
-  return getSearchedResult(
-    searchValue,
-    posts.filter((post) => {
-      const matchedTag = post.frontMatter.tags?.includes(tag);
-      const matchedTitle = post.frontMatter.title.toLowerCase().includes(searchValue);
-      const matchedSummary = post.frontMatter.summary?.includes(searchValue);
-      const nonDraft = post.frontMatter.draft === undefined || !post.frontMatter.draft;
+  const keywords = searchValue.split(' ');
 
-      if (isProd) {
-        return nonDraft && (matchedTag || matchedTitle || matchedSummary);
-      }
-      return matchedTag || matchedTitle || matchedSummary;
-    })
-  );
+  const findMatchedContent = (() => {
+    return posts.filter((post) => {
+      const matchedPost = keywords.map((keyword) => {
+        const matchedTag = post.frontMatter.tags?.includes(keyword);
+        const matchedTitle = post.frontMatter.title.toLowerCase().includes(keyword);
+        const matchedSummary = post.frontMatter.summary?.includes(keyword);
+        const nonDraft = post.frontMatter.draft === undefined || !post.frontMatter.draft;
+
+        if (isProd) {
+          return nonDraft && (matchedTag || matchedTitle || matchedSummary);
+        }
+        return matchedTag || matchedTitle || matchedSummary;
+      });
+      return matchedPost.every((match) => match);
+    });
+  })();
+
+  return getSearchedResult(searchValue, findMatchedContent);
 };
