@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import TagList from '@containers/blog/components/TagList';
-import SearchBar from '@components/SearchBar';
+import SearchBar from './SearchBar';
 import PostList from '@containers/blog/components/PostList';
 import Pagination from '@components/Pagination';
 import styled from 'styled-components';
