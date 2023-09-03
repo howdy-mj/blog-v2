@@ -59,6 +59,8 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "old_pages",
+    "old_src"
   ]
 }
