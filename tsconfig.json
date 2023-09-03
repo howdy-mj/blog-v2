@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": [
+        // TODO: 전체 페이지 app 라우터로 수정 후 'components/*'로 수정
         "src/components/*"
       ],
       "@containers/*": [
@@ -25,7 +26,7 @@
       ],
       "@lib/*": [
         "lib/*"
-      ],
+      ]
     },
     "target": "es5",
     "lib": [
