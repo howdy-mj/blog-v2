@@ -18,6 +18,9 @@ type BlogPostsProps = {
   currentPage?: number;
 };
 
+/**
+ * @deprecated 'components/BlogPosts' 사용
+ */
 const BlogPosts = ({ originPosts, tags, totalPosts, currentPage = 1 }: BlogPostsProps) => {
   const router = useRouter();
   const totalPage = getTotalPage(totalPosts);
