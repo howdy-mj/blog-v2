@@ -22,7 +22,10 @@
       ],
       "@constants/*": [
         "constants/*"
-      ]
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
     },
     "target": "es5",
     "lib": [
