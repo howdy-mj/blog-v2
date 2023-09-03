@@ -26,4 +26,8 @@ module.exports = withBundleAnalyzer({
       },
     ];
   },
+  experimental: {
+    // https://github.com/vercel/next.js/issues/52876#issuecomment-1647623310
+    serverComponentsExternalPackages: ["uglify-js"],
+  },
 });

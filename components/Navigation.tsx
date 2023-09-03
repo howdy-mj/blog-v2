@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import styled, { css } from 'styled-components';
 import { FiSun, FiMoon, FiMenu } from 'react-icons/fi';
 
@@ -18,16 +20,16 @@ const findActivePage = (pathname: string, pageName: string) => {
   return pathname.includes(_pageName);
 };
 
-/**
- * @deprecated 'components/Navigation' 사용하기
- * TODO: 삭제 예정
- */
 const Navigation = () => {
   const hasScrolled = useScroll();
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
 
   const [showMiniNav, setShowMiniNav] = useState(false);
+
+  if (!pathname) {
+    return null;
+  }
 
   return (
     <Container hasScrolled={hasScrolled}>

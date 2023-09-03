@@ -12,7 +12,7 @@ type BlogMainProps = {
   tags: string[];
   totalPosts: number;
 };
-
+// TODO: 삭제
 const BlogMain = ({ originPosts, tags, totalPosts }: BlogMainProps) => {
   return (
     <>
