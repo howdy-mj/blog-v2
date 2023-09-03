@@ -1,10 +1,12 @@
 'use client';
 
 import { PropsWithChildren } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import useHeight from '@hooks/useHeight';
 import Navigation, { GNB_HEIGHT } from './Navigation';
+import theme from '@styles/theme.style';
+import GlobalStyle from '@styles/global.style';
 
 type LayoutProps = {
   noPaddingBottom?: boolean;
@@ -14,12 +16,13 @@ const MainLayout = ({ noPaddingBottom = false, children }: PropsWithChildren<Lay
   const height = useHeight();
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <Navigation />
       <StyledMain minHeight={height}>
         <StyledArticle noPaddingBottom={noPaddingBottom}>{children}</StyledArticle>
       </StyledMain>
-    </>
+    </ThemeProvider>
   );
 };
 
