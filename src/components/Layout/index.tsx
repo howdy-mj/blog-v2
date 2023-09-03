@@ -8,6 +8,9 @@ type LayoutProps = {
   noPaddingBottom?: boolean;
 };
 
+/**
+ * @deprecated 'components/Layout' 사용하기
+ */
 const Layout = ({ noPaddingBottom = false, children }: PropsWithChildren<LayoutProps>) => {
   const height = useHeight();
 
