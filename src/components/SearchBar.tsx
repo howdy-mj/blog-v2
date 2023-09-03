@@ -21,7 +21,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
         type="text"
         placeholder="Search title or #tag."
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e: any) => onChange(e.target.value)}
       />
       <SearchButton>
         {value ? <TiDeleteOutline onClick={onClear} /> : <AiOutlineSearch />}
