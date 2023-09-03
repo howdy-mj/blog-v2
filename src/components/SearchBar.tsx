@@ -8,6 +8,9 @@ type SearchBarProps = {
   onChange: (value: string) => void;
 };
 
+/**
+ * @deprecated 'components/SearchBar' 사용하기
+ */
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   const onClear = () => {
     onChange('');
