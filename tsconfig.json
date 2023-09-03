@@ -60,6 +60,7 @@
   ],
   "exclude": [
     "node_modules",
+    // TODO: 해당 폴더 삭제 후 삭제
     "old_pages",
     "old_src"
   ]
