@@ -10,6 +10,7 @@ type SearchBarProps = {
 
 /**
  * @deprecated 'components/SearchBar' 사용하기
+ * TODO: 삭제 예정
  */
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   const onClear = () => {

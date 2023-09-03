@@ -20,6 +20,7 @@ type BlogPostsProps = {
 
 /**
  * @deprecated 'components/BlogPosts' 사용
+ * TODO: 삭제 예정
  */
 const BlogPosts = ({ originPosts, tags, totalPosts, currentPage = 1 }: BlogPostsProps) => {
   const router = useRouter();

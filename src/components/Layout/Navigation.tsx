@@ -20,6 +20,7 @@ const findActivePage = (pathname: string, pageName: string) => {
 
 /**
  * @deprecated 'components/Navigation' 사용하기
+ * TODO: 삭제 예정
  */
 const Navigation = () => {
   const hasScrolled = useScroll();
