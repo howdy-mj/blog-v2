@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// TODO: 삭제
 export const Table = ({ children }: JSX.IntrinsicElements['table']) => {
   return <StyledTable>{children}</StyledTable>;
 };

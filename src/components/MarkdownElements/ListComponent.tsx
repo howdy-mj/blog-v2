@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// TODO: 삭제
 export const Ol = ({ children }: JSX.IntrinsicElements['ol']) => {
   return <StyledOl>{children}</StyledOl>;
 };

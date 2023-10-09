@@ -29,6 +29,7 @@ export type MdxComponentProps = {
   mdxSource: MDXRemoteSerializeResult;
 };
 
+// TODO: 삭제
 const MdxComponent = ({ mdxSource }: MdxComponentProps) => {
   return <MDXRemote {...mdxSource} components={components} />;
 };

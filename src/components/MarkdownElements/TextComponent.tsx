@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// TODO: 삭제
+
 export const H1 = ({ children }: JSX.IntrinsicElements['h1']) => {
   return <H1Text>{children}</H1Text>;
 };
