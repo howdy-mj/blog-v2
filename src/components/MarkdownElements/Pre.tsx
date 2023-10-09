@@ -4,6 +4,7 @@ import { HiCheck, HiOutlineClipboardCopy } from 'react-icons/hi';
 
 type PreProps = {} & JSX.IntrinsicElements['pre'];
 
+// TODO: 삭제
 const Pre = (pre: PreProps) => {
   const preRef = useRef<HTMLDivElement | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);

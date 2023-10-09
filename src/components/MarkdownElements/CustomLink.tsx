@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 
 type AnchorProps = {} & JSX.IntrinsicElements['a'];
-
+// TODO: 삭제
 const CustomLink = ({ href, children }: AnchorProps) => {
   const isInternalLink = href && href.startsWith('/');
   const isAnchorLink = href && href.startsWith('#');

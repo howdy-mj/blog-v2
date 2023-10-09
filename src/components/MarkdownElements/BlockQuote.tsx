@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 type BlockQuoteProps = {} & JSX.IntrinsicElements['blockquote'];
-
+// TODO: 삭제
 const BlockQuote = ({ children }: BlockQuoteProps) => {
   return <Container>{children}</Container>;
 };

@@ -111,7 +111,7 @@ export const getBasicContentInfo = async (directory: Directory, slug: string) =>
 
   const { data: frontMatter, content } = matter(contentWithFrontMatter);
   return {
-    frontMatter,
+    frontMatter: frontMatter as FrontMatter,
     content,
     isMdxFile,
   };
