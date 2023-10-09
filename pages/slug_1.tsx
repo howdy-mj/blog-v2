@@ -7,7 +7,7 @@ import MdxComponent, { MdxComponentProps } from '@components/MarkdownElements/Md
 import { BlogSEO } from '@components/SEO';
 
 type BlogSlugProps = { slug: string; content: string } & MdxComponentProps & Content;
-
+// TODO: 삭제
 const BlogSlug = ({ frontMatter, mdxSource, slug, content }: BlogSlugProps) => {
   const description = useMemo(
     () => (content ? `${removeHtmlTagFromString(content).slice(0, 150)}...` : ''),
