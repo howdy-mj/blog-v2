@@ -2,16 +2,38 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@containers/*": ["src/containers/*"],
-      "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"],
-      "@hooks/*": ["hooks/*"],
-      "@config/*": ["config/*"],
-      "@constants/*": ["constants/*"]
+      "@components/*": [
+        // TODO: 전체 페이지 app 라우터로 수정 후 'components/*'로 수정
+        "src/components/*"
+      ],
+      "@containers/*": [
+        "src/containers/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ]
     },
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,8 +45,23 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    // TODO: 해당 폴더 삭제 후 삭제
+    "old_pages",
+    "old_src"
+  ]
 }

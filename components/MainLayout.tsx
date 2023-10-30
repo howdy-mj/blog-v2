@@ -1,33 +1,34 @@
-import React, { PropsWithChildren } from 'react';
-import styled from 'styled-components';
+'use client';
+
+import { PropsWithChildren } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
 
 import useHeight from '@hooks/useHeight';
 import Navigation, { GNB_HEIGHT } from './Navigation';
+import theme from '@styles/theme.style';
+import GlobalStyle from '@styles/global.style';
 
 type LayoutProps = {
   noPaddingBottom?: boolean;
 };
 
-/**
- * @deprecated 'components/Layout' 사용하기
- * TODO: 삭제 예정
- */
-const Layout = ({ noPaddingBottom = false, children }: PropsWithChildren<LayoutProps>) => {
+const MainLayout = ({ noPaddingBottom = false, children }: PropsWithChildren<LayoutProps>) => {
   const height = useHeight();
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <Navigation />
-      <MainWrapper minHeight={height}>
+      <StyledMain minHeight={height}>
         <StyledArticle noPaddingBottom={noPaddingBottom}>{children}</StyledArticle>
-      </MainWrapper>
-    </>
+      </StyledMain>
+    </ThemeProvider>
   );
 };
 
-export default Layout;
+export default MainLayout;
 
-const MainWrapper = styled.main<{ minHeight: number }>`
+const StyledMain = styled.main<{ minHeight: number }>`
   min-height: ${({ minHeight }) => minHeight - GNB_HEIGHT}rem;
 `;
 

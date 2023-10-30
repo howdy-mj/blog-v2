@@ -18,10 +18,6 @@ const findActivePage = (pathname: string, pageName: string) => {
   return pathname.includes(_pageName);
 };
 
-/**
- * @deprecated 'components/Navigation' 사용하기
- * TODO: 삭제 예정
- */
 const Navigation = () => {
   const hasScrolled = useScroll();
   const { pathname } = useRouter();

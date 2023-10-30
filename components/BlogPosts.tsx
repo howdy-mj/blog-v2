@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import TagList from '@containers/blog/components/TagList';
-import SearchBar from '@components/SearchBar';
+import SearchBar from './SearchBar';
 import PostList from '@containers/blog/components/PostList';
 import Pagination from '@components/Pagination';
 import styled from 'styled-components';
 import { Content } from '@utils/getFiles';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ROUTES } from '@constants/routes';
 import { searchBlogPosts } from '@utils/searchBlog';
 import NoticeText from '@components/NoticeText';
@@ -18,10 +20,6 @@ type BlogPostsProps = {
   currentPage?: number;
 };
 
-/**
- * @deprecated 'components/BlogPosts' 사용
- * TODO: 삭제 예정
- */
 const BlogPosts = ({ originPosts, tags, totalPosts, currentPage = 1 }: BlogPostsProps) => {
   const router = useRouter();
   const totalPage = getTotalPage(totalPosts);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti';
@@ -8,10 +8,6 @@ type SearchBarProps = {
   onChange: (value: string) => void;
 };
 
-/**
- * @deprecated 'components/SearchBar' 사용하기
- * TODO: 삭제 예정
- */
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   const onClear = () => {
     onChange('');
@@ -22,7 +18,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
         type="text"
         placeholder="Search title or #tag."
         value={value}
-        onChange={(e: any) => onChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
       />
       <SearchButton>
         {value ? <TiDeleteOutline onClick={onClear} /> : <AiOutlineSearch />}
