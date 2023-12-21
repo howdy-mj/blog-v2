@@ -76,17 +76,11 @@ type MouseEventHandler<T = Element> = EventHandler<MouseEvent<T>>;
 
 <div style={{ display: 'flex' }}>
   <div class="img-div">
-    <img
-      src="https://private-user-images.githubusercontent.com/58619071/292183012-da5f801d-f975-4af5-94a6-42d4de6ddedb.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNTcyMDQsIm5iZiI6MTcwMzE1NjkwNCwicGF0aCI6Ii81ODYxOTA3MS8yOTIxODMwMTItZGE1ZjgwMWQtZjk3NS00YWY1LTk0YTYtNDJkNGRlNmRkZWRiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDExMDgyNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVlNDM0ZTJjZDFkYzg0NDNlMGZhNzlhNGQwZDhmMzFkNjMzMjU5MTdiMGY5NzQ3NGRkOWE3YWY3OGZmZjQ3ODgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.rIoFuTEarwIKqATj9R1M4yszqTbae5rRDrm9zCFLxX8"
-      alt="onClick1의 e"
-    />
+    <img src="/event-handling-in-react/1.png" alt="onClick1의 e" />
     <p>onClick1의 e</p>
   </div>
   <div class="img-div">
-    <img
-      src="https://private-user-images.githubusercontent.com/58619071/292183036-58214929-2386-45cb-a9f1-0bfe094b59f9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNTcyMDQsIm5iZiI6MTcwMzE1NjkwNCwicGF0aCI6Ii81ODYxOTA3MS8yOTIxODMwMzYtNTgyMTQ5MjktMjM4Ni00NWNiLWE5ZjEtMGJmZTA5NGI1OWY5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDExMDgyNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTc4MzE3ZWU3MzIzY2JiNTM0ZGNhYzdlODlhZDA0ZDc0ZWRmMDk0YzFmYTkwOTMzODJkMzQ3Yjk2OTZjZGNiMzMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.BnJLRawZnz0DcJFuOxxc5fYhYKzqhnq4gpaG0AcYiOA"
-      alt="onClick2의 e"
-    />
+    <img src="/event-handling-in-react/2.png" alt="onClick2의 e" />
     <p>onClick2의 e</p>
   </div>
 </div>
@@ -103,7 +97,7 @@ type EventHandler<E extends SyntheticEvent<any>> = {
 
 <div class="img-div">
   <img
-    src="https://private-user-images.githubusercontent.com/58619071/292183293-62ced3b0-3c64-4e4f-ba3c-45ac81937df8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNTgzNjQsIm5iZiI6MTcwMzE1ODA2NCwicGF0aCI6Ii81ODYxOTA3MS8yOTIxODMyOTMtNjJjZWQzYjAtM2M2NC00ZTRmLWJhM2MtNDVhYzgxOTM3ZGY4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDExMjc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTlkNzI0Njg1MDhjZmI0OThhM2I4ZjBiMzQ0ZmFjZmMwODQ0OGNhMDNlYjBhYWFmY2NhMmNkMDBhNDU2ZjkzMDEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.tCwKaOJcyS6gaoV0XpTB-tpQ0G8aNkg6OPHZr35DLFQ"
+    src="/event-handling-in-react/3.png"
     alt="onClick1에 return이 추론된다."
     style={{ maxWidth: '550px' }}
   />
@@ -112,7 +106,7 @@ type EventHandler<E extends SyntheticEvent<any>> = {
 
 <div class="img-div">
   <img
-    src="https://private-user-images.githubusercontent.com/58619071/292183302-70a85ac4-626a-4a78-9bc7-fc6761b816b6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNTgzNjQsIm5iZiI6MTcwMzE1ODA2NCwicGF0aCI6Ii81ODYxOTA3MS8yOTIxODMzMDItNzBhODVhYzQtNjI2YS00YTc4LTliYzctZmM2NzYxYjgxNmI2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDExMjc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTdkZWFjZWJiNWVlZTZmN2JhNDRlZGU0MjA2NDFiMzIzOWY1MDUwY2JiZjhlMzM0NWRiYmU4MjY1NzJlMDc1ZjkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.KDExKxpMvw4jZ4mfsT4OxnZlnqPvPZRMkSW6FHJqrV8"
+    src="/event-handling-in-react/4.png"
     alt="onClick2에 return은 무시된다."
     style={{ maxWidth: '500px' }}
   />
@@ -257,10 +251,7 @@ const OuterComponent = () => {
 그래서 리액트 17 버전부터는 document 레벨이 아닌 루트 DOM 컨테이너에 이벤트 핸들러들을 부착한다.
 
 <div class="img-div">
-  <img
-    src="https://private-user-images.githubusercontent.com/58619071/292217483-b138bd4f-b56b-4d8e-ab78-b973b5910835.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNjU1OTYsIm5iZiI6MTcwMzE2NTI5NiwicGF0aCI6Ii81ODYxOTA3MS8yOTIyMTc0ODMtYjEzOGJkNGYtYjU2Yi00ZDhlLWFiNzgtYjk3M2I1OTEwODM1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDEzMjgxNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNiYjk5NGRmOWIyMDQwOTZmYTFmOTM0ZDAyZGY4OWIzMDJmZmQ5YTdjZDA5YjdjYTY2YTdlMTFkNmQzOTgyODQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.zEL62C7wWRtuVzsBK9_JhTueu34zpdBZLRlbD-k1hCI"
-    alt="react의 이벤트 부착 방식"
-  />
+  <img src="/event-handling-in-react/5.png" alt="react의 이벤트 부착 방식" />
   <p>리액트 16, 17의 이벤트 부착 방식 차이</p>
 </div>
 
@@ -270,7 +261,7 @@ const OuterComponent = () => {
 
 <div class="img-div">
   <img
-    src="https://private-user-images.githubusercontent.com/58619071/292224943-6cf20af1-60b8-41b0-a84d-9978821f9a99.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDMxNjc1MDYsIm5iZiI6MTcwMzE2NzIwNiwicGF0aCI6Ii81ODYxOTA3MS8yOTIyMjQ5NDMtNmNmMjBhZjEtNjBiOC00MWIwLWE4NGQtOTk3ODgyMWY5YTk5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjIxVDE0MDAwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNkY2RjNWJjMzhhZWY4NmRmNjVlYzVmMDRmZmI5NzBmOTkyYzlkNzEyNjg4Yjc5ZDAxMGJhNjFkZjljZjE0ZGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.8-X9GUqtQ8TMs312T9ZinMgyCx3xwuWv0qG8Vo-fGhU"
+    src="/event-handling-in-react/6.png"
     alt="onClick의 e.target과 e.nativeEvent.currentTarget"
     style={{ width: '490px' }}
   />

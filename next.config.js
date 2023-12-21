@@ -5,9 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    domains: ['private-user-images.githubusercontent.com'],
-  },
   async rewrites() {
     return [
       {
