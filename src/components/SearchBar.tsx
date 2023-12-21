@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti';
@@ -18,7 +18,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
         type="text"
         placeholder="Search title or #tag."
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
       />
       <SearchButton>
         {value ? <TiDeleteOutline onClick={onClear} /> : <AiOutlineSearch />}
