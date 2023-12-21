@@ -7,9 +7,530 @@
       <language>ko</language>
       <managingEditor>hi.minjungkim@gmail.com (MJ Kim)</managingEditor>
       <webMaster>hi.minjungkim@gmail.com (MJ Kim)</webMaster>
-      <lastBuildDate>Tue, 29 Nov 2022 00:00:00 GMT</lastBuildDate>
+      <lastBuildDate>Fri, 22 Dec 2023 00:00:00 GMT</lastBuildDate>
       <atom:link href="https://www.howdy-mj.me/rss.xml" rel="self" type="application/rss+xml"/>
       
+    <item>
+      <guid>https://www.howdy-mj.me/react/event-handling-in-react</guid>
+      <title>React는 이벤트를 어떻게 처리할까?</title>
+      <link>https://www.howdy-mj.me/react/event-handling-in-react</link>
+      undefined
+      <pubDate>Fri, 22 Dec 2023 00:00:00 GMT</pubDate>
+      <author>hi.minjungkim@gmail.com (MJ Kim)</author>
+      <category>react</category>
+      <content:encoded>
+회사에서 리액트의 js 컴포넌트를 tsx로 전환하는 과정에서 이벤트들에 대한 타입을 어떻게 선언해야 좋을지 궁금했다.
+
+버튼에 대한 onClick 이벤트가 있다면 단순하게 `MouseEvent`로 작성했지만, 생각해보니 어떤 함수에서는 `MouseEventHandler`를 사용했다.
+
+그러다 보니 어떤 상황에서 어떤 인터페이스를 사용하는 것이 더 적절한지 궁금해졌고, 리액트가 자체적으로 이벤트에 대한 래퍼를 갖고 있다는 사실은 알았지만, 내부에서는 어떻게 다루고 있는지도 더 궁금해졌다.
+
+
+
+우선 가장 처음에 궁금했던 `MouseEvent`와 `MouseEventHandler`의 차이점을 알아보자.
+
+## MouseEvent vs. MouseEventHandler
+
+사용 방법은 아래와 같다.
+
+```tsx
+import { MouseEvent, MouseEventHandler } from 'react';
+
+export default function App() {
+  // 1. MouseEvent
+  const onClick1 = (e: MouseEvent) => {
+    console.log('onClick1: ', e);
+  };
+
+  // 2. MouseEventHandler
+  const onClick2: MouseEventHandler = (e) => {
+    console.log('onClick2: ', e);
+  };
+
+  return (
+    
+      case 1: MouseEvent
+      
+      case 2: MouseEventHandler
+    
+  );
+}
+```
+
+`MouseEvent`는 매개변수에 대한 타입이며, `MouseEventHandler`는 해당 함수 자체에 대한 타입이다. 그리고 두 인터페이스를 보면, `MouseEventHandler`가 `MouseEvent`를 사용하는 형태인 것을 확인할 수 있다.
+
+```ts:@types/react/index.d.ts
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/b580df54c0819ec9df62b0835a315dd48b8594a9/types/react/index.d.ts#L1315
+interface MouseEvent extends UIEvent {
+  altKey: boolean;
+  button: number;
+  buttons: number;
+  clientX: number;
+  clientY: number;
+  ctrlKey: boolean;
+  /**
+   * See [DOM Level 3 Events spec](https://www.w3.org/TR/uievents-key/#keys-modifier). for a list of valid (case-sensitive) arguments to this method.
+   */
+  getModifierState(key: ModifierKey): boolean;
+  metaKey: boolean;
+  movementX: number;
+  movementY: number;
+  pageX: number;
+  pageY: number;
+  relatedTarget: EventTarget | null;
+  screenX: number;
+  screenY: number;
+  shiftKey: boolean;
+}
+
+type MouseEventHandler = EventHandler>;
+```
+
+그래서 두 onClick 함수의 e를 찍어보면 동일한 것도 확인 가능하다.
+
+
+  
+    
+    onClick1의 e
+  
+  
+    
+    onClick2의 e
+  
+
+
+`MouseEventHandler`은 void를 반환하므로, 반환 값이 필요없는 함수일 경우 사용한다.
+
+```ts:@types/react/index.d.ts {2}
+type EventHandler> = {
+  bivarianceHack(event: E): void;
+}['bivarianceHack'];
+```
+
+물론 반환 값을 준다고 해도 타입 에러는 뜨지 않지만, 무시 되기 때문에 권장되지 않는다.
+
+
+  
+  onClick1에 return을 주었을 때
+
+
+
+  
+  onClick2에 return을 주었을 때
+
+
+참고로 `MouseEvent`에서 참조하고 있는 NativeMouseEvent는 브라우저의 마우스 이벤트로 [MDN > MouseEvent](https://developer.mozilla.org/ko/docs/Web/API/MouseEvent)에 설명되어 있다.
+
+`MouseEvent`는 `UIEvent`를 상속하고, `UIEvent`는 `Event`를 상속한다 나와 있듯이, 리액트의 타입에도 비슷한 구조로 선언되어 있다.
+
+```ts
+type NativeMouseEvent = MouseEvent;
+
+interface UIEvent extends SyntheticEvent {
+  detail: number;
+  view: AbstractView;
+}
+```
+
+그런데 한 가지 다른 점은, 리액트 타입에는 `UIEvent`에서 바로 `Event` 타입으로 가는 것이 아닌, `SyntheticEvent`가 중간에 있다는 점이다.
+
+```ts
+interface SyntheticEvent
+  extends BaseSyntheticEvent {}
+
+interface BaseSyntheticEvent {
+  nativeEvent: E;
+  currentTarget: C;
+  target: T;
+  bubbles: boolean;
+  cancelable: boolean;
+  defaultPrevented: boolean;
+  eventPhase: number;
+  isTrusted: boolean;
+  preventDefault(): void;
+  isDefaultPrevented(): boolean;
+  stopPropagation(): void;
+  isPropagationStopped(): boolean;
+  persist(): void;
+  timeStamp: number;
+  type: string;
+}
+```
+
+## SyntheticEvent
+
+리액트의 SyntheticEvent는 브라우저의 네이티브 이벤트를 감싸는 리액트의 이벤트 래퍼다. 위에서 확인했던 `e`는 전부 브라우저가 아닌 리액트의 이벤트 객체다. SyntheticEvent는 기본적으로 DOM 이벤트 표준을 따르지만, 일부 브라우저마다 다르게 동작하는 기능을 일관되게 동작하게 해준다.
+
+예를 들어, 리액트의 `onMouseLeave`는 `mouseout`라는 네이티브 이벤트를 가리킨다. 특정 기능은 퍼블릭 API에 매핑되지 않았으며, 미래에 언제든지 변경될 수 있다. 그러니 만약 기본 브라우저 이벤트가 필요하다면, `e.nativeEvent`를 참조해야 한다.
+
+### 속성과 메서드
+
+위 BaseSyntheticEvent 인터페이스는 기본적으로 표준 [`Event`](https://developer.mozilla.org/en-US/docs/Web/API/Event)에서 구현되었으며, [React event object](https://react.dev/reference/react-dom/components/common#react-event-object)에서 확인 가능하다.
+
+**Event를 기반으로 구현된 속성과 메서드**
+
+- [`bubbles`](https://developer.mozilla.org/en-US/docs/Web/API/Event/bubbles): (boolean) 이벤트가 DOM을 통해 버블링되었는지를 반환한다.
+- [`cancelable`](https://developer.mozilla.org/en-US/docs/Web/API/Event/cancelable): (boolean) 이벤트를 취소할 수 있는지를 반환한다.
+- [`currentTarget`](https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget): (DOM 노드) 리액트 트리에서 현재 이벤트 핸들러가 첨부된 노드를 반환한다.
+- [`deafultPrevented`](https://developer.mozilla.org/en-US/docs/Web/API/Event/defaultPrevented): (boolean) `preventDefault`가 호출되었는지를 반환한다.
+- [`eventPahse`](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase): (number) 이벤트가 현재 어느 단계에 있는지 반환한다.
+- [`isTrusted`](https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted): (boolean) 이벤트가 사용자에 의해 시작되었는지 반환한다.
+- [`target`](https://developer.mozilla.org/en-US/docs/Web/API/Event/target): (DOM 노드) 이벤트가 발생한 노드(멀리 떨어진 자식 노드일 수 있음)를 반환한다.
+- [`timeStamp`](https://developer.mozilla.org/en-US/docs/Web/API/Event/timeStamp): (number) 이벤트가 발생한 시간을 반환한다.
+- [`preventDefault()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault): 브라우저의 기본 동작을 막는다.
+- [`stopPropagation()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation): 리액트 트리에서 발생하는 이벤트 전파를 막는다.
+
+
+
+**React만의 속성과 메서드**
+
+- `nativeEvent`: (Event) 원래의 브라우저 이벤트 객체를 반환한다.
+- `isDefaultPrevented()`: (boolean) `preventDefault`가 호출 되었는지를 반환한다.
+- `persist()`: 리액트 DOM에서는 사용되지 않으며, 리액트 네이티브에서 이벤트 속성을 이벤트 이후에 읽기 위해 사용된다.
+- `isPersistent()`: 리액트 DOM에서는 사용되지 않으며, 리액트 네이티브에서 `persist`가 호출되었는지를 반환한다.
+
+
+
+**주의사항**
+
+`currentTarget`, `eventPhase`, `target` 그리고 `type`의 값은 리액트 코드가 예상하는 값들을 반영한다. 내부적으로 리액트는 루트에 이벤트 핸들러를 부착(attach)하지만, 이는 리액트의 이벤트 객체에는 반영되지 않는다. 예를 들어, `e.currentTarget`은 기본 `e.nativeEvent.currentTarget`과는 다를 수 있다. 만약 폴리필된 이벤트인 경우, `e.type`(리액트 이벤트 타입)은 `e.nativeEvent.type`(기본 타입)과 다를 수 있다. 따라서 기본 브라우저 이벤트가 필요한 경우 반드시 `e.nativeEvent`를 참조해야 한다.
+
+### 이벤트 위임 (Event Delegation)
+
+자바스크립트의 [이벤트 위임](https://davidwalsh.name/event-delegate) 덕분에 여러 자식 요소에서 발생하는 동일한 유형의 이벤트를 부모 요소에서 한 번에 처리할 수 있다.
+
+```html
+
+  
+    document.getElementById('parent-list').addEventListener('click', function (e) {
+      // 만약 li 태그라면
+      if (e.target && e.target.nodeName == 'LI') {
+        console.log('List item ', e.target.id.replace('post-', ''), ' was clicked!');
+      }
+    });
+  
+  
+    
+      Item 1
+      Item 2
+      Item 3
+    
+  
+
+```
+
+리액트 역시 첫 출시부터 이벤트 위임을 지원했지만, 이벤트 시스템의 작동 방식은 불안정했다. 일반적으로 리액트 컴포넌트에서 이벤트 핸들러는 인라인 방식으로 사용된다.
+
+```jsx
+
+```
+
+하지만 이를 DOM 노드에 직접적으로 부착하는 방식이 아니라, document 노드에 직접 이벤트를 타입별로 부착했다. 따라서 어플리케이션 내에서 이벤트가 발생한다면, 리액트는 어떤 컴포넌트를 호출할지 파악하고, 이벤트는 컴포넌트를 통해 '버블링'되어 발생한다. 만약 한 페이지에 여러 버전의 리액트가 존재한다면, 이벤트들은 모두 최상위에 등록되어 `e.stopPropagation()`이 정상적으로 동작하지 않을 수 있다.
+
+예를 들어 아래 코드에서 내부의 InnerButton과 외부의 OuterComponent의 리액트 버전이 다를 경우를 가정해보자.
+
+```jsx
+const InnerButton = () => {
+  const handleInnerClick = (e) => {
+    e.stopPropagation();
+    console.log('내부 버튼 클릭');
+  };
+
+  return 내부 버튼;
+};
+
+const OuterComponent = () => {
+  const handleOuterClick = () => {
+    console.log('외부 컴포넌트 클릭');
+  };
+
+  return (
+    
+      
+    
+  );
+};
+```
+
+일반적으로 내부 버튼을 클릭하면 `e.stopPropagation()` 호출로 인해 외부 컴포넌트의 이벤트(handleOuterClick)는 실행되지 않아야 하지만 실제로는 실행된다. 이는 리액트 17 이전 버전에서 발생할 수 있으며, [Atom 에디터에서 발생](https://github.com/facebook/react/pull/8117)했었다.
+
+그래서 리액트 17 버전부터는 document 레벨이 아닌 루트 DOM 컨테이너에 이벤트 핸들러들을 부착한다.
+
+
+  
+  리액트 16, 17의 이벤트 부착 방식 차이
+
+
+이러한 변경 덕분에, 리액트의 `e.stopPropagation()`은 일반적인 DOM에 더 가깝게 작동하여 원하는 결과(ex. 외부에 이벤트 전파 막기)를 기대할 수 있게 되었다. (단, 모든 버전이 리액트 17 이상이어야 한다)
+
+초반에 작성한 코드에서 이벤트의 target과 이벤트가 실제로 부착된 target을 각각 찍어보면 타겟은 button이지만 부착된 노드는 root인걸 확인할 수 있다.
+
+
+  
+  onClick의 e.target과 e.nativeEvent.currentTarget
+
+
+## 리액트에 이벤트가 부착되는 시점은?
+
+리액트에서 이벤트 핸들러가 root에 부착되는 시점은 리액트가 렌더링되는 시점이다.
+
+```jsx
+const rootNode = document.getElementById('root');
+
+// React 17
+ReactDOM.render(, rootNode);
+
+// React 18
+const root = ReactDOM.createRoot(rootNode);
+root.render();
+```
+
+리액트 18 버전을 예로, 렌더 함수(`root.render`)를 따라가보면 아래와 같은 코드로 동작하는 걸 확인할 수 있다.
+
+```tsx:react-dom/src/client/ReactDOMRoot.js {24}
+// https://github.com/facebook/react/blob/main/packages/react-dom/src/client/ReactDOMRoot.js#L162
+export function createRoot(
+  container: Element | Document | DocumentFragment,
+  options?: CreateRootOptions,
+): RootType {
+  // 생략...
+
+  const root = createContainer(
+    container,
+    ConcurrentRoot,
+    null,
+    isStrictMode,
+    concurrentUpdatesByDefaultOverride,
+    identifierPrefix,
+    onRecoverableError,
+    transitionCallbacks,
+  );
+  // ...
+
+  const rootContainerElement: Document | Element | DocumentFragment =
+    container.nodeType === COMMENT_NODE
+      ? (container.parentNode: any)
+      : container;
+  listenToAllSupportedEvents(rootContainerElement);
+
+  // $FlowFixMe[invalid-constructor] Flow no longer supports calling new on functions
+  return new ReactDOMRoot(root);
+}
+```
+
+아래 코드는 흐름대로 읽기 위해 순서를 변경했으며, 실제 코드는 명시한 url에서 확인할 수 있다.
+
+```js:react-dom-bindings/src/events/DOMPluginEventSystem.js
+// https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/DOMPluginEventSystem.js
+
+const listeningMarker = '_reactListening' + Math.random().toString(36).slice(2);
+
+export function listenToAllSupportedEvents(rootContainerElement: EventTarget) {
+  // rootContainerElement, 즉 id가 root인 엘리먼트에 이벤트 리스너가 부착되어 있지 않은 경우 실행한다.
+  if (!(rootContainerElement: any)[listeningMarker]) {
+    // 내부에서 이벤트가 부착되었다는 flag를 설정하여, 이후에 다시 실행되지 않게 동작. 따라서 첫 렌더링에만 실행된다.
+    rootContainerElement[listeningMarker] = true;
+    // 모든 이벤트들에 대해 이벤트 리스너를 부착한다.
+    allNativeEvents.forEach(domEventName => {
+      if (domEventName !== 'selectionchange') {
+        if (!nonDelegatedEvents.has(domEventName)) {
+          listenToNativeEvent(domEventName, false, rootContainerElement);
+        }
+        listenToNativeEvent(domEventName, true, rootContainerElement);
+      }
+    });
+    // ...
+  }
+}
+
+// 실제 브라우저 이벤트를 연결한다
+export function listenToNativeEvent(
+  domEventName: DOMEventName,
+  isCapturePhaseListener: boolean,
+  target: EventTarget,
+): void {
+  // ...
+  let eventSystemFlags = 0; // 기본 값이 0인 것을 주목하자
+  if (isCapturePhaseListener) {
+    eventSystemFlags |= IS_CAPTURE_PHASE; // 캡쳐링을 한다면 4로 할당
+  }
+  addTrappedEventListener(
+    target,
+    domEventName,
+    eventSystemFlags,
+    isCapturePhaseListener,
+  );
+}
+
+function addTrappedEventListener(
+  targetContainer: EventTarget,
+  domEventName: DOMEventName,
+  eventSystemFlags: EventSystemFlags,
+  isCapturePhaseListener: boolean,
+  isDeferredListenerForLegacyFBSupport?: boolean,
+) {
+  // 우선순위에 따라 이벤트 리스너를 생성한다.
+   let listener = createEventListenerWrapperWithPriority(
+    targetContainer,
+    domEventName,
+    eventSystemFlags,
+  );
+
+  // ...
+  let unsubscribeListener;
+
+  if (isCapturePhaseListener) {
+    // ...
+    unsubscribeListener = addEventCaptureListener(
+        targetContainer,
+        domEventName,
+        listener,
+      );
+  } else {
+    // ...
+    unsubscribeListener = addEventBubbleListener(
+        targetContainer,
+        domEventName,
+        listener,
+      );
+  }
+}
+```
+
+그리하여 마침내 익숙한 addEventListener에 도달했다.
+
+```js:react-dom-bindings/src/events/EventListner.js
+// https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/EventListener.js
+export function addEventBubbleListener(
+  target: EventTarget,
+  eventType: string,
+  listener: Function,
+): Function {
+  target.addEventListener(eventType, listener, false);
+  return listener;
+}
+
+export function addEventCaptureListener(
+  target: EventTarget,
+  eventType: string,
+  listener: Function,
+): Function {
+  target.addEventListener(eventType, listener, true);
+  return listener;
+}
+```
+
+따라서 사용자에게 화면이 보여질때는 이미 이벤트 핸들러들이 다 부착된 상태이기에 클릭, 작성 등의 이벤트들이 동작한다.
+
+## 이벤트를 실행한다면 어떤 일이 일어날까?
+
+위 코드들로 이벤트가 root에 이벤트 리스너 함수(addEventListener)가 부착된다는 걸 보았다. 그렇다면 반대로 button을 클릭 할 때, root에 부착된 이벤트가 어떻게 실행되는 걸까?
+
+버튼을 클릭 할 경우, 이벤트 버블링이 일어나면서 DOM 트리를 통해 상위 요소로 버블링되며 최종적으로 root 요소에 도달한다. 그리고 바인딩 된 이벤트를 찾아 실행하는데 코드로 살펴보자.
+
+아까 위에서 우선순위로 이벤트 리스너를 바인딩하는 함수(`createEventListenerWrapperWithPriority()`)에서 리스너에 이벤트를 실행하는 dispatch 함수를 같이 바인딩 해둔다.
+
+```js:react-dom-bindings/src/events/ReactDOMListener.js
+// https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/ReactDOMEventListener.js#L148
+export function dispatchEvent(
+  domEventName: DOMEventName,
+  eventSystemFlags: EventSystemFlags,
+  targetContainer: EventTarget,
+  nativeEvent: AnyNativeEvent,
+): void {
+  // ...
+}
+```
+
+해당 함수에서 이벤트의 활성화 여부, 이벤트 전파 중단 여부 등을 확인하고, 이벤트를 실행할 경우 `dispatchEventForPluginEventSystem()` 함수가 호출된다.
+
+```js:react-dom-bindings/src/events/DOMPluginEventSystem.js
+// https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/DOMPluginEventSystem.js#L547
+export function dispatchEventForPluginEventSystem(
+  domEventName: DOMEventName,
+  eventSystemFlags: EventSystemFlags,
+  nativeEvent: AnyNativeEvent,
+  targetInst: null | Fiber,
+  targetContainer: EventTarget,
+): void {
+  // ...
+  if (targetInst !== null) {
+    // rootContainer를 찾기 위해 타겟에서 계속해서 위로 올라가며 탐색한다
+    let node: null | Fiber = targetInst;
+    mainLoop: while (true) {
+      // ...
+    }
+  }
+  // ...
+  batchedUpdates(() =>
+    dispatchEventsForPlugins(
+      domEventName,
+      eventSystemFlags,
+      nativeEvent,
+      ancestorInst,
+      targetContainer,
+    ),
+  );
+}
+
+function dispatchEventsForPlugins() {
+  // ...
+  extractEvents(
+    dispatchQueue,
+    domEventName,
+    targetInst,
+    nativeEvent,
+    nativeEventTarget,
+    eventSystemFlags,
+    targetContainer,
+  );
+}
+
+function extractEvents(
+  dispatchQueue: DispatchQueue,
+  domEventName: DOMEventName,
+  targetInst: null | Fiber,
+  nativeEvent: AnyNativeEvent,
+  nativeEventTarget: null | EventTarget,
+  eventSystemFlags: EventSystemFlags,
+  targetContainer: EventTarget,
+) {
+  // 기본적으로 해당 플러그인으로 이벤트 수행
+  SimpleEventPlugin.extractEvents(...)
+  const shouldProcessPolyfillPlugins = (eventSystemFlags & SHOULD_NOT_PROCESS_POLYFILL_EVENT_PLUGINS) === 0;
+  if (shouldProcessPolyfillPlugins) {
+    // 폴리필 여부를 판단한 후, 상황에 맞는 이벤트를 실행
+  }
+}
+```
+
+마지막에 나오는 `extractEvents()` 함수에서 일반적으로는 SimpleEventPlugin만 실행 될 것이다. 왜냐하면 `eventSystemFlags`는 상단 이벤트 리스너를 바인딩하는 곳에서 결정되는데, 리액트에서 이벤트는 기본적으로 캡처링 모드는 비활성화 되어 있으며, `eventSystemFlags`가 기본값인 0으로 설정될 것이기 때문이다.
+
+[SimpleEventPlugin.extractEvents](https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/plugins/SimpleEventPlugin.js#L55)는 리액트의 이벤트와 브라우저의 네이티브 이벤트를 바인딩 시키고, 그에 대응되는 코드는 [SyntheticEvent](https://github.com/facebook/react/blob/main/packages/react-dom-bindings/src/events/SyntheticEvent.js)에서 확인할 수 있다.
+
+### 결론
+
+부끄럽지만 여태 리액트에 이벤트를 선언할 때 단순히 요구사항에 맞는 함수를 만들어 선언하고 각 노드에 해당 함수를 연결해주고 더 깊게 생각하지 않았었다.
+
+이번에 리액트 소스코드를 보다보니 각 노드들에 바인딩 된 이벤트들이 root에 바인딩 되며, 실행도 root를 통해서 되고 있다는 사실을 알았다. 리액트가 단방향 바인딩을 추구하고 있다는 건 알고 있었지만, 코드로 보니 더 확 와 닿았다.
+
+이와 별개로 이번에 이벤트 관련 코드들을 보니 생각보다 브라우저 호환성을 위한 분기 처리나 핸들링이 적다는 생각이 들었다. 크롬은 [V8](https://v8.dev/)을, 파이어폭스는 [Gecko](https://wiki.mozilla.org/Gecko:Overview) 엔진을 사용하는데 이 두 가지 모두 메인 페이지에 ECMASCript 혹은 JavaScript에 대한 내용이 있는 반면, 사파리가 사용하는 [WebKit](https://webkit.org/) 엔진의 메인 페이지에서는 해당 내용을 찾아볼 수 없다. 그래서 상대적으로 자유분방(?)한 사파리에서 유독 이벤트 관련해서 더 많은 예외 케이스가 발생하는 것 같다. 리액트도 이런 케이스를 하나하나 대응하기에 힘들기 때문에 따로 처리하지 않은게 아닌가 유추해본다.
+
+
+
+
+
+**참고**
+
+
+
+- [React](https://react.dev/)
+- [React event object](https://react.dev/reference/react-dom/components/common#react-event-object)
+
+
+</content:encoded>
+    </item>
+  
     <item>
       <guid>https://www.howdy-mj.me/general/http-cache</guid>
       <title>캐시(cache)</title>
