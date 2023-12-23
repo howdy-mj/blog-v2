@@ -99,7 +99,7 @@ type EventHandler<E extends SyntheticEvent<any>> = {
   <img
     src="/event-handling-in-react/3.png"
     alt="onClick1에 return이 추론된다."
-    style={{ maxWidth: '550px' }}
+    style={{ width: '550px' }}
   />
   <p>onClick1에 return을 주었을 때</p>
 </div>
@@ -108,7 +108,7 @@ type EventHandler<E extends SyntheticEvent<any>> = {
   <img
     src="/event-handling-in-react/4.png"
     alt="onClick2에 return은 무시된다."
-    style={{ maxWidth: '500px' }}
+    style={{ width: '500px' }}
   />
   <p>onClick2에 return을 주었을 때</p>
 </div>
@@ -252,7 +252,7 @@ const OuterComponent = () => {
 
 <div class="img-div">
   <img src="/event-handling-in-react/5.png" alt="react의 이벤트 부착 방식" />
-  <p>리액트 16, 17의 이벤트 부착 방식 차이</p>
+  <p>https://ko.legacy.reactjs.org/blog/2020/08/10/react-v17-rc.html</p>
 </div>
 
 이러한 변경 덕분에, 리액트의 `e.stopPropagation()`은 일반적인 DOM에 더 가깝게 작동하여 원하는 결과(ex. 외부에 이벤트 전파 막기)를 기대할 수 있게 되었다. (단, 모든 버전이 리액트 17 이상이어야 한다)
