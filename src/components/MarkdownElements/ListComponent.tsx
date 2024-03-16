@@ -30,4 +30,8 @@ export const Li = ({ children }: JSX.IntrinsicElements['li']) => {
 const StyledLi = styled.li`
   list-style: circle inside;
   line-height: 1.7;
+
+  > p {
+    display: inline-block;
+  }
 `;
