@@ -20,6 +20,16 @@ export const contentStyle = css`
       margin-top: 5px;
     }
   }
+
+  // 에러메세지
+  .error-message {
+    color: #e13238;
+    background-color: #ffebec;
+    font-family: monospace;
+    font-size: 1.4rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
 `;
 
 export const blogV1ContentStyle = css`
