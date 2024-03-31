@@ -26,14 +26,14 @@ const Navigation = () => {
   const [showMiniNav, setShowMiniNav] = useState(false);
 
   return (
-    <Container hasScrolled={hasScrolled}>
+    <Container $hasScrolled={hasScrolled}>
       <NavWrapper>
         <NavList>
           {pages
             .filter((page) => page.isActive)
             .map((page) => {
               return (
-                <NavItem key={page.name} isActive={findActivePage(pathname, page.name)}>
+                <NavItem key={page.name} $isActive={findActivePage(pathname, page.name)}>
                   <Link href={page.link}>{page.name}</Link>
                 </NavItem>
               );
@@ -52,7 +52,7 @@ const Navigation = () => {
               .filter((page) => page.isActive)
               .map((page) => {
                 return (
-                  <MiniNavItem key={page.name} isActive={findActivePage(pathname, page.name)}>
+                  <MiniNavItem key={page.name} $isActive={findActivePage(pathname, page.name)}>
                     <Link href={page.link}>{page.name}</Link>
                   </MiniNavItem>
                 );
@@ -69,7 +69,7 @@ const Navigation = () => {
 
 export default Navigation;
 
-const Container = styled.nav<{ hasScrolled: boolean }>`
+const Container = styled.nav<{ $hasScrolled: boolean }>`
   position: sticky;
   top: 0;
   height: ${GNB_HEIGHT}rem;
@@ -77,8 +77,8 @@ const Container = styled.nav<{ hasScrolled: boolean }>`
   border-bottom: 1px solid var(--border2);
   z-index: 10;
 
-  ${({ hasScrolled }) =>
-    hasScrolled &&
+  ${({ $hasScrolled }) =>
+    $hasScrolled &&
     css`
       backdrop-filter: blur(8px);
     `}
@@ -124,8 +124,8 @@ const NavList = styled.ul`
   }
 `;
 
-const NavItem = styled.li<{ isActive: boolean }>`
-  color: ${(p) => p.isActive && `var(--text-primary)`};
+const NavItem = styled.li<{ $isActive: boolean }>`
+  color: ${(p) => p.$isActive && `var(--text-primary)`};
 `;
 
 const ThemeMode = styled.div`
@@ -169,10 +169,10 @@ const MiniNavList = styled.div`
   border-radius: 0.6rem;
 `;
 
-const MiniNavItem = styled(NavList)<{ isActive: boolean }>`
+const MiniNavItem = styled(NavList)<{ $isActive: boolean }>`
   flex-direction: column;
-  color: ${(p) => p.isActive && `var(--text-primary)`};
-  background-color: ${(p) => p.isActive && `var(--hover1)`};
+  color: ${(p) => p.$isActive && `var(--text-primary)`};
+  background-color: ${(p) => p.$isActive && `var(--hover1)`};
   padding: 1rem;
 `;
 
