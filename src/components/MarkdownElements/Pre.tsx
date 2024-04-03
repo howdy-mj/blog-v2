@@ -19,8 +19,8 @@ const Pre = (pre: PreProps) => {
   return (
     <Container className="pre-wrapper" ref={preRef}>
       <PreWrapper>
-        <CopyButton onClick={onCopy} isCopied={codeCopied}>
-          {codeCopied ? <CheckedIcon isCopied={codeCopied} /> : <CopyIcon />}
+        <CopyButton onClick={onCopy} $isCopied={codeCopied}>
+          {codeCopied ? <CheckedIcon $isCopied={codeCopied} /> : <CopyIcon />}
         </CopyButton>
         <pre className={pre.className}>{pre.children}</pre>
       </PreWrapper>
@@ -44,13 +44,13 @@ const PreWrapper = styled.div`
   }
 `;
 
-const CopyButton = styled.button<{ isCopied: boolean }>`
+const CopyButton = styled.button<{ $isCopied: boolean }>`
   display: none;
   position: absolute;
   top: 1rem;
   right: 1rem;
   padding: 0.3rem 0.5rem;
-  border: 1px solid ${(p) => (p.isCopied ? 'green' : '#9e9e9e')};
+  border: 1px solid ${(p) => (p.$isCopied ? 'green' : '#9e9e9e')};
   border-radius: 0.5rem;
 
   &:hover {
@@ -65,9 +65,9 @@ const iconStyle = css`
   font-size: 2rem;
 `;
 
-const CheckedIcon = styled(HiCheck)<{ isCopied: boolean }>`
+const CheckedIcon = styled(HiCheck)<{ $isCopied: boolean }>`
   ${iconStyle};
-  color: ${(p) => p.isCopied && 'green'};
+  color: ${(p) => p.$isCopied && 'green'};
 `;
 
 const CopyIcon = styled(HiOutlineClipboardCopy)`

@@ -4,7 +4,7 @@ import { getCurrentTheme } from '@hooks/useTheme';
 import metaData from '@config/metaData';
 
 const src = 'https://giscus.app/client.js';
-const lightTheme = 'github-light';
+const lightTheme = 'light';
 const darkTheme = 'dark_dimmed';
 const GISCUS_CLASSNAME = '.giscus-frame';
 

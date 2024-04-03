@@ -215,7 +215,7 @@ npm install --save-dev @stylexjs/eslint-plugin
 
 화면은 아래와 같다.
 
-<div class="img-div" style={{ width: '300px', margin: '2rem auto' }}>
+<div className="img-div" style={{ width: '300px', margin: '2rem auto' }}>
   <img src="/posts/stylex/main_example.png" alt="메인 페이지 화면" />
   <p>메인 화면</p>
 </div>
@@ -465,7 +465,7 @@ const BackButtonSection = () => {
 
 위의 `iconStyle.base`만 보면 value가 모두 string이라 에러가 안나야 할 것 같아서, 이를 콘솔로 찍어봤다.
 
-<div class="img-div" style={{ margin: '2rem auto' }}>
+<div className="img-div" style={{ margin: '2rem auto' }}>
   <img src="/posts/stylex/iconstyle-base.png" alt="iconStyle.base 로그" />
   <p>iconStyle.base 로그</p>
 </div>
@@ -1037,7 +1037,7 @@ const TopNavigationBar = ({ title }: TopNavigationBarProps) => {
 
 StyleX는 스타일 정보를 컴파일 단계에서 해싱하여, 최종적으로 생성되는 클래스명에는 짧고 최소한의 정보만을 포함한다. 이는 성능 최적화, 보안 강화, 충돌 방지 등의 이점을 갖고 있지만, 브라우저에서 바로 스타일을 알아보기 어렵다.
 
-<div class="img-div">
+<div className="img-div">
   <img src="/posts/stylex/stylex-broswer.png" alt="브라우저에서의 Elements 탭" />
   <p>브라우저 > Elements 탭</p>
 </div>
@@ -1105,9 +1105,9 @@ StyleX의 특징이나 철학만 보더라도, Scalable(확장 가능), Predicta
 
 해당 글은 1-2주에 걸쳐 작성했는데, 글을 작성하는 도중에도 업데이트 된 이슈나 수정된 부분이 있어서 글을 읽고 있는 시점에도 변경될 가능성이 높다. 따라서 항상 StyleX 공식 문서를 보고 프로젝트에 적용하는 것을 추천한다.
 
-<p style={{ color: 'gray', fontSize: '14px' }}>
+<div style={{ color: 'gray', fontSize: '14px' }}>
   (뭔가 글을 업로드하고 StyleX의 내용이 자주 변경 될 것 같아서... 수정이 잦을 수도 있다)
-</p>
+</div>
 
 <br />
 

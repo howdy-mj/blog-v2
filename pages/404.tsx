@@ -15,7 +15,7 @@ const NotFoundPage = () => {
     <>
       <PageSEO title={`Oops... | ${metaData.title}`} />
       <Layout noPaddingBottom>
-        <DescriptionWrapper height={height}>
+        <DescriptionWrapper $height={height}>
           <TextWrapper>
             <ErrorCodeText>404</ErrorCodeText>
             <PageNonFoundText>Page Not Found</PageNonFoundText>
@@ -32,12 +32,12 @@ const NotFoundPage = () => {
 
 export default NotFoundPage;
 
-const DescriptionWrapper = styled.div<{ height: number }>`
+const DescriptionWrapper = styled.div<{ $height: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: ${(p) => p.height - GNB_HEIGHT}rem;
+  height: ${(p) => p.$height - GNB_HEIGHT}rem;
 `;
 
 const TextWrapper = styled.div`

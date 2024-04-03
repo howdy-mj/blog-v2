@@ -14,8 +14,8 @@ const Layout = ({ noPaddingBottom = false, children }: PropsWithChildren<LayoutP
   return (
     <>
       <Navigation />
-      <MainWrapper minHeight={height}>
-        <StyledArticle noPaddingBottom={noPaddingBottom}>{children}</StyledArticle>
+      <MainWrapper $minHeight={height}>
+        <StyledArticle $noPaddingBottom={noPaddingBottom}>{children}</StyledArticle>
       </MainWrapper>
     </>
   );
@@ -23,18 +23,18 @@ const Layout = ({ noPaddingBottom = false, children }: PropsWithChildren<LayoutP
 
 export default Layout;
 
-const MainWrapper = styled.main<{ minHeight: number }>`
-  min-height: ${({ minHeight }) => minHeight - GNB_HEIGHT}rem;
+const MainWrapper = styled.main<{ $minHeight: number }>`
+  min-height: ${({ $minHeight }) => $minHeight - GNB_HEIGHT}rem;
 `;
 
-const StyledArticle = styled.article<{ noPaddingBottom: boolean }>`
+const StyledArticle = styled.article<{ $noPaddingBottom: boolean }>`
   margin: 0 auto;
-  padding: ${(p) => (p.noPaddingBottom ? '0' : '3rem')} 3rem
-    ${(p) => (p.noPaddingBottom ? '0' : '10rem')};
+  padding: ${(p) => (p.$noPaddingBottom ? '0' : '3rem')} 3rem
+    ${(p) => (p.$noPaddingBottom ? '0' : '10rem')};
 
   ${(p) => p.theme.media.mobile} {
-    padding: ${(p) => (p.noPaddingBottom ? '0' : '2rem')} 2rem
-      ${(p) => (p.noPaddingBottom ? '0' : '10rem')};
+    padding: ${(p) => (p.$noPaddingBottom ? '0' : '2rem')} 2rem
+      ${(p) => (p.$noPaddingBottom ? '0' : '10rem')};
   }
 
   ${(p) => p.theme.media.tablet} {

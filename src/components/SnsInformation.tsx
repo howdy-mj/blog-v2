@@ -19,7 +19,7 @@ type SnsIconWrapperProps = {
 };
 const SnsIconWrapper = ({ href, size = 2.4, children }: PropsWithChildren<SnsIconWrapperProps>) => {
   return (
-    <StyledLink href={href} size={size} target="_blank" rel="noopener noreferrer">
+    <StyledLink href={href} $size={size} target="_blank" rel="noopener noreferrer">
       {children}
     </StyledLink>
   );
@@ -29,7 +29,7 @@ const SnsInformation = () => {
   return (
     <SnsWrapper>
       {metaData.email && (
-        <StyledLink href={`${SNS_URL.email}${metaData.email}`} size={2.4}>
+        <StyledLink href={`${SNS_URL.email}${metaData.email}`} $size={2.4}>
           <GrMail />
         </StyledLink>
       )}
@@ -73,11 +73,11 @@ const SnsWrapper = styled.div`
   }
 `;
 
-const StyledLink = styled.a<{ size: number }>`
+const StyledLink = styled.a<{ $size: number }>`
   cursor: pointer;
   > svg {
-    width: ${({ size }) => `${size}rem`};
-    height: ${({ size }) => `${size}rem`};
+    width: ${({ $size }) => `${$size}rem`};
+    height: ${({ $size }) => `${$size}rem`};
     color: var(--text-main);
   }
 `;
