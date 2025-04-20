@@ -16,13 +16,15 @@ export default function sitemapHandler(req: NextApiRequest, res: NextApiResponse
   const sitemap = `
         <?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-            ${allPaths.map((pathname) => {
-              return `
+            ${allPaths
+              .map((pathname) => {
+                return `
                 <url>
                   <loc>${siteUrl}${pathname}</loc>
                 </url>
               `;
-            })}
+              })
+              .join('')}
         </urlset>
     `.trim();
 
