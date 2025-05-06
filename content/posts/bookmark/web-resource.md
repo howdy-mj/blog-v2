@@ -33,6 +33,7 @@ draft: false
 - <a href="https://developers.facebook.com/docs/" target="_blank">Facebook for Developers</a>
 - <a href="https://data.seoul.go.kr/" target="_blank">서울 열린데이터 광장</a>
 - <a href="https://jsonformatter.curiousconcept.com/" target="_blank">JSON Formatter & Validator</a>
+- <a href="https://extendsclass.com/csv-generator.html" target="_blank">Test data generator</a>
 
 #### Free For Commercial
 
@@ -111,5 +112,6 @@ draft: false
 - <a href="https://codeimg.io/" target="_blank">Codeimg (beta)</a>
 - <a href="https://textedit.tools/" target="_blank">Online Text Edit Tools</a>
 - <a href="http://www.pythontutor.com/visualize.html#mode=edit" target="_blank">Code Execution</a>
+- <a href="https://pythonium.net/" target="_blank">Online tools for Python: Formatter, Code checker and Regex tester</a>
 
 <!-- - <a href="" target="_blank"></a> -->
