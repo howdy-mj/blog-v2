@@ -24,9 +24,13 @@ React 18부터는 useEffect에서도 layout과 paint 전에 동기적으로 함�
 
 ## useLayoutEffect
 
-[useLayoutEffect](https://ko.reactjs.org/docs/hooks-reference.html#uselayouteffect)는 useEffect와 동일하지만, 렌더링 후 layout과 paint 전에 **동기적**으로 실행된다.
+[useLayoutEffect](https://ko.reactjs.org/docs/hooks-reference.html#uselayouteffect)는 useEffect와 동일하지만, DOM 변경 후 layout과 paint 전에 **동기적**으로 실행된다.
 
 때문에 설령 DOM을 조작하는 코드가 존재하더라도, 사용자는 깜빡임을 보지 않는다.
+
+<br />
+
+정리하자면, 렌더링(render phase) -> DOM 변경 -> layout -> useLayoutEffect -> paint -> useEffect 순으로 실행된다.
 
 ### 예제
 

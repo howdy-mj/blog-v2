@@ -34,7 +34,7 @@ draft: false
   <p>출처: https://blog.sessionstack.com/how-javascript-works-event-loop-and-the-rise-of-async-programming-5-ways-to-better-coding-with-2f077c4438b5</p>
 </div>
 
-브라우저 환경을 그린 것인데, 그림에서도 알 수 있듯이 <span class="underline">이벤트 루프는 자바스크립트가 아닌 브라우저에 내장되어 있는 기능</span> 중 하나다. 즉, 자바스크립트는 싱글 스레드이지만, 브라우저에서는 이벤트 루프 덕분에 멀티 스레드로 동작하여 비동기 작업이 가능하다.
+그림에서도 알 수 있듯이 <span class="underline">이벤트 루프는 자바스크립트가 아닌 브라우저에 내장되어 있는 기능</span> 중 하나다. 즉, 자바스크립트는 싱글 스레드이지만 브라우저에서는 이벤트 루프 덕분에 비동기 작업을 비블로킹 방식으로 처리하고, 이를 통해 동시성을 구현하여 마치 멀티스레딩처럼 느껴지게 한다.
 
   <details>
     <summary>용어: Memory Heap(메모리 힙), Call Stack(콜 스택)</summary>
@@ -89,19 +89,16 @@ console.log('Bye');
 
 <br/>
 
-큐는 크게 태스크 큐(Task Queue), 마이크로 태스크 큐(Micro Task Queue), rAF 큐(Request Animation Frame Queue)로 나뉜다.
+큐는 크게 태스크 큐(Task Queue), 마이크로 태스크 큐(Micro Task Queue)로 나뉜다.
 
 <div>
 
 <ul>
   <li>
-    <strong>태스크 큐(Task Queue)</strong>: `setTimeout()`, `setInterval()`과 같은 비동기 함수의 콜백 함수 또는 이벤트 핸들러가 대기하는 곳이다.
+    <strong>태스크 큐(Task Queue)</strong>: `setTimeout()`, `setInterval()`과 같은 비동기 함수의 콜백 함수 또는 DOM 이벤트(ex. 클릭) 핸들러가 대기하는 곳이다.
   </li>
   <li>
-    <strong>마이크로 태스크 큐(Micro Task Queue)</strong>: `Promise()`의 후속 처리 메서드의 콜백 함수나 `MutationObserver()`가 대기하는 곳이다.
-  </li>
-  <li>
-    <strong>rAF 큐(Request Animation Frame Queue)</strong>: `requestAnimationFrame()`처럼 애니메이션을 업데이트하는 콜백 함수가 대기하는 곳이다.
+    <strong>마이크로 태스크 큐(Micro Task Queue)</strong>: `Promise()`의 후속 처리 메서드의 콜백 함수나 `queueMicrotask()`, `MutationObserver()`가 대기하는 곳이다.
   </li>
 </ul>
 
@@ -109,7 +106,7 @@ console.log('Bye');
 
 ### 우선 순위
 
-각 큐에 대한 실행 우선 순위는 **마이크로 태스크 큐 > rAF 큐 > 태스트 큐** 순서이다. 이벤트 루프는 해당 순서대로 대기하고 있는 함수들을 보고 있다가 차례대로 콜 스택에 가져와 실행한다.
+각 큐에 대한 실행 우선 순위는 **마이크로 태스크 큐 > 태스트 큐** 순서이다. 이벤트 루프는 해당 순서대로 대기하고 있는 함수들을 보고 있다가 차례대로 콜 스택에 가져와 실행한다.
 
 ```js
 console.log('처음');
@@ -126,10 +123,6 @@ Promise.resolve()
     console.log('promise2 - 마이크로 태스크 큐');
   });
 
-requestAnimationFrame(() => {
-  console.log('requestAnimationFrame - rAF 큐');
-});
-
 console.log('마지막');
 ```
 
@@ -138,24 +131,8 @@ console.log('마지막');
 마지막
 promise1 - 마이크로 태스크 큐
 promise2 - 마이크로 태스크 큐
-requestAnimationFrame - rAF 큐
 setTimeout - 태스크 큐
 ```
-
-따라서 위와 같은 결과가 나와야하지만 실제로는 그렇지 않았다.
-
-<iframe src="https://codesandbox.io/embed/queue-l92vz?fontsize=14&hidenavigation=1&theme=dark"
-style="width:100%; height:350px; border:0; border-radius: 4px; overflow:hidden;"
-title="queue"
-allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-></iframe>
-
-몇 번의 새로고침을 반복하다보면 `setTimeout()`이 `requestAnimationFrame()`보다 먼저 console에 찍히는걸 볼 수 있다.
-
-구글링을 해보면 브라우저에 따라 태스크 큐와 rAF 큐의 실행 순서가 달라질 수 있다고 했지만, 같은 크롬에서 테스트했을 때 발생한 문제이기 때문에 다른 원인이 있다고 생각한다.
-
-아직 정확한 이유는 모르지만, 필자는 `requestAnimationFrame()`가 브라우저가 리페인트 하기 바로 직전에 호출되기 때문이라 추측한다. _(추후 내용 보충)_
 
 <div class="callout">
 
@@ -202,29 +179,18 @@ console.log('종료');
     </ul>
 </details>
 
-`requestAnimationFrame()`이 나오기 전에는 `setTimeout()`이나 `setInterval()`을 중첩으로 사용하여 애니메이션 작업을 했다. 따라서 함수 실행이 프레임(16ms)마다 끊기지 않고 연이어 실행되어야 유저에게 부드럽게 재생되는 애니메이션 효과를 낼 수 있다.
+`requestAnimationFrame()`이 등장하기 전에는 웹 애니메이션을 구현하기 위해 주로 `setTimeout()`이나 `setInterval()`을 사용했다. 유저가 애니메이션을 부드럽게 느끼려면, 함수 실행이 프레임마다 끊기지 않고 연이어 이루어져야 했다. 따라서 이 함수들을 중헙해서 반복적으로 사용해서 마치 연속적인 움직임을 보이게 만들었다.
 
-그러나 `setTimeout()`과 `setInterval()` 모두 시간 기반의 함수가 아니며, 앞의 콜백 함수가 종료 시에 실행된다. 게다가 만약 컴퓨터 성능이 안 좋다면, 프레임(16ms) 시작 때 함수 실행이 늦어져 화면과 싱크가 맞지 않아 애니메이션이 끊겨 보이는 현상(ex. 위 gif의 15FPS)이 일어난다.
+그러나 `setTimeout()`과 `setInterval()` 모두 엄밀히 말해 '시간 기반'으로 작동하는 함수라기보다는, 지정된 **최소 지연 시간** 이후에 콜백 함수를 실행하는 예약 함수다. 즉, 앞의 콜백 함수가 종료된 후에 다음 실행을 대기하는 방식이다. 게다가 만약 컴퓨터 성능이 안 좋거나, 다른 무거운 작업이 있다면, 프레임(16ms) 시작 시점에 함수 실행이 늦어질 수 있다. 이렇게 되면 화면과 애니메이션 싱크가 맞지 않아 애니메이션이 끊겨 보이는 현상(ex. 위 gif의 15FPS)이 일어난다.
 
 <div class="img-div center">
-  <img src="https://web-dev.imgix.net/image/T4FyVKpzu4WKF1kBNvXepbi08t52/iq5yVSd4wRskoD8GywR7.jpg?auto=format&w=1600" alt="setTimeout fires">
+  <img src="https://web.dev/static/articles/optimize-javascript-execution/image/settimeout-causing-brows-6424030c04e02_1920.jpg?hl=ko" alt="setTimeout fires">
   <p>https://web.dev/optimize-javascript-execution/</p>
 </div>
 
-반면 <a href="https://developer.mozilla.org/ko/docs/Web/API/Window/requestAnimationFrame" target="_blank">requestAnimationFrame()</a>는 콜백을 실행하는 시점에 `DOMHighResTimeStamp`가 전달되어 시간 기반으로 작동하는 함수로 프레임(16ms) 시작 때 실행을 보장한다. 때문에 무한 스크롤을 구현할 때 `setTimeout()` 기반의 throttle 대신 `requestAnimationFrame()`을 사용해야 한다.
+이러한 문제를 해결하기 위해 <a href="https://developer.mozilla.org/ko/docs/Web/API/Window/requestAnimationFrame" target="_blank">requestAnimationFrame()</a>이 등장했다. 이는 브라우저 렌더링 주기와 동기되어 작동하는 함수이다. 콜백을 실행하는 시점에 `DOMHighResTimeStamp`를 전달받아, 실제 브라우저의 **다음 리페인트 직전**에 실행을 보장한다.
 
-<!-- <br /> -->
-
-<!-- <iframe src="https://codesandbox.io/embed/settimeout-raf-cifhw?fontsize=14&hidenavigation=1&theme=dark"
-     style="width:100%; height:200px; border:0; border-radius: 4px; overflow:hidden;"
-     title="setTimeout-rAF"
-     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-   ></iframe>
-
-위의 코드는 '시작' 버튼을 누르면, 바로 1씩 증가하는 counter를 만든 것이고, 각각의 id가 500이상이 되면 동작을 멈추게 만들었다.
-
-확인해보면, rAF는 언제나 500에서 멈추지만, setTimeout은 500 이전의 숫자에서 랜덤하게 멈춘다. -->
+브라우저는 `requestAnimationFrame()` 콜백을 실행하기 가장 좋은 시점을 스스로 판단한다. 만약 탭이 비활성화되면 실행을 일시 중지하여 불필요한 리소스 낭비를 줄이거나, CPU, 배터리 소모를 최적화할 수 있다. 이러한 특성 덕분에 `setTimeout()`, `setInterval()` 대신 `requestAnimationFrame()` 사용이 훨씬 좋다.
 
 ## 비동기 프로그래밍(Asynchronous Programming)
 
@@ -293,7 +259,7 @@ const posts = getPosts(POSTS_URL, handlePosts, errorHandling);
 
 따라서 콜백의 후속 처리를 모두 그 콜백 함수 내에서 처리해야 하기 때문에, 위처럼 다시 콜백함수를 넘기는 수 밖에 없게 되었다.
 
-그런데 만약 해당 콜백 함수에 또 예외 처리를 해야 하거나, 여러 에러 상황에 각기 다른 조치를 취해야 한다면 어떻게 해야할까? 끔찍하게도 이것 역시 또 다른 콜백함수로 넘겨야 한다. 그리고 이런 상황이 곧 **'콜백 헬(callback hell)'**이라는 단어로 불러졌다.
+그런데 만약 해당 콜백 함수에 또 예외 처리를 해야 하거나, 여러 에러 상황에 각기 다른 조치를 취해야 한다면 어떻게 해야할까? 끔찍하게도 이것 역시 또 다른 콜백함수로 넘겨야 한다. 그리고 이런 상황이 곧 <strong>'콜백 헬(callback hell)'</strong>이라는 단어로 불러졌다.
 
 ### Promise
 
@@ -318,7 +284,7 @@ const getPostsWithPromise = (url) => {
 };
 
 const posts = getPostsWithPromise(POSTS_URL);
-console.log('posts: ', posts);
+console.log('posts: ', posts); // Promise {<pending>}
 ```
 
 콜백 함수와 달리 post를 console로 찍어보면 <span class="return">Promise {\<pending>}</span>이란 값이 나온다. 비동기 함수가 수행되기 전이기 때문에 resolve나 reject가 아닌 pending이 반환된 것이다.
@@ -373,7 +339,6 @@ posts.then(console.log);
 
 _추후 추가할 내용_
 
-- rAF 큐와 태스크 큐의 우선순위가 매번 달라지는 이유
 - 콜백함수, Promise, async/await에서의 try/catch 문
 
 <br />
