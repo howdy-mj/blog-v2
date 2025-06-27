@@ -4,7 +4,7 @@ import BlogContainer from '@containers/blog';
 import { PageSEO } from '@components/SEO';
 import { Content, filterDraftInProduction, getAllFiles } from '@utils/getFiles';
 import { getAllTags } from '@utils/getAllTags';
-import { makePostsRss } from '@utils/makePostsRss';
+// import { makePostsRss } from '@utils/makePostsRss';
 import { getCurrentPagePosts } from '@utils/makeBlogPage';
 
 type BlogMainProps = {
@@ -30,9 +30,9 @@ export const getStaticProps = async () => {
   const posts = getCurrentPagePosts(allPosts, 1);
   const tags = getAllTags();
 
-  if (totalPosts > 0) {
-    await makePostsRss(allPosts);
-  }
+  // if (totalPosts > 0) {
+  //   await makePostsRss(allPosts);
+  // }
 
   return {
     props: {
