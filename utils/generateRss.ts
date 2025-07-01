@@ -21,20 +21,28 @@ const escapeCdata = (text: string) => {
   return text.replaceAll(']]>', ']]]]><![CDATA[>');
 };
 
+const safeContent = (content: string) => {
+  return escapeCdata(content)
+    .replace(/\$\{[^}]+\}/g, '')
+    .replace(/src="\/([^"]+)"/g, `src="${metaData.siteUrl}/$1"`)
+    .replace(/style="[^"]*"/g, '');
+};
+
 const generateRssItem = (content: RssContent) => {
   const { title, summary, date, tags } = content.frontMatter;
+
   return `
     <item>
       <guid>${escapeXml(`${metaData.siteUrl}/${content.slug}`)}</guid>
       <title>${removeHtmlTagFromString(escapeXml(title))}</title>
       <link>${escapeXml(`${metaData.siteUrl}/${content.slug}`)}</link>
-      ${summary && `<description>${escapeXml(removeHtmlTagFromString(summary))}</description>`}
+      ${summary ? `<description>${escapeXml(removeHtmlTagFromString(summary))}</description>` : ''}
       <pubDate>${new Date(date).toUTCString()}</pubDate>
       <author>${escapeXml(`${metaData.email} (${metaData.name})`)}</author>
       ${tags && tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('')}
       ${
         content.content &&
-        `<content:encoded><![CDATA[${escapeCdata(content.content)}]]></content:encoded>`
+        `<content:encoded><![CDATA[${safeContent(content.content)}]]></content:encoded>`
       }
     </item>
   `;
