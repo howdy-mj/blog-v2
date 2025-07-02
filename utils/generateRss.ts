@@ -24,10 +24,14 @@ const escapeCdata = (text: string) => {
 const safeContent = (content: string) => {
   const replacedContent = escapeCdata(content)
     .replace(/\$\{[^}]+\}/g, '')
-    .replace(/src="\/([^"]+)"/g, `src="${metaData.siteUrl}/$1"`)
+    .replace(/src=(["'])\/([^"']+)\1/g, `src=$1${metaData.siteUrl}/$2$1`)
     .replace(/style="[^"]*"/g, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/g, '')
+    .replace(/<base[^>]*>/g, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/&(?!(amp|lt|gt|quot|apos);)/g, '&amp;');
-  return `<div>${replacedContent}</div>`;
+
+  return `<article>${replacedContent}</article>`;
 };
 
 const generateRssItem = (content: RssContent) => {
