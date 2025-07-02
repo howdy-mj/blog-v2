@@ -22,7 +22,8 @@ const escapeCdata = (text: string) => {
 };
 
 const safeContent = (content: string) => {
-  return escapeCdata(content)
+  const wrapped = `<p>${content}</p>`;
+  return escapeCdata(wrapped)
     .replace(/\$\{[^}]+\}/g, '')
     .replace(/src="\/([^"]+)"/g, `src="${metaData.siteUrl}/$1"`)
     .replace(/style="[^"]*"/g, '')
@@ -41,11 +42,7 @@ const generateRssItem = (content: RssContent) => {
       <description>${escapeXml(removeHtmlTagFromString(description))}</description>
       <pubDate>${new Date(date).toUTCString()}</pubDate>
       <author>${escapeXml(`${metaData.email} (${metaData.name})`)}</author>
-      ${
-        tags &&
-        tags.length > 0 &&
-        tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('')
-      }
+      ${tags && tags.length > 0 && tags.map((tag) => `<category>${tag}</category>`).join('')}
       ${
         content.content &&
         `<content:encoded><![CDATA[${safeContent(content.content)}]]></content:encoded>`
