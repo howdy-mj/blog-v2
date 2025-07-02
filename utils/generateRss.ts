@@ -8,20 +8,48 @@ export type RssContent = {
   slug: string;
 };
 
+const escapeXml = (unsafe: string) => {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+};
+
+const escapeCdata = (text: string) => {
+  return text.replaceAll(']]>', ']]]]><![CDATA[>');
+};
+
+const safeContent = (content: string) => {
+  const replacedContent = escapeCdata(content)
+    .replace(/\$\{[^}]+\}/g, '')
+    .replace(/src=(["'])\/([^"']+)\1/g, `src=$1${metaData.siteUrl}/$2$1`)
+    .replace(/style="[^"]*"/g, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/g, '')
+    .replace(/<base[^>]*>/g, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/&(?!(amp|lt|gt|quot|apos);)/g, '&amp;');
+
+  return `<article>${replacedContent}</article>`;
+};
+
 const generateRssItem = (content: RssContent) => {
   const { title, summary, date, tags } = content.frontMatter;
+  const description = summary || title || 'No description';
+
   return `
     <item>
-      <guid>${metaData.siteUrl}/${content.slug}</guid>
-      <title>${removeHtmlTagFromString(title)}</title>
-      <link>${metaData.siteUrl}/${content.slug}</link>
-      ${summary && `<description>${removeHtmlTagFromString(summary)}</description>`}
+      <guid>${escapeXml(`${metaData.siteUrl}/${content.slug}`)}</guid>
+      <title>${escapeXml(removeHtmlTagFromString(title))}</title>
+      <link>${escapeXml(`${metaData.siteUrl}/${content.slug}`)}</link>
+      <description>${escapeXml(removeHtmlTagFromString(description))}</description>
       <pubDate>${new Date(date).toUTCString()}</pubDate>
-      <author>${metaData.email} (${metaData.name})</author>
-      ${tags && tags.map((tag) => `<category>${tag}</category>`).join('')}
+      <author>${escapeXml(`${metaData.email} (${metaData.name})`)}</author>
+      ${tags && tags.length > 0 && tags.map((tag) => `<category>${tag}</category>`).join('')}
       ${
         content.content &&
-        `<content:encoded>${removeHtmlTagFromString(content.content)}</content:encoded>`
+        `<content:encoded><![CDATA[${safeContent(content.content)}]]></content:encoded>`
       }
     </item>
   `;
@@ -42,4 +70,5 @@ const generateRss = (contents: RssContent[], page = 'rss.xml') => `
     </channel>
   </rss>
 `;
+
 export default generateRss;
