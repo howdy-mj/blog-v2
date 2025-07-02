@@ -22,12 +22,12 @@ const escapeCdata = (text: string) => {
 };
 
 const safeContent = (content: string) => {
-  const wrapped = `<p>${content}</p>`;
-  return escapeCdata(wrapped)
+  const replacedContent = escapeCdata(content)
     .replace(/\$\{[^}]+\}/g, '')
     .replace(/src="\/([^"]+)"/g, `src="${metaData.siteUrl}/$1"`)
     .replace(/style="[^"]*"/g, '')
     .replace(/&(?!(amp|lt|gt|quot|apos);)/g, '&amp;');
+  return `<div>${replacedContent}</div>`;
 };
 
 const generateRssItem = (content: RssContent) => {
