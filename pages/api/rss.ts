@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.writeHead(200, {
     'Content-Type': 'application/xml',
-    'Cache-Control': 's-maxage=3600, stale-while-revalidate',
+    'Cache-Control': 'no-store',
   });
   return res.end(rss);
 }
